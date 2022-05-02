@@ -74,7 +74,7 @@ public class FunctionController {
 		
 		Menu menu = new Menu(SettingData.HOMEDIV_CF); 
 		mv.addObject("sitemap", Component.getList("Menu.AMN_getUserMenuListByHOMEDIV", menu));
-		ActivityHistoryService.setDesc("나는 누구인가!!!", mv);
+		ActivityHistoryService.setDesc("dd", mv);
 		
 		return mv;
 	}

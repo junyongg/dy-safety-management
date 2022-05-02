@@ -48,7 +48,6 @@ public class JactMainController {
 		mv.addObject("slide", Component.getList("Slide.get_slideList",slideDto));
 		mv.addObject("banner", Component.getList("Banner.BM_selectmain",BM_MN_KEYNO));
 		mv.addObject("movie", Component.getList("MainMovie.MM_selectmain",BM_MN_KEYNO));
-		mv.addObject("crawling", Component.getListNoParam("Crawling.CrawlingSelect"));
 		
 		
 		mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지

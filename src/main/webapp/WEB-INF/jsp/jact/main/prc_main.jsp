@@ -264,50 +264,6 @@
 				<!-- SNS박스 -->
 				<div class="main_sns_02_box">
 					<ul class="main_sns02_ul">
-						<c:forEach items="${crawling }" var="crawling">
-							<c:choose>
-								<c:when test="${crawling.TYPE eq 'facebook' }">
-									<li class="facebook">
-										<a href="https://www.facebook.com/jact5800" target="_blank" title="페이스북 링크이동">
-											<span class="icon"><img src="/resources/img/main/new/icon_main_circle_facebook.png" alt=""></span>
-											<div class="img_box"><img src="${crawling.IMGURL }" alt=""></div>
-											<div class="txt_box">
-												<p class="nor">
-													${crawling.CONTENT }
-												</p>
-											</div>
-										</a>
-									</li>
-								</c:when>
-								<c:when test="${crawling.TYPE eq 'instagram' }">
-									<li class="insta">
-										<a href="https://www.instagram.com/jncf5800/" target="_blank" title="인스타그램 링크이동">
-											<span class="icon"><img src="/resources/img/main/new/icon_main_circle_insta.png" alt=""></span>
-											<div class="img_box"><img src="${crawling.IMGURL }" alt=""></div>
-											<div class="txt_box">
-												<p class="nor">
-													${crawling.CONTENT }
-												</p>
-											</div>
-										</a>
-									</li>
-								</c:when>
-								<c:when test="${crawling.TYPE eq 'blog' }">
-									<li class="blog">
-										<a href="https://blog.naver.com/jact123" target="_blank" title="네이버 링크이동">
-											<span class="icon"><img src="/resources/img/main/new/icon_main_circle_blog.png" alt=""></span>
-											<div class="img_box"><img src="${crawling.IMGURL }" alt=""></div>
-											<div class="txt_box">
-												<h2>${crawling.TITLE }</h2>
-												<p class="nor">
-													${crawling.CONTENT }
-												</p>
-											</div>
-										</a>
-									</li>
-								</c:when>
-							</c:choose>
-						</c:forEach>
 					</ul>
 				</div>
 			</div><!-- // inner -->

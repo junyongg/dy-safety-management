@@ -108,9 +108,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- 설문결과관리 -->
 		<typeAlias alias="SrmDTO" type="com.tx.admin.operation.survey.dto.SrmDTO"/>
 		
-		<!-- 관광정보관리 -->
-		<typeAlias alias="Tour" type="com.tx.admin.tour.dto.TourDTO"/>
-		
 		<!-- 베너관리 -->
 		<typeAlias alias="Banner" type="com.tx.admin.operation.banner.dto.BannerDTO"/>
 		
