@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Slide"> 
+	
+	<sql id="MM_getListBody">
+		FROM (
+			SELECT AB.*
+					, ROW_NUMBER() OVER(
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	MM_MN_MAINNAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	MM_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	MM_URL ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	MM_REGDT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	MM_LEVEL ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	LOCATION_NAME ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	MM_LEVEL
+				 		</otherwise>
+				 	</choose>
+				 	) RNUM
+			FROM(
+				SELECT 		CASE MM_LOCATION WHEN 'H' THEN '상단' WHEN 'M' THEN '중단' WHEN 'L' THEN '하단' END LOCATION_NAME
+							, S.*, M.MN_NAME 	MM_MN_MAINNAME
+							,(SELECT COUNT(*) FROM T_MAIN_SLIDE_MANAGER S2 WHERE S2.MM_MN_KEYNO = M.MN_KEYNO AND S2.MM_LOCATION = S.MM_LOCATION  AND S2.MM_DEL_YN = 'N' AND S2.MM_USE_YN = 'Y') TOTAL_CNT
+				FROM 		T_MAIN_SLIDE_MANAGER S
+				LEFT JOIN 	T_MENU_MANAGER M
+				ON			S.MM_MN_KEYNO	=	M.MN_KEYNO
+	            WHERE		MM_DEL_YN = 'N'
+	            AND			MM_USE_YN = #{MM_USE_YN}
+	            ORDER BY 	S.MM_LEVEL*1
+			)AB
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		MM_MN_MAINNAME 			LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		MM_TITLE				LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		MM_URL 					LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		MM_REGDT 				LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		MM_LEVEL 				LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		LOCATION_NAME 			LIKE ('%'||#{item.searchKeyword}||'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				<if test='MM_USE_YN.equals("Y")'>
+ 				MM_LEVEL 				LIKE ('%'||#{item.searchKeyword}||'%')	OR
+ 				</if>
+ 				MM_MN_MAINNAME 			LIKE ('%'||#{item.searchKeyword}||'%') 	OR
+ 				MM_TITLE				LIKE ('%'||#{item.searchKeyword}||'%') 	OR
+ 				MM_URL 					LIKE ('%'||#{item.searchKeyword}||'%') 	OR
+ 				MM_REGDT				LIKE ('%'||#{item.searchKeyword}||'%')	OR 	 
+ 				LOCATION_NAME			LIKE ('%'||#{item.searchKeyword}||'%') 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		) AA	
+		
+	</sql>
+	
+    <select id="MM_getListCnt" resultType="int">
+			SELECT	COUNT(*)
+		<include  refid="MM_getListBody"/>
+    </select>
+    <select id="MM_getList" resultType="hashmap">
+		SELECT	*
+		<include  refid="MM_getListBody"/>
+		<if test="recordCountPerPage != 0">
+		 	WHERE 1=1
+		 	AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if> 	
+		
+    </select>
+	
+	 <select id="MM_select" resultType="HashMap">
+   		SELECT 		MM.*,S.FS_ORINM,M.*
+		FROM 		T_MAIN_SLIDE_MANAGER MM
+		LEFT JOIN	T_COMMON_FILE_SUB S
+		ON			MM.MM_FS_KEYNO	=	S.FS_KEYNO
+		LEFT JOIN	T_MENU_MANAGER M
+		ON			MM.MM_MN_KEYNO	=	M.MN_KEYNO
+		WHERE		MM_KEYNO = #{MM_KEYNO}
+    </select>
+    
+    <!-- 슬라이드 등록 -->
+	<insert id="MM_insert" parameterType="Slide">
+		INSERT INTO T_MAIN_SLIDE_MANAGER(
+			 MM_KEYNO
+			,MM_TITLE
+			,MM_FS_KEYNO
+			,MM_COMMENT
+			,MM_REGNM
+			,MM_REGDT
+			,MM_LEVEL
+			,MM_URL
+			,MM_MN_KEYNO
+			,MM_LOCATION
+			)
+		VALUES(
+			 #{MM_KEYNO}        
+			,#{MM_TITLE}        
+			,#{MM_FS_KEYNO}     
+			,#{MM_COMMENT}      
+			,#{MM_REGNM}        
+			,SYSDATE      
+			,1        
+			,#{MM_URL}          
+			,#{MM_MN_KEYNO}     
+			,#{MM_LOCATION}     
+			)
+	</insert>
+	
+	 <update id="MM_update">
+    	UPDATE T_MAIN_SLIDE_MANAGER
+	   	SET	     MM_KEYNO     =   #{MM_KEYNO}    
+				,MM_TITLE     =   #{MM_TITLE}    
+				,MM_FS_KEYNO  =   #{MM_FS_KEYNO} 
+				,MM_COMMENT   =   #{MM_COMMENT}  
+				,MM_MODNM     =   #{MM_MODNM}    
+				,MM_MODDT     =   SYSDATE  
+				,MM_URL       =   #{MM_URL}      
+				,MM_MN_KEYNO  =   #{MM_MN_KEYNO}    
+				,MM_LOCATION  =   #{MM_LOCATION}    
+    	WHERE  	MM_KEYNO      =	#{MM_KEYNO}
+    </update>
+	
+	<!-- 슬라이드 순서 변경 --> 
+	<update id="MM_levelUpdate">
+		UPDATE T_MAIN_SLIDE_MANAGER A
+		SET MM_LEVEL = 
+		(
+			CASE WHEN MM_KEYNO = #{MM_KEYNO} THEN #{MM_LEVEL_AFTER}
+				 <![CDATA[
+				 WHEN	MM_LEVEL >= #{MM_LEVEL_AFTER} AND MM_LEVEL <= #{MM_LEVEL} THEN MM_LEVEL + 1
+				 WHEN	MM_LEVEL >= #{MM_LEVEL} AND MM_LEVEL <= #{MM_LEVEL_AFTER} THEN MM_LEVEL - 1
+				 ]]>
+				 ELSE 	MM_LEVEL
+			END
+		)
+		WHERE MM_USE_YN = 'Y'
+		AND	  MM_DEL_YN = 'N'
+		AND   MM_MN_KEYNO  		=	#{MM_MN_KEYNO}
+		AND	  MM_LOCATION		=	#{MM_LOCATION}
+	</update>
+	
+	<update id="MM_levelUpdate2" parameterType="Slide">
+    	
+    	UPDATE T_MAIN_SLIDE_MANAGER A
+		SET   MM_LEVEL  		= MM_LEVEL + 1
+		WHERE MM_USE_YN		 	=    'Y'
+		AND	  MM_DEL_YN		    =	 'N'
+		AND   MM_MN_KEYNO  		=	#{MM_MN_KEYNO}
+		AND	  MM_LOCATION		=	#{MM_LOCATION}
+		
+    </update>
+    
+    <!-- 슬라이드 삭제 -->    
+    <update id="MM_delete" parameterType="hashmap">
+   
+        UPDATE T_MAIN_SLIDE_MANAGER 
+        SET MM_DEL_YN='Y' , MM_USE_YN ='N' 
+        WHERE MM_KEYNO =	#{MM_KEYNO}
+    </update>
+    
+     <!-- 사용여부 Y -->
+    <update id="MM_choiceY" parameterType="Slide">
+    	
+    	<selectKey resultType="int" keyProperty="MM_LEVEL" order="BEFORE">
+		    SELECT NVL(MAX(MM_LEVEL),0)+1
+			FROM T_MAIN_SLIDE_MANAGER
+			WHERE	MM_USE_YN	=	'Y'
+			AND		MM_DEL_YN	=	'N'
+			AND   	MM_MN_KEYNO  	=	#{MM_MN_KEYNO}
+			AND	  	MM_LOCATION		=	#{MM_LOCATION}
+		</selectKey>
+   		UPDATE 	   T_MAIN_SLIDE_MANAGER
+    	SET		   MM_USE_YN		=	#{MM_USE_YN}
+    			  ,MM_LEVEL			=	#{MM_LEVEL}
+    	WHERE	   MM_KEYNO			=	#{MM_KEYNO}
+    	AND   	   MM_MN_KEYNO  	=	#{MM_MN_KEYNO}
+		AND	 	   MM_LOCATION		=	#{MM_LOCATION}
+    </update>
+     <!-- 사용여부 N -->
+    <update id="MM_choiceN" parameterType="Slide">
+    	
+   		UPDATE 	T_MAIN_SLIDE_MANAGER
+    	SET 	MM_USE_YN		=	'N'
+    	WHERE	MM_KEYNO		=	#{MM_KEYNO} 	
+    	AND   	MM_MN_KEYNO  	=	#{MM_MN_KEYNO}
+		AND	  	MM_LOCATION		=	#{MM_LOCATION}
+    </update>
+    
+    <!-- 사용여부 N 추가 처리-->
+    <update id="MM_choiceN2" parameterType="Slide">
+   		<![CDATA[
+   		UPDATE T_MAIN_SLIDE_MANAGER
+    	SET  	MM_LEVEL 		= 	MM_LEVEL - 1
+    	WHERE 	MM_USE_YN 		= 	'Y'
+    	AND		MM_LEVEL 		>= 	#{MM_LEVEL}
+    	AND   	MM_MN_KEYNO  	=	#{MM_MN_KEYNO}
+		AND	  	MM_LOCATION		=	#{MM_LOCATION}
+    	]]>
+    </update>
+    
+    <select id="get_slideList" resultType="HashMap">
+    	SELECT MM.*
+    			, NVL2(FS.FS_KEYNO,('/resources/img/upload/'||FS.FS_FOLDER||FS.FS_CHANGENM||'.'||FS.FS_EXT),'') AS FS_PATH
+		FROM T_MAIN_SLIDE_MANAGER MM
+		LEFT JOIN T_COMMON_FILE_SUB FS
+		ON   MM.MM_FS_KEYNO = FS.FS_KEYNO
+		WHERE MM_MN_KEYNO 	= #{MM_MN_KEYNO}
+		AND   MM_USE_YN   	= 'Y'
+		AND   MM_DEL_YN   	= 'N'
+		AND   MM_LOCATION   = #{MM_LOCATION}
+		ORDER BY MM_LEVEL
+    </select>
+    
+</mapper>
+ 

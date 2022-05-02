@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Popup"> 
+	<resultMap id="PopMap" type="HashMap">
+		<result property="PI_CONTENTS" column="PI_CONTENTS" jdbcType="CLOB" javaType="java.lang.String"/>
+	</resultMap>
+
+	<!-- 팝업 메인페이지  -->
+	 <select id="PI_getListCnt_1" resultType="int">
+			SELECT	COUNT(*)
+			FROM T_POPUPINFO
+            WHERE PI_DEL = 'N'
+            <if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		PI_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		PI_STARTDAY 				LIKE '%' || #{item.searchKeyword} || '%'					
+ 		OR		PI_ENDDAY				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				PI_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' OR
+ 				PI_STARTDAY 				LIKE '%' || #{item.searchKeyword} || '%'  	OR					
+ 				PI_ENDDAY				LIKE '%' || #{item.searchKeyword} || '%'	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	 	<if test=" recordCountPerPage != 0"> 
+		AND 1=1
+		AND 	ROWNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>
+			ORDER BY PI_CHECK DESC
+    </select>
+    
+    <select id="PI_getList_1" resultType="hashmap">
+			SELECT P.* , CASE WHEN PI_TYPE = 'A' THEN '이미지형'
+						WHEN PI_TYPE = 'B' THEN '텍스트형'
+						ELSE PI_TYPE
+						END  AS PI_TYPE_TEXT
+			FROM T_POPUPINFO P
+			WHERE PI_DEL = 'N'
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		PI_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		PI_STARTDAY 				LIKE '%' || #{item.searchKeyword} || '%'					
+ 		OR		PI_ENDDAY				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				PI_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' OR
+ 				PI_STARTDAY 				LIKE '%' || #{item.searchKeyword} || '%'  	OR					
+ 				PI_ENDDAY				LIKE '%' || #{item.searchKeyword} || '%'	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	 	<if test=" recordCountPerPage != 0"> 
+		AND 1=1
+		AND 	ROWNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>
+			ORDER BY PI_CHECK DESC
+    </select>
+
+
+
+	<!-- 등록된 팝업 중 수정하기 위해 찾는 팝업 -->
+	<select id="PI_select" parameterType="PopupDTO" resultMap="PopMap">
+           SELECT       
+         		P.PI_STARTDAY AS PI_STARTDAY,
+          	 	P.PI_ENDDAY AS PI_ENDDAY,
+<!--          		TO_CHAR(TO_DATE(P.PI_STARTDAY, 'YYYY-MM-DD'),'YYYY-MM-DD') AS PI_STARTDAY, -->
+<!--           	 	TO_CHAR(TO_DATE(P.PI_ENDDAY, 'YYYY-MM-DD'),'YYYY-MM-DD') AS PI_ENDDAY, -->
+						P.*,S.FS_ORINM
+			FROM 		T_POPUPINFO P
+			LEFT JOIN	T_COMMON_FILE_SUB S
+			ON			P.PI_FS_KEYNO	=	S.FS_KEYNO
+			WHERE
+                PI_KEYNO = #{PI_KEYNO}
+	</select>
+	
+	<!-- 팝업 메인에 등록되는 리스트(조건문 : 체크상태 및 이미지 파일 정보를 위한 키넘버 동일, 시작 날짜 종료날짜가 현재 날짜를 벗어나지 않는 기준) -->
+	<select id="PI_main_list" resultType="hashmap">
+		<![CDATA[
+			SELECT  P.*, F.*
+			FROM
+ 			       T_POPUPINFO P, T_COMMON_FILE_SUB F
+			WHERE
+  				   P.PI_CHECK = 'Y' and P.PI_FS_KEYNO = F.FS_KEYNO  
+  				   and P.PI_STARTDAY <= TO_CHAR(SYSDATE,'YYYY-MM-DD')
+   				   and P.PI_ENDDAY >= TO_CHAR(SYSDATE,'YYYY-MM-DD')  
+			ORDER BY P.PI_KEYNO DESC
+		]]>
+	</select>
+	
+	<select id="PI_getListWidthURL" resultMap="PopMap" parameterType="hashmap">
+	-- LOG OFF
+		<![CDATA[
+			SELECT		A.*
+			FROM (
+				SELECT 		*
+				FROM 		T_POPUPINFO P
+				LEFT JOIN 	T_COMMON_FILE_SUB S
+				ON			P.PI_FS_KEYNO = S.FS_KEYNO
+				LEFT JOIN 	T_POPUPINFO_SUB PS
+				ON			P.PI_KEYNO = PS.PC_PI_KEYNO
+				WHERE		P.PI_MN_TYPE 	= 	'N'
+				AND	 		PS.PC_SUBKEY = 
+							(
+								SELECT MN_KEYNO
+							    FROM T_MENU_MANAGER
+							    WHERE ( MN_URL = #{MN_URL} OR MN_FORWARD_URL = #{MN_URL} )
+							    AND	  MN_DEL_YN	=	'N'
+							)
+	            UNION ALL
+	            
+	            SELECT		*
+	            FROM		T_POPUPINFO P
+	            LEFT JOIN 	T_COMMON_FILE_SUB S
+				ON			P.PI_FS_KEYNO = S.FS_KEYNO
+				LEFT JOIN 	T_POPUPINFO_SUB PS
+				ON			P.PI_KEYNO = PS.PC_PI_KEYNO
+	            WHERE		P.PI_MN_TYPE 	= 	'A'
+	            AND	 		PS.PC_SUBKEY = 
+	            			(
+								SELECT MN_HOMEDIV_C
+							    FROM T_MENU_MANAGER
+							    WHERE ( MN_URL = #{MN_URL} OR MN_FORWARD_URL = #{MN_URL})
+							    AND	  MN_DEL_YN	=	'N'
+							)
+			) A
+			WHERE	PI_CHECK	=	'Y'
+			]]>
+			<if test="PI_STARTDAT != null">
+			<![CDATA[
+ 				AND		PI_STARTDAY <= TO_CHAR(SYSDATE,'YYYY-MM-DD') 
+ 	            AND		PI_ENDDAY >= TO_CHAR(SYSDATE,'YYYY-MM-DD') 
+	        ]]> 
+	        </if>
+ 			AND		PI_DIVISION = #{PI_DIVISION}
+		<if test="key != null">
+			AND			PI_KEYNO NOT IN 
+			<foreach collection="key" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+			ORDER BY PI_KEYNO
+	</select>
+  	
+	<!-- 팝업 등록 -->
+	<insert id="PI_insert" parameterType="PopupDTO">
+		INSERT INTO T_POPUPINFO(
+			PI_KEYNO,
+			PI_FS_KEYNO,
+			PI_TITLE,
+			PI_TOP_LOC,
+			PI_LEFT_LOC,
+			PI_STARTDAY,	
+			PI_ENDDAY,	
+			PI_CONTENTS,
+			PI_WIDTH,
+			PI_HEIGHT,
+			PI_LINK,
+			PI_CHECK,
+			PI_LEVEL,
+			PI_MN_TYPE,
+			PI_BACKGROUND_COLOR,
+			PI_TITLE_COLOR,
+			PI_COMMENT_COLOR,
+			PI_TYPE,
+			PI_TITLE2,
+			PI_DIVISION,
+			PI_COMMENT,
+		    PI_RESIZE_CHECK
+			)
+		VALUES(
+			#{PI_KEYNO},
+			#{PI_FS_KEYNO},
+			#{PI_TITLE},
+			#{PI_TOP_LOC},
+			#{PI_LEFT_LOC},
+			#{PI_STARTDAY},
+			#{PI_ENDDAY},	
+			#{PI_CONTENTS},
+			#{PI_WIDTH},			
+			#{PI_HEIGHT},
+			#{PI_LINK},
+			#{PI_CHECK},
+			1,
+			#{PI_MN_TYPE},
+            #{PI_BACKGROUND_COLOR},
+            #{PI_TITLE_COLOR},
+            #{PI_COMMENT_COLOR},
+            #{PI_TYPE},
+            #{PI_TITLE2},
+            #{PI_DIVISION},
+            #{PI_COMMENT},
+            #{PI_RESIZE_CHECK}
+			)
+	</insert>
+	
+    <!-- 팝업 삭제 -->    
+    <update id="PI_delete" parameterType="hashmap">
+   
+        UPDATE T_POPUPINFO 
+        SET PI_DEL='Y' , PI_CHECK ='N' 
+        WHERE PI_KEYNO =	#{PI_KEYNO}
+    </update>
+    
+    <!-- 팝업 사용여부 -->    
+    <update id="PI_choice" parameterType="PopupDTO">
+        UPDATE 	T_POPUPINFO 
+        SET 	PI_CHECK	=	#{PI_CHECK} 
+        WHERE 	PI_KEYNO	=	#{PI_KEYNO} 
+    </update>
+    
+    <!-- 사용여부 Y -->
+    <update id="PI_choiceY" parameterType="PopupDTO">
+    	
+<!--     	<selectKey resultType="Integer" keyProperty="PI_LEVEL" order="BEFORE"> -->
+<!-- 		    SELECT 		NVL(MAX(PI_LEVEL),0)+1 -->
+<!-- 			FROM 		T_POPUPINFO -->
+<!-- 			LEFT JOIN 	T_MENU_MANAGER  M -->
+<!-- 			ON 			PI_MN_KEYNO 	= M.MN_KEYNO -->
+<!-- 			WHERE		PI_CHECK		=	'Y' -->
+<!-- 			AND			PI_DEL			=	'N' -->
+<!-- 			AND   		M.MN_HOMEDIV_C 	= #{PI_HOME_KEY} -->
+<!-- 		</selectKey> -->
+   		UPDATE 	   T_POPUPINFO
+    	SET		   PI_CHECK		=	#{PI_CHECK}
+    	WHERE	   PI_KEYNO		=	#{PI_KEYNO}
+    </update>
+     <!-- 사용여부 N -->
+    <update id="PI_choiceN" parameterType="PopupDTO">
+    	
+   		UPDATE 	T_POPUPINFO
+    	SET 	PI_CHECK		=	'N'
+    	WHERE	PI_KEYNO		=	#{PI_KEYNO} 	
+    </update>
+    
+    <!-- 팝업 수정 --> 
+    <update id="PI_update" parameterType="PopupDTO">
+    
+    	UPDATE T_POPUPINFO
+        SET    PI_FS_KEYNO           =    #{PI_FS_KEYNO}
+              ,PI_TITLE              =    #{PI_TITLE}
+              ,PI_CONTENTS           =    #{PI_CONTENTS}
+              ,PI_TOP_LOC            =    #{PI_TOP_LOC}
+              ,PI_LEFT_LOC           =    #{PI_LEFT_LOC}
+              ,PI_WIDTH              =    #{PI_WIDTH}
+              ,PI_HEIGHT             =    #{PI_HEIGHT}
+              ,PI_STARTDAY           =    #{PI_STARTDAY}
+              ,PI_ENDDAY             =    #{PI_ENDDAY}
+              ,PI_LINK               =    #{PI_LINK}       
+              ,PI_MN_TYPE            =    #{PI_MN_TYPE}       
+              ,PI_BACKGROUND_COLOR   =    #{PI_BACKGROUND_COLOR}
+              ,PI_TITLE_COLOR        =    #{PI_TITLE_COLOR}   
+              ,PI_COMMENT_COLOR      =    #{PI_COMMENT_COLOR}  
+              ,PI_TITLE2             =    #{PI_TITLE2}  
+              ,PI_COMMENT            =    #{PI_COMMENT}  
+              ,PI_RESIZE_CHECK            =	#{PI_RESIZE_CHECK}  
+              	  	
+    	WHERE  PI_KEYNO     		 =	#{PI_KEYNO}
+    </update>
+  	
+	<!-- sub 테이블에 추가 -->
+    <insert id="PC_insert" parameterType="Popup_subDTO">
+    	INSERT INTO T_POPUPINFO_SUB(
+    	PC_PI_KEYNO,
+    	PC_MAINKEY,
+    	PC_SUBKEY,
+    	PC_PI_MN_TYPE
+    	)
+    	VALUES(
+    	#{PC_PI_KEYNO},
+    	#{PC_MAINKEY},
+    	#{PC_SUBKEY},
+    	#{PC_PI_MN_TYPE}
+    	)
+    </insert>
+    
+     <!-- 등록된 팝업 중 수정하기 위해 찾는 팝업 메인과 서브 텍스트값 찾기-->
+	<select id="PI_select_one" parameterType="PopupDTO" resultType="hashmap">
+		<![CDATA[
+			SELECT A.* , MN.MN_NAME AS MAIN_NAME, 
+											CASE WHEN A.MN_NAME = MN.MN_NAME AND A.PI_MN_TYPE = 'A' THEN '모든 메뉴'
+												 WHEN A.MN_NAME = MN.MN_NAME AND A.PI_MN_TYPE = 'N' THEN '메인 화면'
+											ELSE A.MN_NAME
+										    END  AS SUB_NAME
+			FROM
+			(SELECT 	*
+			 FROM  	(SELECT *
+					FROM T_POPUPINFO_SUB PS
+					LEFT JOIN T_POPUPINFO P
+					ON PS.PC_PI_KEYNO = P.PI_KEYNO
+					)Q
+			LEFT JOIN	T_MENU_MANAGER M
+			ON			Q.PC_SUBKEY	=	M.MN_KEYNO
+			WHERE PI_KEYNO = #{PI_KEYNO} 
+			)A
+			LEFT JOIN      T_MENU_MANAGER MN
+			ON A.MN_HOMEDIV_C = MN.MN_KEYNO
+		]]>
+	</select>
+	
+	<!-- 서브 팝업 정보 삭제 -->
+	<delete id="SUB_POPUP_DELETE">
+		DELETE FROM T_POPUPINFO_SUB WHERE PC_PI_KEYNO = #{PI_KEYNO}
+	</delete>
+	
+	<!-- 메뉴 리스트별 팝업 띄우기 -->
+    <select id="PI_getListCnt_sub" resultType="int">
+			SELECT	COUNT(*)
+			FROM T_POPUPINFO_SUB PS
+			LEFT JOIN T_POPUPINFO P
+			ON PS.PC_PI_KEYNO = P.PI_KEYNO
+			WHERE P.PI_DEL = 'N'
+	       	AND P.PI_MN_TYPE = '${type_b}'
+	       	AND PS.PC_SUBKEY = '${Sub_value}'
+    </select>
+    <select id="PI_getList_sub" resultType="hashmap">
+		SELECT	PS.*,P.*,CASE WHEN P.PI_TYPE = 'A' THEN '이미지형'
+						WHEN P.PI_TYPE = 'B' THEN '텍스트형'
+						ELSE P.PI_TYPE
+						END  AS PI_TYPE_TEXT
+		FROM T_POPUPINFO_SUB PS
+		LEFT JOIN T_POPUPINFO P
+		ON PS.PC_PI_KEYNO = P.PI_KEYNO
+		WHERE P.PI_DEL = 'N'
+       	AND P.PI_MN_TYPE = '${type_b}'
+       	AND PS.PC_SUBKEY = '${Sub_value}'
+        ORDER BY PI_CHECK DESC
+    </select>
+	
+</mapper>
+ 

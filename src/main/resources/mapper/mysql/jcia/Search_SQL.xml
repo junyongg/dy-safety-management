@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="search"> 
+	
+	<!-- 메뉴검색  count -->
+	<select id="MN_getMenuListCnt" resultType="int" parameterType="Menu">
+		<choose>
+			<when test="keyword2 != null or keyword2 != ''" >
+				SELECT COUNT(*)
+				FROM (
+				SELECT *
+			</when>
+			<otherwise>
+				SELECT COUNT(*)
+			</otherwise>
+		</choose>
+		FROM T_MENU_MANAGER M
+		LEFT JOIN (
+			SELECT 	*
+			FROM 	T_MENU_VIEW_DATA
+			WHERE  	MVD_DEL_YN = 'N'
+		) V
+		ON   	M.MN_KEYNO = V.MVD_MN_KEYNO
+		WHERE 1=1
+		AND	
+		<foreach collection="searchKeywordArr" item="keyword" open="(" close=")" separator="OR">
+		  ( MN_NAME LIKE CONCAT('%',#{keyword},'%'))
+		</foreach>
+		AND	  (MN_HOMEDIV_C	=	#{MN_HOMEDIV_C} OR MN_HOMEDIV_C	=	#{MN_HOMEDIV_C2} )
+		AND	  MN_USE_YN		=	#{MN_USE_YN}
+		AND	  MN_DEL_YN		=	#{MN_DEL_YN}
+		AND	  MN_PAGEDIV_C	!=	'SC_QXCFB'
+		<if test="keyword2 != null or keyword2 != ''">
+			)A
+			WHERE  MN_NAME LIKE CONCAT('%',#{keyword2},'%')
+		</if>
+		
+	</select>
+	
+	
+	<!-- 메뉴검색 -->
+	<select id="MN_getMenuList" resultType="hashmap" parameterType="Menu">
+		SELECT GROUP_CONCAT(keyword  SEPARATOR '   ') keyword
+			   , LENGTH(MN_NAME) - LENGTH(REPLACE(MN_NAME,#{keyword},'')) searchCNT	
+			   , A.*
+		FROM 
+		(
+		SELECT *
+		FROM(
+			<foreach collection="searchKeywordArr" item="keyword"  separator="UNION ALL">
+			SELECT #{keyword} keyword,M.*,V.MVD_DATA
+			FROM T_MENU_MANAGER M
+			LEFT JOIN (
+				SELECT 	*
+				FROM 	T_MENU_VIEW_DATA
+				WHERE  	MVD_DEL_YN = 'N'
+			) V
+			ON   	M.MN_KEYNO = V.MVD_MN_KEYNO
+			WHERE 	1=1
+			AND   	( MN_NAME LIKE CONCAT('%',#{keyword},'%') )
+			AND	  (MN_HOMEDIV_C	=	#{MN_HOMEDIV_C} OR MN_HOMEDIV_C	=	#{MN_HOMEDIV_C2} )
+			AND	  	MN_USE_YN		=	#{MN_USE_YN}
+			AND	  	MN_DEL_YN		=	#{MN_DEL_YN}
+			AND	  	MN_PAGEDIV_C	!=	'SC_QXCFB'
+			</foreach>
+		) B
+		WHERE MN_NAME LIKE CONCAT('%',#{keyword2},'%')
+		) A
+        GROUP BY MN_KEYNO
+        <choose>
+        	<when test='orderCondition.equals("A")'>
+        	ORDER BY searchCnt 
+        	</when>
+        	<when test='orderCondition.equals("B")'>
+        	ORDER BY MN_NAME 
+        	</when>
+        	<when test='orderCondition.equals("C")'>
+        	ORDER BY MN_REGDT 
+        	</when>
+        	<otherwise>
+        		ORDER BY searchCnt 
+        	</otherwise>
+        </choose>
+        <choose>
+        	<when  test='upanddown.equals("up")'>ASC</when>
+        	<otherwise>DESC</otherwise>
+        </choose>
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<!-- 메뉴키로 부모 이름들 찾기 -->
+	<select id="MN_getMainNames" resultType="String" parameterType="String">
+		<![CDATA[
+		SELECT GROUP_CONCAT(MN_NAME) FROM (
+	       SELECT MN_NAME FROM (
+	         SELECT ID FROM
+	           (
+	           SELECT @r as ID,
+	           (
+	             SELECT @r := MN_MAINKEY FROM T_MENU_MANAGER WHERE MN_KEYNO = ID
+	           ) AS _PARENT_ID
+	
+	           FROM (
+	             SELECT @r := #{MN_KEYNO}
+	           ) vars, T_MENU_MANAGER h
+	           WHERE @r <> ''
+	         ) A
+	       ) B
+	       JOIN T_MENU_MANAGER M
+	       ON	B.ID = M.MN_KEYNO
+	       ORDER BY M.MN_LEV
+	     ) C 
+    	]]>
+	</select>
+	
+	<!-- 게시판 - count -->
+	<select id="BN_getCnt" resultType="int" parameterType="BoardNotice">
+    	SELECT COUNT(*)
+    	FROM
+    	(
+    	SELECT 		*
+    	FROM		T_BOARD_NOTICE B
+    	LEFT JOIN	T_MENU_MANAGER M
+    	ON			B.BN_MN_KEYNO = MN_KEYNO 
+    	WHERE
+    	<foreach collection="searchKeywordArr" item="keyword" open="(" close=")" separator="OR">
+		BN_TITLE	LIKE	CONCAT('%',#{keyword},'%') 
+		OR
+    	BN_CONTENTS	LIKE	CONCAT('%',#{keyword},'%')
+		</foreach>
+    	AND			BN_USE_YN		=	'Y'
+    	AND			BN_DEL_YN		=	'N'
+    	AND			(MN_HOMEDIV_C	=	#{BN_MN_KEYNO} OR MN_HOMEDIV_C	=	#{BN_MN_KEYNO2}) 	
+    	<choose>
+        	<when test='searchCondition.equals("day")'>
+        	<![CDATA[
+        	AND		BN_REGDT >= #{searchBeginDate}
+        	]]>
+        	</when>
+        	<when test='searchCondition.equals("week") or searchCondition.equals("month") or searchCondition.equals("year") or searchCondition.equals("etc")'>
+        	<![CDATA[
+        	AND		BN_REGDT >= #{searchBeginDate} 
+        	AND		BN_REGDT <= #{searchEndDate}
+        	]]>
+        	</when>
+        </choose>
+        ) A
+        WHERE  A.BN_TITLE	LIKE	CONCAT('%',#{keyword2},'%') or A.BN_CONTENTS	LIKE	CONCAT('%',#{keyword2},'%')
+    </select>
+    
+    <!-- 게시판 -->
+    <select id="BN_getList" resultType="hashmap" parameterType="BoardNotice">
+    	SELECT GROUP_CONCAT(keyword  SEPARATOR '   ') keyword
+				   ,(LENGTH(BN_CONTENTS) - LENGTH(REPLACE(BN_CONTENTS,#{keyword},'')) + LENGTH(BN_TITLE) - LENGTH(REPLACE(BN_TITLE,#{keyword},'')) )searchCNT
+				   , A.*
+		FROM (
+			<foreach collection="searchKeywordArr" item="keyword"  separator="UNION ALL">
+	    	SELECT 		  #{keyword} keyword
+    				    , M.MN_URL
+                        , B.BN_KEYNO
+                        , B.BN_TITLE
+                        , B.BN_CONTENTS
+                        , B.BN_REGDT
+                        , B.BN_MN_KEYNO
+	    	FROM		T_BOARD_NOTICE B
+	    	LEFT JOIN	T_MENU_MANAGER M
+	    	ON			B.BN_MN_KEYNO	=	M.MN_KEYNO
+	    	WHERE		(
+	    					BN_TITLE	LIKE	CONCAT('%',#{keyword},'%') 
+	    				OR
+	    					BN_CONTENTS	LIKE	CONCAT('%',#{keyword},'%')
+	   					)
+	    	AND			BN_USE_YN		=	'Y'
+	    	AND			BN_DEL_YN		=	'N'
+	    	AND			(MN_HOMEDIV_C	=	#{BN_MN_KEYNO} OR MN_HOMEDIV_C	=	#{BN_MN_KEYNO2})	
+	    	<choose>
+	        	<when test='searchCondition.equals("day")'>
+	        	<![CDATA[
+	        	AND		BN_REGDT >= #{searchBeginDate}
+	        	]]>
+	        	</when>
+	        	<when test='searchCondition.equals("week") or searchCondition.equals("month") or searchCondition.equals("year") or searchCondition.equals("etc")'>
+	        	<![CDATA[
+	        	AND		BN_REGDT >= #{searchBeginDate} 
+	        	AND		BN_REGDT <= #{searchEndDate}
+	        	]]>
+	        	</when>
+	        </choose>
+	    	</foreach>
+			) A
+			Where (
+	    					A.BN_TITLE	LIKE	CONCAT('%',#{keyword2},'%') 
+	    				OR
+	    					A.BN_CONTENTS	LIKE	CONCAT('%',#{keyword2},'%')
+	   					)
+	        GROUP BY BN_KEYNO
+	        <choose>
+	        	<when test='orderCondition.equals("A")'>
+	        	ORDER BY searchCnt 
+	       	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+	        	, BN_REGDT 
+	    	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if> 	
+	        	</when>
+	        	<when test='orderCondition.equals("B")'>
+	        	ORDER BY BN_TITLE 
+	  		      <if  test='upanddown.equals("up")'> ASC</if>
+	        	<if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+	        	</when>
+	        	<when test='orderCondition.equals("C")'>
+	        	ORDER BY BN_REGDT 
+	        	<if  test='upanddown.equals("up")'>ASC</if>
+	        	<if  test='upanddown.equals("down") or upanddown == null'>DESC</if>
+	        	</when>
+	        	<otherwise>
+	        	ORDER BY searchCnt 	        <if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>, BN_REGDT 	        <if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if> 	
+	        	</otherwise>
+	        </choose>
+    	LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+	
+	<!-- 자료 - count -->
+	<select id="FS_getCnt" resultType="int" parameterType="BoardNotice">
+		SELECT COUNT(*)
+		FROM(
+		SELECT 		*
+		FROM 		T_BOARD_NOTICE BN
+		LEFT JOIN 	T_COMMON_FILE_MAIN FM
+		ON			BN.BN_FM_KEYNO = FM.FM_KEYNO
+		LEFT JOIN	T_COMMON_FILE_SUB FS
+		ON			FM.FM_KEYNO	=	FS.FS_FM_KEYNO
+		WHERE
+		<foreach collection="searchKeywordArr" item="keyword" open="(" close=")" separator="OR">
+		FS.FS_ORINM LIKE CONCAT('%',#{keyword},'%')
+		</foreach>
+		AND			BN_USE_YN	=	'Y'
+    	AND			BN_DEL_YN	=	'N'
+    	AND			BN_MN_KEYNO	IS NOT NULL
+    	<choose>
+        	<when test='searchCondition.equals("day")'>
+        	<![CDATA[
+        	AND		FS_REGDT >= #{searchBeginDate}
+        	]]>
+        	</when>
+        	<when test='searchCondition.equals("week") or searchCondition.equals("month") or searchCondition.equals("year") or searchCondition.equals("etc")'>
+        	<![CDATA[
+        	AND		FS_REGDT >= #{searchBeginDate} 
+        	AND		FS_REGDT <= #{searchEndDate}
+        	]]>
+        	</when>
+        </choose>
+        )A
+        WHERE A.FS_ORINM LIKE CONCAT('%',#{keyword2},'%') 
+    </select>
+    
+    <!-- 자료 -->
+    <select id="FS_getList" resultType="hashmap" parameterType="BoardNotice">
+    	SELECT GROUP_CONCAT(keyword  SEPARATOR '   ') keyword
+				   ,LENGTH(FS_ORINM) - LENGTH(REPLACE(FS_ORINM,#{keyword},''))searchCnt	
+				   , A.*
+		FROM (
+			<foreach collection="searchKeywordArr" item="keyword"  separator="UNION ALL">
+	    	SELECT 		BN.*
+	    				, FS.*
+	    				, M.MN_URL
+	    				, CONCAT(FS.FS_FOLDER, FS.FS_CHANGENM , '.' , FS.FS_EXT) AS FS_PATH
+	    				, #{keyword} keyword
+			FROM 		T_BOARD_NOTICE BN
+			LEFT JOIN 	T_COMMON_FILE_MAIN FM
+			ON			BN.BN_FM_KEYNO = FM.FM_KEYNO
+			LEFT JOIN	T_COMMON_FILE_SUB FS
+			ON			FM.FM_KEYNO	=	FS.FS_FM_KEYNO
+			LEFT JOIN	T_MENU_MANAGER M
+	    	ON			BN.BN_MN_KEYNO	=	M.MN_KEYNO
+			WHERE		FS.FS_ORINM LIKE CONCAT('%',#{keyword},'%')
+			AND			BN_USE_YN	=	'Y'
+	    	AND			BN_DEL_YN	=	'N'
+	    	AND			BN_MN_KEYNO	IS NOT NULL
+	    	<choose>
+	        	<when test='searchCondition.equals("day")'>
+	        	<![CDATA[
+	        	AND		FS_REGDT >= #{searchBeginDate}
+	        	]]>
+	        	</when>
+	        	<when test='searchCondition.equals("week") or searchCondition.equals("month") or searchCondition.equals("year") or searchCondition.equals("etc")'>
+	        	<![CDATA[
+	        	AND		FS_REGDT >= #{searchBeginDate} 
+	        	AND		FS_REGDT <= #{searchEndDate}
+	        	]]>
+	        	</when>
+	        </choose>
+    		</foreach>
+		) A
+		WHERE A.FS_ORINM LIKE CONCAT('%',#{keyword2},'%')
+        GROUP BY FS_KEYNO
+        <choose>
+        	<when test='orderCondition.equals("A")'>
+        	ORDER BY searchCnt 	        <if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>, FS_REGDT 	        <if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>	
+        	</when>
+        	<when test='orderCondition.equals("B")'>
+        	ORDER BY FS_ORINM
+        	</when>
+        	<when test='orderCondition.equals("C")'>
+        	ORDER BY FS_REGDT DESC	
+        	</when>
+        	<otherwise>
+        	ORDER BY searchCnt 	        
+        	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+	        , FS_REGDT
+	        <if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+        	</otherwise>
+        </choose>
+    	LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+		
+		
+	<!-- 웹페이지 -->
+	<select id="PG_getListCNT" resultType="int"  parameterType="BoardNotice" >
+		SELECT COUNT(*)
+		FROM(
+		select *
+		from T_MENU_VIEW_DATA M
+		LEFT JOIN 
+		(
+			SELECT * FROM T_MENU_MANAGER where MN_PAGEDIV_C = 'SC_EANHU' AND (MN_HOMEDIV_C = #{MN_HOMEDIV_C} OR  MN_HOMEDIV_C = #{MN_HOMEDIV_C2} )
+			AND  	MN_DEL_YN = 'N'
+			AND 	MN_SHOW_YN = 'Y'
+		) A
+		ON A.MN_KEYNO = M.MVD_MN_KEYNO
+		WHERE M.MVD_MN_HOMEDIV_C = #{MN_HOMEDIV_C} AND
+		(
+		<foreach collection="searchKeywordArr" item="keyword" open="" close="" separator="OR">
+		 M.MVD_DATA LIKE CONCAT('%',#{keyword},'%')
+		</foreach>
+		)
+		AND	  MN_USE_YN		=	#{MN_USE_YN}
+		AND	  MN_DEL_YN		=	#{MN_DEL_YN}
+		) B
+		WHERE B.MVD_DATA LIKE CONCAT('%',#{keyword2},'%')
+	</select>
+	
+	<select id="PG_getList" resultType="hashmap"  parameterType="BoardNotice" >
+	SELECT B.*, LENGTH(MVD_DATA) - LENGTH(REPLACE(MVD_DATA,#{keyword},'')) searchCnt
+	FROM(
+	SELECT  *
+	FROM(
+		<foreach collection="searchKeywordArr" item="keyword"  separator="UNION ALL">
+		select * , #{keyword} , U.UI_NAME AS REGDNM
+		from T_MENU_VIEW_DATA M
+		LEFT JOIN 
+		(
+			SELECT * FROM T_MENU_MANAGER where MN_PAGEDIV_C = 'SC_EANHU' AND (MN_HOMEDIV_C = #{MN_HOMEDIV_C} OR MN_HOMEDIV_C = #{MN_HOMEDIV_C2} )
+			AND  	MN_DEL_YN = 'N'
+			AND 	MN_SHOW_YN = 'Y'
+		) A
+		ON A.MN_KEYNO = M.MVD_MN_KEYNO
+		LEFT JOIN T_USERINFO U 
+		ON U.UI_KEYNO = M.MVD_REGNM
+		WHERE M.MVD_MN_HOMEDIV_C = #{MN_HOMEDIV_C}
+		AND M.MVD_DATA LIKE CONCAT('%',#{keyword},'%')
+		AND	  MN_USE_YN		=	#{MN_USE_YN}
+		AND	  MN_DEL_YN		=	#{MN_DEL_YN}
+		</foreach>
+	)A
+	WHERE A.MVD_DATA LIKE CONCAT('%',#{keyword2},'%')
+	)B
+	 GROUP BY MN_KEYNO
+	 <choose>
+        	<when test='orderCondition.equals("A")'>
+        	ORDER BY searchCnt 	        
+        	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>	
+        	</when>
+        	<when test='orderCondition.equals("B")'>
+        	ORDER BY MN_NAME 	        
+        	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+        	</when>
+        	<when test='orderCondition.equals("C")'>
+        	ORDER BY MN_REGDT 	        
+        	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>	
+        	</when>
+        	<otherwise>
+        	ORDER BY searchCnt 	        
+        	<if  test='upanddown.equals("up")'> ASC</if>
+	        <if  test='upanddown.equals("down") or upanddown == null'> DESC</if>
+        	</otherwise>
+     </choose>
+    LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	
+	
+</mapper>
+ 

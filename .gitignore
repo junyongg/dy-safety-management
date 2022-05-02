@@ -1,0 +1,15 @@
+.classpath
+.project
+
+.gradle/
+.settings/
+bin/
+build/
+#src/main/webapp/resources/img/upload/
+#src/main/webapp/resources/attach/
+#src/main/webapp/resources/data/
+src/main/resources/config.properties
+
+
+
+src/main/webapp/WEB-INF/jsp/jact/board/data/e-book/temp.jsp

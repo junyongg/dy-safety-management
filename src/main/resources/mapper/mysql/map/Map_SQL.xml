@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="map"> 
+  
+  
+	 <insert id="MMA_Insert" parameterType="MapDTO" useGeneratedKeys="true" keyProperty="MMA_KEYNO">
+	 	INSERT INTO M_MAP_MAIN (
+			MMA_X_LOCATION,
+			MMA_Y_LOCATION,
+			MMA_TITLE,
+			MMA_LINK,
+			MMA_FM_KEYNO,
+			MMA_SIZE,
+			MMA_TYPE,
+			MMA_ADDRESS,
+			MMA_STDT,
+			MMA_URL,
+			MMA_TEXT,
+			MMA_AREA,
+			MMA_DELYN,
+			MMA_ADDR1,
+			MMA_ADDR2,
+			MMA_POST
+	 	)VALUES(
+			#{MMA_X_LOCATION},
+			#{MMA_Y_LOCATION},
+			#{MMA_TITLE},
+			#{MMA_LINK},
+			#{MMA_FM_KEYNO},
+			#{MMA_SIZE},
+			#{MMA_TYPE},
+			#{MMA_ADDRESS},
+			#{MMA_STDT},
+			#{MMA_URL},
+			#{MMA_TEXT},
+			#{MMA_AREA},
+			#{MMA_DELYN},
+			#{MMA_ADDR1},
+			#{MMA_ADDR2},
+			#{MMA_POST}
+		)
+	 </insert>
+	
+	<update id="MMA_Update" parameterType="MapDTO"> 
+		UPDATE M_MAP_MAIN
+		SET MMA_X_LOCATION	= #{MMA_X_LOCATION},
+			MMA_Y_LOCATION	= #{MMA_Y_LOCATION},
+			MMA_TITLE		= #{MMA_TITLE},
+			MMA_LINK		= #{MMA_LINK},
+			MMA_FM_KEYNO	= #{MMA_FM_KEYNO},
+			MMA_SIZE		= #{MMA_SIZE},
+			MMA_TYPE		= #{MMA_TYPE},
+			MMA_ADDRESS		= #{MMA_ADDRESS},
+			MMA_STDT		= #{MMA_STDT},
+			MMA_URL			= #{MMA_URL},
+			MMA_TEXT		= #{MMA_TEXT},
+			MMA_AREA		= #{MMA_AREA},
+			MMA_DELYN		= #{MMA_DELYN},
+			MMA_ADDR1		= #{MMA_ADDR1},
+			MMA_ADDR2		= #{MMA_ADDR2},
+			MMA_POST		= #{MMA_POST}
+		WHERE MMA_KEYNO		= #{MMA_KEYNO}			
+	</update>
+	
+	<update id="MMA_DELETE" parameterType="MapDTO">
+		UPDATE  M_MAP_MAIN
+		SET		MMA_DELYN 	= 'Y'
+		WHERE 	MMA_KEYNO	= #{MMA_KEYNO}
+	</update>
+	
+	<update id="MMA_AllDelete">
+  		UPDATE  M_MAP_MAIN
+		SET		MMA_DELYN = 'Y'
+ 		 <foreach collection="KeyList" item="key" separator="OR" open="WHERE(" close=")">
+ 		 	MMA_KEYNO = #{key}
+ 		 </foreach>
+  	</update>
+	
+	<sql id="MMA_getDataListBody">
+		FROM(
+			SELECT @rownum:=@rownum+1 as NUM, A.*
+			FROM (
+				SELECT * 
+				FROM M_MAP_MAIN 
+				WHERE MMA_DELYN = 'N'
+			) A
+			,(SELECT @rownum:=0) TMP
+		)AA
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		NUM 						LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		MMA_AREA					LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		MMA_TITLE 					LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		MMA_TEXT					LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		MMA_URL					LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				NUM 						LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				MMA_AREA					LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				MMA_TITLE 					LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				MMA_TEXT					LIKE CONCAT('%',#{item.searchKeyword},'%')  OR						
+ 				MMA_URL 					LIKE CONCAT('%',#{item.searchKeyword},'%')
+ 			)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+    
+    <select id="MMA_getDataListCnt" resultType="int">
+			SELECT	COUNT(*)
+		<include  refid="MMA_getDataListBody"/>
+    </select>
+	
+	<select id="MMA_getDataList" resultType="hashmap" resultMap="ResultMap.rownumHashMap2">
+		SELECT	*
+		<include  refid="MMA_getDataListBody"/>
+		
+		<choose>
+	 		<when test='orderBy.equals("1")'>
+	 		ORDER BY	NUM ${sortDirect}
+	 		</when>
+	 		<when test='orderBy.equals("2")'>
+	 		ORDER BY	MMA_AREA ${sortDirect}
+	 		</when>
+	 		<when test='orderBy.equals("3")'>
+	 		ORDER BY	MMA_TITLE ${sortDirect}
+	 		</when>
+	 		<when test='orderBy.equals("4")'>
+	 		ORDER BY	MMA_TEXT ${sortDirect}
+	 		</when>
+	 		<when test='orderBy.equals("5")'>
+	 		ORDER BY 	MMA_URL ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	NUM 	DESC
+	 		</otherwise>
+	 	</choose>
+		<if test="recordCountPerPage != 0">
+		 	LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+		</if> 	
+    </select>
+	
+	<!-- 상세페이지 -->
+	<select id="MMA_Pra_getDataCnt" parameterType="MapDTO" resultType="int">
+        SELECT count(*) 
+     	FROM(
+	     	SELECT @rownum:=@rownum+1 as number , A.* 
+			FROM (
+				SELECT *
+				FROM M_MAP_SUB S
+				LEFT JOIN  M_MAP_MAIN M
+				ON M.MMA_KEYNO = S.MMS_MMA_KEYNO
+				WHERE M.MMA_X_LOCATION = #{MMA_X_LOCATION}
+				AND M.MMA_Y_LOCATION = #{MMA_Y_LOCATION}
+				AND S.MMS_DELYN = 'N'
+				AND M.MMA_DELYN = 'N'
+				<if test="MMS_TYPE != 'all'">
+					AND S.MMS_TYPE = #{MMS_TYPE }
+				</if>
+	     		) A
+	     		,(SELECT @rownum:=0) TMP
+     	)AA
+	</select>
+	
+	<!-- 상세페이지 -->
+	<select id="MMA_Pra_getData" parameterType="MapDTO" resultType="MapDTO">
+        SELECT * 
+     	FROM(
+	     	SELECT @rownum:=@rownum+1 as number , A.* 
+			FROM (
+				SELECT *
+				FROM M_MAP_SUB S
+				LEFT JOIN  M_MAP_MAIN M
+				ON M.MMA_KEYNO = S.MMS_MMA_KEYNO
+				WHERE M.MMA_X_LOCATION = #{MMA_X_LOCATION}
+				AND M.MMA_Y_LOCATION = #{MMA_Y_LOCATION}
+				AND S.MMS_DELYN = 'N'
+				AND M.MMA_DELYN = 'N'
+				<if test="MMS_TYPE != 'all'">
+					AND S.MMS_TYPE = #{MMS_TYPE }
+				</if>
+	     		) A
+	     		,(SELECT @rownum:=0) TMP
+     	)AA
+		WHERE AA.number = #{number }
+	</select>
+	
+	<!-- 상세페이지 관리자 -->
+	<select id="MMA_Pra_getData2" parameterType="MapDTO" resultType="hashmap">
+		SELECT * 
+		FROM M_MAP_MAIN
+		WHERE MMA_KEYNO = #{MMA_KEYNO}
+		AND	MMA_DELYN = 'N'
+	</select>
+</mapper>
+ 

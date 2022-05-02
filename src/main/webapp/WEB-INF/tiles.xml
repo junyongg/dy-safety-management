@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<!-- 
+				ADMIN
+	 -->
+	<definition name="admin" template="/WEB-INF/jsp/layout/txap/layout.jsp">
+		<put-attribute name="script" value="/WEB-INF/jsp/layout/txap/script.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/jsp/layout/txap/css.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/txap/header.jsp"/>
+		<put-attribute name="leftmenu" value="/WEB-INF/jsp/layout/txap/leftmenu.jsp"/>
+		<put-attribute name="ribbon" value="/WEB-INF/jsp/layout/txap/ribbon.jsp"/>
+		<put-attribute name="body" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/txap/footer.jsp"/>
+	</definition>
+	
+	<definition name="/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*/*.adm" extends="admin">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp"/>
+	</definition>
+	
+	<!-- USER -->
+	<definition name="user" template="/WEB-INF/jsp/layout/user/layout.jsp">
+		<put-attribute name="script" value="/WEB-INF/jsp/layout/user/script.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/jsp/layout/user/css.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/user/header.jsp"/>
+<!-- 		<put-attribute name="leftmenu" value="/WEB-INF/jsp/layout/user/leftmenu.jsp"/> -->
+		<put-attribute name="ribbon" value="/WEB-INF/jsp/layout/user/ribbon.jsp"/>
+		<put-attribute name="subTop" value="/WEB-INF/jsp/layout/user/subTop.jsp"/>
+		<put-attribute name="rightTop" value="/WEB-INF/jsp/layout/user/rightTop.jsp"/>
+		<put-attribute name="body" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/user/footer.jsp"/>
+	</definition>
+	
+	<definition name="/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp"/>
+	</definition>
+	<definition name="/*/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*/*.user" extends="user">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp"/>
+	</definition>
+	
+	<!-- 
+				noTiles
+	 -->
+	<definition name="noTiles" template="/WEB-INF/jsp/layout/user/noTilesLayout.jsp">
+		<put-attribute name="script" value="/WEB-INF/jsp/layout/user/script.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/jsp/layout/user/css.jsp"/>
+		<put-attribute name="body" />
+	</definition>
+	
+	<definition name="/*.notiles" extends="noTiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*.notiles" extends="noTiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*/*.notiles" extends="noTiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*.notiles" extends="noTiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*.notiles" extends="notiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*/*.notiles" extends="notiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp"/>
+	</definition>
+
+
+	<!-- 
+				map
+	 -->
+	<definition name="map" template="/WEB-INF/jsp/layout/user/map/mapLayout.jsp">
+		<put-attribute name="script" value="/WEB-INF/jsp/layout/user/map/script.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/jsp/layout/user/map/css.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/user/map/footer.jsp"/>
+		<put-attribute name="body" />
+	</definition>
+	
+	<definition name="/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="/*/*/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp"/>
+	</definition>
+	<definition name="/*/*/*/*/*/*.map" extends="map">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp"/>
+	</definition>
+	
+	
+</tiles-definitions>

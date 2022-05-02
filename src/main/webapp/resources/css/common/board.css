@@ -1,0 +1,223 @@
+
+
+
+
+.board_layerPop {display:none; position:fixed; left:0; top:0; z-index:3000; width:100%; height:100%; overflow-y:auto;}
+.board_layerPop .board_layerPop_inner {position:absolute; top:50%; left:50%; margin:-213px 0 0 -145px; width:290px; border:1px solid #f68121; background-color:#fff; padding:30px;}
+.board_layerPop .board_layerPop_inner .board_layerPop_close {position: absolute;right: 20px;top: 20px;font-size: 20px;background:#fff;border:0;cursor:pointer;}
+
+
+
+
+/* 게시판 목록 */
+.board_count {font-size:12px; color:#888; margin:0 0 15px 0;}
+
+.tblBoardBox {width:100%;}
+.tbl_Board_01 a { color:#777; font-size:14px; }
+.tbl_Board_01 {width:100%; text-align:center; vertical-align:middle; font-size:14px; line-height:1.5;  border-top:1px solid #333;}
+.tbl_Board_01 th {padding:17px 5px; background-color:#f3f3f3; border-bottom:1px solid #aaa !important;}
+.tbl_Board_01 th span {font-size:16px; font-weight:500; color:#444; line-height:1; display:block; width:100%; border-right:1px solid #999;}
+.tbl_Board_01 th:last-of-type span {border-right:none;}
+
+.tbl_Board_01 td {font-size:14px; padding:12px 5px; border-bottom:1px solid #dddddd; color:#777;}
+.tbl_Board_01 td.lineBlack {border-bottom:1px solid #333 !important;}
+.tbl_Board_01 td.boardSubject { text-align:left !important; padding:12px 10px;}
+
+.tbl_Board_01 tr:last-of-type td {border-bottom:1px solid #333;}
+.tbl_Board_01 tr:last-of-type th {border-bottom:1px solid #333;}
+
+.tbl_Board_01 tr.boardNotice_Row {background-color:#fafafa;}
+.tbl_Board_01 tr.boardNotice_Row td.number {color:#333 !important; font-weight:500;}
+.tbl_Board_01 a:hover {text-decoration: underline;}
+
+
+/* 게시판 밑에 검색 */
+.searchBox_01 {text-align:center; background-color:#f3f4f4; padding:20px 10px; border:1px solid #aaaaaa;}
+
+
+@media all and (max-width:850px){	
+
+	/* 게시판 목록 */
+	.tbl_Board_01 th span {font-size:14px;}		
+	.tbl_Board_01 th span {border-right:none;}
+	
+	/* 페이지 넘버 */
+	.pageNumberUl li a { font-size:11px;}
+	
+	/* 게시판 밑에 검색 */
+	.searchBox_01 {padding:10px 10px;}
+	
+}
+
+
+
+/* 게시판 상세보기 */
+
+.boardDetailViewBox {width:100%;}
+.detailViewTilteBox {width:100%; background-color:#f3f4f4;}
+.detailViewTilteBox p {font-size:14px; color:#6d6e71;}
+.detailViewTilteBox span {font-size:14px; color:#444; font-weight:500; padding:0 10px 0 0;width: 90px;display: inline-block;text-align: right;vertical-align: top;} 
+.detailViewTilteBox font.contents {width: calc( 100% - 100px);display: inline-block;word-break:keep-all;} 
+.detailViewTilteBox .topBox {padding:10px 10px; border-top:1px solid #252525; border-bottom:1px solid #aaaaaa;position:relative}
+.detailViewTilteBox .topBox .left_1 { width: calc( 100%  - 140px)}
+.detailViewTilteBox .topBox .right_1 {position:absolute;right:10px;top:10px;}
+.detailViewTilteBox .middleBox {padding:10px 10px;border-bottom:1px solid #aaaaaa;}
+.detailViewTilteBox .middleBox a {color: #e22931;text-align:bold;}
+.detailViewTilteBox .middleBox a:hover {text-decoration: underline;}
+.detailViewTilteBox .bottomBox {padding:10px 10px; border-bottom:1px solid #252525;}
+.detailViewTilteBox .bottomBox .left_1 {float:left; margin:0 10px 0 0;}
+.detailViewTilteBox .bottomBox .right_1 {float:right; margin:0 10px 0 0;}
+.detailViewTilteBox .bottomBox .inputBox {display:inline-block; background-color:#fff; border:1px solid #aaa; width:calc(100% - 100px); vertical-align:middle; padding:3px; font-size:12px;}
+.detailViewTilteBox .bottomBox .inputBox a {display:block;padding:3px 0}
+
+.detailViewContentsBox {padding:25px 10px;}
+.detailViewContentsBox p {font-size:14px; color:#666;}
+
+.detailViewNextBox {width:100%;}
+.detailViewNext {width:100%;}
+.detailViewNext li:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.detailViewNext li {border-top:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; font-size:14px; padding:10px 10px;}
+.detailViewNext li:nth-of-type(2) {border-top:none; border-bottom:1px solid #252525;}
+.detailViewNext li span {display:inline-block; padding:0 8px 0 0; margin:0 8px 0 0; border-right:1px solid #777; font-weight:500;}
+
+.detailViewBtnBox {padding:30px 10px; text-align:center; position:relative;}
+.detailViewBtnBox .rightBtnBox {position:absolute; right:10px; top:30px;}
+
+.detailViewReplyWriteBox {width:100%; padding:15px; background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #aaa;}
+.detailViewReplyWriteBox span {font-size:14px; margin:0 0 10px 0;}
+.detailViewReplyWriteBox .writeBox textarea {width:100%; height:80px;}
+
+.detailViewReplyBox {width:100%;}
+.detailReply {width:100%; border-top:1px solid #aaa;  padding:20px 0;}
+.detailReply:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+/*.detailReply li.img {float:left; width:10%; text-align:center; padding:0 10px;}
+.detailReply li.img .imgBox {display:inline-block; width:48px; height:48px; border:1px solid #aaa; overflow:hidden; background:#fff;}
+.detailReply li.content {float:left; width:80%; text-align:left; padding:0 10px;} */
+.detailReply li.content {float:left; width:100%; text-align:left; padding:0 10px;}
+.detailReply li.content p,
+.detailReply li.content pre {font-size:14px;}
+.detailReply li.content p.title {font-weight:500; margin:0 0 3px 0;}
+.detailReply li.content p.date {margin:5px 0 0 0; color:#888;}
+.detailReply li.content .btnBox {margin:5px 0 0 0; color:#888;}
+.detailReply li.content .btnBox .leftBox {float:left;}
+.detailReply li.content .btnBox .rightBox {float:right;}
+.detailReplyReply {width:100%; background-color:#f3f4f4; padding: 10px 0 10px 5%;border-top:1px solid #ddd;}
+.detailReplyReply:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+/* .detailReplyReply li.img {float:left; width:10%; text-align:center; padding:0 10px;}
+.detailReplyReply li.img .imgBox {display:inline-block; width:48px; height:48px; border:1px solid #aaa; overflow:hidden; background:#fff;}
+.detailReplyReply li.content {float:left; width:80%; text-align:left; padding:0 10px;} */
+.detailReplyReply li.content {float:left; width:100%; text-align:left; padding:0 10px;}
+.detailReplyReply li.content p,
+.detailReplyReply li.content pre {font-size:14px;}
+.detailReplyReply li.content pre .mainName {font-size:13px;color:gray;font-weight:bold;margin-right:10px;}
+.detailReplyReply li.content p.title {font-weight:500; margin:0 0 3px 0;}
+.detailReplyReply li.content p.date {margin:5px 0 0 0; color:#888;}
+.detailReplyReply li.content .btnBox {margin:5px 0 0 0; color:#888;}
+.detailReplyReply li.content .btnBox .leftBox {float:left;}
+.detailReplyReply li.content .btnBox .rightBox {float:right;}
+.detailViewReplyModifyBox {width:100%; padding:20px 10px; background-color:#f3f4f4; border-top:1px solid #aaa;}
+.detailViewReplyModifyBox span {font-size:14px; margin:0 0 10px 0;}
+.detailViewReplyModifyBox .writeBox textarea {margin-left:10%;width:90%; height:80px;}
+.detailViewReplyModifyBox > .btn {padding:5px 0}
+
+.tempComment {display:none;}
+
+@media all and (max-width:850px){	
+
+	/* 게시판 상세보기 */	
+	.detailViewTilteBox .topBox .left_1 {float:none; margin:0 0 5px 0; width:100%;}
+	.detailViewTilteBox .topBox .right_1 {position:relative;right:0;top:0; margin:0 0px 0 0; width:100%;}
+	
+	.detailViewTilteBox .bottomBox .left_1 {float:none; margin:0 0px 5px 0; width:100%;}
+	.detailViewTilteBox .bottomBox .right_1 {float:none; margin:0 0px 0 0; width:100%;}
+	
+	.detailViewTilteBox p {font-size:12px;}
+	.detailViewTilteBox span {font-size:12px; width: 60px;}
+	.detailViewTilteBox font.contents {width: calc( 100% - 70px);}
+	
+	.detailViewBtnBox {padding:20px 10px;}
+	.detailViewBtnBox .rightBtnBox {position:relative; top:0; right:0; margin:0 0 10px 0;}	
+	
+	.detailReply {padding:10px 0;}
+	.detailReply li.img {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReply li.content {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReply li.content .btnBox .leftBox {float:none; width:100%;}
+	.detailReply li.content .btnBox .rightBox {clear:both; float:none; width:100%; margin:5px 0 0 0;}
+	
+	.detailReplyReply {width:100%; background-color:#f3f4f4; padding:10px 0 10px 10%;}
+	.detailReplyReply li.img {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReplyReply li.content {float:none; width:100%; text-align:left; padding:0 10px; margin:0 0 10px;}
+	.detailReplyReply li.content .btnBox .leftBox {float:none; width:100%;}
+	.detailReplyReply li.content .btnBox .rightBox {clear:both; float:none; width:100%; margin:5px 0 0 0;}
+	
+}
+
+
+/* 게시판 등록 */
+.boardUploadWrap {width:100%; padding:20px 40px 20px 20px;  background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #252525; margin:0 0 20px 0;}
+.boardUploadWrap .row {width:100%; margin:10px 0;}
+.boardUploadWrap .row:after { visibility: hidden; display:block;font-size: 0;content:".";clear: both;height: 0;*zoom:1;}
+.boardUploadWrap .titleBox {float:left; width:100px; text-align:right; font-size:14px;  padding:0 10px 0 0; line-height:32px;}
+.boardUploadWrap .formBox {float:left; width:calc(100% - 100px); text-align:left; font-size:14px;}
+.boardUploadWrap .formBox iframe,
+.boardUploadWrap #uploadFileDiv {background:#fff}
+.boardUploadWrap #uploadFileDiv .row {border:1px solid #cfcfcf;margin:0;}
+
+.lineheightBox {line-height:34px;}
+.lineheightBox label {margin:0 13px 0 0;}
+.lineheightBox input[type=radio] {vertical-align:middle;}
+.lineheightBox label:last-of-type {margin:0 0px 0 0;}
+
+
+@media all and (max-width:850px){	
+
+	/* 게시판 등록 */	
+	.boardUploadWrap {width:100%; padding:10px 10px; background-color:#f3f4f4; border-top:1px solid #252525; border-bottom:1px solid #252525; margin:0 0 20px 0;}
+	.boardUploadWrap .titleBox {float:none; width:100%; text-align:left; padding:0 0px 0 0; line-height:1.5;}
+	.boardUploadWrap .formBox {float:none; width:100%;}
+	
+}
+
+
+/* 공지사항 - 게시판 목록*/
+.tbl_Board_notice td.number {width:8%;}
+.tbl_Board_notice td.boardSubject {width:45%;}
+.tbl_Board_notice td.name {width:12%;}
+.tbl_Board_notice td.date {width:12%;}
+.tbl_Board_notice td.count {width:8%;}
+
+.tbl_Board_info td.number {width:8%;}
+.tbl_Board_info td.boardSubject {width:30%;}
+.tbl_Board_info td.boardLink {width:20%;}
+
+@media all and (max-width:850px){	
+
+	.tbl_Board_notice tr th:not(.boardSubject):not(.number) {display:none;}
+	.tbl_Board_notice tr td:not(.boardSubject):not(.number) {display:none;}
+	
+}
+
+/* 공지사항 (관리자) - 게시판 목록*/
+.tbl_Board_notice_admin td.number {width:8%;}
+.tbl_Board_notice_admin td.check {width:5%;}
+.tbl_Board_notice_admin td.boardSubject {width:45%;}
+.tbl_Board_notice_admin td.name {width:12%;}
+.tbl_Board_notice_admin td.date {width:12%;}
+.tbl_Board_notice_admin td.count {width:8%;}
+
+
+@media all and (max-width:850px){	
+
+	.tbl_Board_notice_admin tr th:not(.boardSubject):not(.check) {display:none;}
+	.tbl_Board_notice_admin tr td:not(.boardSubject):not(.check) {display:none;}
+	
+}
+
+
+
+.btnPublication {width:150px; padding:5px; background-color:#eee; color:#fff; font-size:14px; border-radius:4px;text-align:center;display:block;margin:0 auto 20px;}
+.thumbnailNote {color:#e22931;font-size:12px;}
+
+
+
+

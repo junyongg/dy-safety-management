@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="List"> 
+  	
+  	<sql id="TLM_getListBody">
+  		FROM(
+  			SELECT AA.*
+		  			, ROW_NUMBER() OVER (
+		    		<choose>
+				 		<when test='orderBy.equals("1")'>
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test='orderBy.equals("2")'>
+				 		ORDER BY	TLM_TCGM_TITLE ${sortDirect}
+				 		</when>
+				 		<when test='orderBy.equals("3")'>
+				 		ORDER BY	TLM_COMMENT ${sortDirect}
+				 		</when>
+				 		<when test='orderBy.equals("4")'>
+				 		ORDER BY	TLM_URL ${sortDirect}
+				 		</when>
+				 		<when test='orderBy.equals("5")'>
+				 		ORDER BY	TLM_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY TLM_KEYNO DESC
+				 		</otherwise>
+				 	</choose>
+			 		) RNUM
+			FROM(
+				SELECT 	  TLM_KEYNO
+						, ROWNUM COUNT
+			    		, TO_CHAR(TLM_REGDT,'YYYY-MM-dd') TLM_REGDT
+			    		, NVL(U.UI_REP_NAME, TLM_REGNM) TCGM_UI_NAME
+			    		, M.TCGM_TITLE TLM_TCGM_TITLE
+			    		, TLM_COMMENT
+			    		, TLM_URL
+			    		, TLM_USE_YN
+			    FROM	T_LIST_MANAGER B 
+			    LEFT JOIN T_USERINFO U
+			    ON		B.TLM_REGNM	=	U.UI_KEYNO
+			    LEFT JOIN T_CATEGORY_MANAGER M
+			    ON		B.TLM_TCGM_KEYNO	=	M.TCGM_KEYNO
+				WHERE TLM_DEL_YN = 'N'
+				<if test="SHOW_USING_YN != null and SHOW_USING_YN != ''">
+					AND	TLM_USE_YN = #{SHOW_USING_YN}
+				</if>
+			)AA
+			WHERE 1=1
+			
+			<if test="searchList != null">
+		 	<foreach collection="searchList" item="item">
+		 		<choose>
+		 			<when test='item.searchIndex.equals("1")'>
+	 		AND		COUNT 			LIKE '%' || #{item.searchKeyword} || '%'			
+		 			</when>
+		 			<when test='item.searchIndex.equals("2")'>
+	 		AND		TLM_TCGM_TITLE	LIKE '%' || #{item.searchKeyword} || '%'				
+		 			</when>
+		 			<when test='item.searchIndex.equals("3")'>
+	 		AND		TLM_COMMENT 	LIKE '%' || #{item.searchKeyword} || '%'				
+		 			</when>
+		 			<when test='item.searchIndex.equals("4")'>
+	 		AND		TLM_URL			=	#{item.searchKeyword}					
+		 			</when>
+		 			<when test='item.searchIndex.equals("5")'>
+	 		AND		TLM_REGDT 		LIKE '%' || #{item.searchKeyword} || '%'				
+		 			</when>
+		 			<when test='item.searchIndex.equals("all")'>
+	 		AND (
+	 				COUNT 			LIKE '%' || #{item.searchKeyword} || '%'	OR
+	 				TLM_TCGM_TITLE	LIKE '%' || #{item.searchKeyword} || '%' 	OR
+	 				TLM_COMMENT 	LIKE '%' || #{item.searchKeyword} || '%' 	OR
+	 				TLM_URL			=	#{item.searchKeyword}  					OR
+	 				TLM_REGDT 		LIKE '%' || #{item.searchKeyword} || '%'				
+	 		)							
+		 			</when>
+		 		</choose>
+		 	</foreach>
+		 	</if>
+	 	) AAA
+		
+	</sql>
+	
+    <select id="TLM_getListCnt" resultType="int">
+			SELECT	COUNT(*)
+		<include  refid="TLM_getListBody"/>
+    </select>
+    
+    <select id="TLM_getList" resultType="hashmap">
+		SELECT	*
+		<include  refid="TLM_getListBody"/>
+		<if test="recordCountPerPage != 0">
+		WHERE 1=1
+	 	AND RNUM BETWEEN	#{firstIndex} AND #{recordCountPerPage}
+		</if> 	
+    </select>
+    
+    <insert id="TLM_insert">
+    	INSERT INTO T_LIST_MANAGER(
+			 TLM_KEYNO
+			,TLM_ALT
+			,TLM_COMMENT
+			,TLM_REGNM
+			,TLM_REGDT
+			,TLM_URL
+			,TLM_FS_KEYNO
+			,TLM_USE_YN
+			,TLM_DEL_YN
+			,TLM_TCGM_KEYNO
+			)
+		VALUES(
+			 #{TLM_KEYNO}     
+			,#{TLM_ALT}     
+			,#{TLM_COMMENT}     
+			,#{TLM_REGNM}     
+			,SYSDATE 
+			,#{TLM_URL}     
+			,#{TLM_FS_KEYNO}     
+			,'Y'     
+			,'N'     
+			,#{TLM_TCGM_KEYNO}     
+			)
+    </insert>
+    
+    <update id="TLM_choiceYN" parameterType="ListDTO">
+   		UPDATE 	T_LIST_MANAGER
+    	SET 	TLM_USE_YN		=	#{TLM_USE_YN}
+    	WHERE	TLM_KEYNO		=	#{TLM_KEYNO}
+    </update>
+    
+    <update id="TLM_delete" parameterType="hashmap">
+        UPDATE T_LIST_MANAGER 
+        SET TLM_DEL_YN	=	'Y' , TLM_USE_YN ='N' 
+        WHERE	TLM_KEYNO		=	#{TLM_KEYNO}
+    </update>
+    
+    <select id="TLM_getData" resultType="hashmap">
+    	SELECT 	  TLM_KEYNO
+	   			, 'TLM' || TO_NUMBER(SUBSTR(TLM_KEYNO, -10)) KEYNO 
+	    		, TO_CHAR(TLM_REGDT,'YYYY-MM-dd') TLM_REGDT
+	    		, NVL(U.UI_REP_NAME, TLM_REGNM) TLM_UI_NAME
+	    		, M.TCGM_TITLE TLM_TCGM_TITLE
+	    		, TLM_ALT
+	    		, TLM_COMMENT
+	    		, TLM_URL
+	    		, TLM_FS_KEYNO
+	    		, TLM_USE_YN
+	    		, TLM_DEL_YN
+	    		, TLM_TCGM_KEYNO
+	    		, M.TCGM_IMG_WIDTH TCGM_IMG_WIDTH
+	    		, M.TCGM_IMG_HEIGHT TCGM_IMG_HEIGHT
+	    		, M.TCGM_IMG_YN TCGM_IMG_YN
+	    		, M.TCGM_IMG_RESIZE_YN TCGM_IMG_RESIZE_YN
+	    		, S.FS_ORINM 
+	    FROM	T_LIST_MANAGER B 
+	    LEFT JOIN T_USERINFO U
+	    ON		B.TLM_REGNM	=	U.UI_KEYNO
+	    LEFT JOIN T_CATEGORY_MANAGER M
+	    ON		B.TLM_TCGM_KEYNO	=	M.TCGM_KEYNO
+	    LEFT JOIN	T_COMMON_FILE_SUB S
+		ON		B.TLM_FS_KEYNO	=	S.FS_KEYNO
+		WHERE	TLM_DEL_YN = 'N'
+		<if test="TLM_KEYNO != null and TLM_KEYNO != ''">
+		AND TLM_KEYNO = #{TLM_KEYNO}
+		</if>
+    </select>
+    
+    <update id="TLM_update" parameterType="ListDTO">
+    	UPDATE T_LIST_MANAGER
+	   	SET	     TLM_ALT     	=    #{TLM_ALT}      
+				,TLM_FS_KEYNO   =    #{TLM_FS_KEYNO}  
+				,TLM_URL        =    #{TLM_URL}        
+				,TLM_COMMENT   	=    #{TLM_COMMENT}     
+				,TLM_TCGM_KEYNO =    #{TLM_TCGM_KEYNO}     
+    	WHERE  	TLM_KEYNO       =	#{TLM_KEYNO}
+    </update>
+    
+</mapper>
+ 

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="surveyRe"> 
+  
+  <sql id="SRM_getListBody">
+		FROM (
+			SELECT	B.*
+					, @ROWNUM:=@ROWNUM+1 as COUNT
+			FROM (
+				SELECT 		R.SRM_KEYNO
+			 				, IFNULL(U.UI_ID,'비회원') UI_ID
+							, LEFT(SRM_REGDT,19) SRM_REGDT
+							, R.SRM_IP 
+			 	FROM 		T_SURVEY_RESULT_MGR R
+			 	LEFT JOIN	T_USERINFO U
+			 	ON			R.SRM_REGNM = U.UI_KEYNO
+			 	WHERE 		SRM_SM_KEYNO = #{SM_KEYNO}
+			 	ORDER BY	SRM_KEYNO DESC
+			) B
+			WHERE (@ROWNUM:=0)=0
+		)AA
+		WHERE 1=1
+		
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		SRM_REGDT			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		SRM_IP 			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		UI_ID			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				<if test='SM_IDYN.equals("Y")'>
+ 				UI_ID 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				</if>
+ 				COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SRM_REGDT			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SRM_IP 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 		
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	
+	</sql>
+  	
+    <select id="SRM_getListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="SRM_getListBody"/>
+    </select>
+    
+    <select id="SRM_getList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="SRM_getListBody"/>
+		<choose>
+	 		<when test="orderBy == 1">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 2">
+	 		ORDER BY	SRM_REGDT ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	SRM_IP ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	UI_ID ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+  
+  <!-- 설문 목록 -->
+ 	<select id="SRM_selectBySmkey" resultType="hashmap" parameterType="SmDTO">
+	 	SELECT 		R.*
+	 				, U.UI_ID
+	 	FROM 		T_SURVEY_RESULT_MGR R
+	 	LEFT JOIN	T_USERINFO U
+	 	ON			R.SRM_REGNM = U.UI_KEYNO
+	 	WHERE 		SRM_SM_KEYNO = #{SM_KEYNO}
+	 	ORDER BY	SRM_KEYNO DESC
+ 	</select>
+  
+  <!-- 설문결과 관리 입력 -->
+  <insert id="SRM_insert" parameterType="SrmDTO">
+  	INSERT INTO T_SURVEY_RESULT_MGR
+  		(
+  			 SRM_KEYNO
+  			,SRM_SM_KEYNO
+  			,SRM_REGDT
+  			<if test="SRM_REGNM != null">
+  			,SRM_REGNM
+  			</if>
+  			,SRM_IP
+  		)
+  	VALUES
+  		(
+  			 #{SRM_KEYNO}
+  			,#{SRM_SM_KEYNO}
+  			,SYSDATE()
+  			<if test="SRM_REGNM != null">
+  			,#{SRM_REGNM}
+  			</if>
+  			,#{SRM_IP}
+  		)
+  </insert>
+  
+  <!-- 설문 결과 데이터 입력 -->
+  <insert id="SRD_insert" parameterType="SrmDTO">
+  	INSERT INTO T_SURVEY_RESULT_DATA
+  		(
+  			 SRD_KEYNO
+  			,SRD_SM_KEYNO
+  			,SRD_SRM_KEYNO
+  			,SRD_SQ_KEYNO
+  			<if test="SRD_DATA != null">
+  			,SRD_DATA
+  			</if>
+  			<if test="SRD_DATA == null">
+  			,SRD_SQO_KEYNO
+  			,SRD_SQO_VALUE
+  			</if>
+  		)
+  	VALUES
+  		(
+  			 #{SRD_KEYNO}
+  			,#{SRD_SM_KEYNO}
+  			,#{SRD_SRM_KEYNO}
+  			,#{SRD_SQ_KEYNO}
+  			<if test="SRD_DATA != null">
+  			,#{SRD_DATA}
+  			</if>
+  			<if test="SRD_DATA == null">
+  			,#{SRD_SQO_KEYNO}
+  			,#{SRD_SQO_VALUE}
+  			</if>
+  		)
+  </insert>
+  
+   <!-- 객관식 보기,결과 가져오기 -->
+ 	<select id="SRD_selectResultBySmkey_op" resultType="SqDTO" parameterType="SmDTO">
+	 	SELECT 	 a.SQO_KEYNO
+	 			,a.SQO_SQ_KEYNO
+	 			,a.SQO_NUM
+	 			,a.SQO_OPTION
+	 			,a.SQO_VALUE
+	 			,if ( isnull(b.CNT_CHOICE), 0, b.CNT_CHOICE ) as CNT_CHOICE
+	 			,if ( isnull(b.SUM_VAL), 0, b.SUM_VAL ) as SUM_VAL
+		FROM 
+			(SELECT  SQO_KEYNO
+			 		,SQO_SQ_KEYNO
+			 		,SQO_NUM
+			 		,SQO_OPTION
+			 		,SQO_VALUE 
+			 FROM T_SURVEY_QUESTION_OPTION
+			 WHERE SQO_SQ_KEYNO in (SELECT SQ_KEYNO FROM T_SURVEY_QUESTION WHERE SQ_SM_KEYNO=#{SM_KEYNO})
+			 ORDER BY SQO_NUM) a
+		LEFT OUTER JOIN
+			(SELECT  SRD_SQ_KEYNO
+					,SRD_SQO_KEYNO
+					,COUNT(SRD_SQO_KEYNO) as CNT_CHOICE
+					,SUM(SRD_SQO_VALUE) as SUM_VAL
+			 FROM T_SURVEY_RESULT_DATA
+			 GROUP BY SRD_SQO_KEYNO) b
+		ON a.SQO_KEYNO = b.SRD_SQO_KEYNO
+		ORDER BY a.SQO_SQ_KEYNO, a.SQO_NUM
+ 	</select>
+ 	
+ 	<!-- 주관식 결과 가져오기 -->
+ 	<select id="SRD_selectResultBySmkey_an" resultType="SrmDTO" parameterType="SmDTO">
+	 	SELECT * 
+	 	FROM T_SURVEY_RESULT_DATA
+		WHERE SRD_SM_KEYNO = #{SM_KEYNO}
+		AND SRD_DATA IS NOT NULL
+		ORDER BY SRD_SQ_KEYNO
+ 	</select>
+ 	
+ 	<select id="SRD_getList" resultType="hashmap">
+		SELECT SQ_ST_TYPE
+				, SRD_DATA
+				, SQ.SQ_NUM
+		        , SQ.SQ_QUESTION
+		        , SQO.SQO_KEYNO
+		        , SQO.SQO_NUM
+		        , SQO.SQO_OPTION
+		        , GROUP_CONCAT(SQA.SQO_KEYNO ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_KEYNO
+		        , GROUP_CONCAT(SQA.SQO_NUM ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_NUM
+		        , GROUP_CONCAT(SQA.SQO_OPTION ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_OPTION 	
+		FROM T_SURVEY_RESULT_DATA RD
+		LEFT JOIN T_SURVEY_QUESTION SQ
+		ON	RD.SRD_SQ_KEYNO = SQ.SQ_KEYNO
+		LEFT JOIN T_SURVEY_QUESTION_OPTION SQO
+		ON 	RD.SRD_SQO_KEYNO = SQO.SQO_KEYNO
+		LEFT JOIN T_SURVEY_QUESTION_OPTION SQA
+		ON 	RD.SRD_SQ_KEYNO = SQA.SQO_SQ_KEYNO
+		WHERE SRD_SRM_KEYNO = #{SRM_KEYNO}
+		GROUP BY SQ_KEYNO
+		ORDER BY SQ.SQ_ALIGN
+ 	</select>
+ 	
+	<select id="SRD_getList22" resultType="hashmap">
+		SELECT SQ_ST_TYPE
+				, SRD_DATA
+				, RD.SRD_SQO_KEYNO
+				, SQ.SQ_NUM
+		        , SQ.SQ_QUESTION
+		        , GROUP_CONCAT(SQA.SQO_KEYNO ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_KEYNO
+		        , GROUP_CONCAT(SQA.SQO_NUM ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_NUM
+		        , GROUP_CONCAT(SQA.SQO_OPTION ORDER BY SQA.SQO_NUM SEPARATOR '||') ALL_SQO_OPTION 	
+		FROM T_SURVEY_RESULT_DATA RD
+		LEFT JOIN T_SURVEY_QUESTION SQ
+		ON	RD.SRD_SQ_KEYNO = SQ.SQ_KEYNO
+		LEFT JOIN T_SURVEY_QUESTION_OPTION SQO
+		ON 	RD.SRD_SQO_KEYNO = SQO.SQO_KEYNO
+		LEFT JOIN T_SURVEY_QUESTION_OPTION SQA
+		ON 	RD.SRD_SQ_KEYNO = SQA.SQO_SQ_KEYNO
+		WHERE SRD_SRM_KEYNO = #{SRM_KEYNO}
+		GROUP BY SQ_KEYNO
+		ORDER BY SQ.SQ_ALIGN
+ 	</select>
+  	
+  	<!-- 설문참여결과 -->
+  	<select id="GET_RESULTDATA" resultType="HashMap">
+		SELECT A.SRM_KEYNO, A.SRM_REGDT, A.SRM_IP, A.SRD_SQ_KEYNO, 
+		       CONCAT(IFNULL(A.SRD_DATA,''), IFNULL(A.SQO_OPTION,'')) RESULTDATA
+		FROM(
+		    SELECT SRM.SRM_KEYNO, SRM.SRM_REGDT, SRM.SRM_IP, SRD.SRD_SQ_KEYNO, SRD.SRD_DATA, SRD.SRD_SQO_KEYNO, AA.SQO_OPTION
+		    FROM T_SURVEY_RESULT_MGR SRM
+		    LEFT JOIN T_SURVEY_RESULT_DATA SRD
+		    ON SRM.SRM_KEYNO = SRD.SRD_SRM_KEYNO
+		      
+		    LEFT JOIN ( SELECT SQO.SQO_KEYNO, SQO.SQO_OPTION
+		            FROM T_SURVEY_QUESTION SQ, T_SURVEY_QUESTION_OPTION SQO
+		            WHERE SQ.SQ_KEYNO = SQO.SQO_SQ_KEYNO
+		            AND   SQ.SQ_SM_KEYNO = #{SRM_SM_KEYNO}
+		            AND   SQ.SQ_DELYN = 'N') AA  
+		    ON SRD.SRD_SQO_KEYNO = AA.SQO_KEYNO
+		                
+		    WHERE SRM_KEYNO = #{SRM_KEYNO}
+		    ) A
+		ORDER BY A.SRD_SQ_KEYNO
+  	</select>
+  	
+  	
+  	<insert id="evnent_insert" parameterType="SrmDTO">
+  	INSERT INTO EVENT_RESULT
+  		(
+  			 USER_ID
+  			,USER_NM
+  			,USER_PH
+  			,USER_EM
+  			,Q1
+  			,Q2
+  			,Q3
+  			,Q4
+  			,URL
+  			,CONTENT
+  			,DATE
+  		)
+  	VALUES
+  		(
+  			 #{USER_ID}
+  			,#{USER_NM}
+  			,#{USER_PH}
+  			,#{USER_EM}
+  			,#{Q1}
+  			,#{Q2}
+  			,#{Q3}
+  			,#{Q4}
+  			,#{URL}
+  			,#{CONTENT}
+  			,SYSDATE()
+  		)
+  </insert>
+  
+  <select id="event_select" parameterType="SrmDTO" resultType="int">
+  	SELECT COUNT(*)
+  	FROM EVENT_RESULT
+  	WHERE USER_ID = #{USER_ID}
+  </select>
+  	
+</mapper>
+ 

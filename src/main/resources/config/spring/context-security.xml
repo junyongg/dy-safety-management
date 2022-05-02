@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+	
+	<http pattern="/common/**" security="none"/>
+	<http pattern="/async/**" security="none"/>
+	<http pattern="/error.do" security="none"/>
+	<http pattern="/**/login/denied.do" security="none"/>
+	<http pattern="/resources/**" security="none"/>
+	
+	
+	<http pattern="/tour/**"  use-expressions="true"  access-denied-page="/tour/login/denied.do">    
+	    <form-login login-page="/tour/member/login.do"
+	      username-parameter="UI_ID"        
+		  password-parameter="UI_PASSWORD"
+	    /> 
+	    
+	    <anonymous granted-authority="ANONYMOUS"  />
+	    
+	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_tour" />  
+	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_tour"/>
+	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+	
+	    <!-- enable csrf protection -->
+	    <csrf/>
+	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
+	</http>
+	
+	
+    <http pattern="/cf/**"  use-expressions="true"  access-denied-page="/cf/login/denied.do">    
+	    <form-login login-page="/cf/member/login.do" 
+	      username-parameter="UI_ID"        
+		  password-parameter="UI_PASSWORD"
+	    /> 
+	    
+	    <anonymous granted-authority="ANONYMOUS"  />
+	    
+	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_user" />  
+	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_user"/>
+	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+	
+	    <!-- enable csrf protection -->
+	    <csrf/>
+	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
+  	</http> 
+	  
+	  
+	 <http pattern="/jact/**"  use-expressions="true"  access-denied-page="/jact/login/denied.do">    
+	    <form-login login-page="/jact/member/login.do" 
+	      username-parameter="UI_ID"        
+		  password-parameter="UI_PASSWORD"
+	    /> 
+	    
+	    <anonymous granted-authority="ANONYMOUS"  />
+	    
+	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_jact" />  
+	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_jact"/>
+	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+	
+	    <!-- enable csrf protection -->
+	    <csrf/>
+	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
+  	</http>  
+	  
+	  
+	  
+	  
+	<http pattern="/jcia/**"  use-expressions="true"  access-denied-page="/jcia/login/denied.do">    
+	    <form-login login-page="/jcia/member/login.do"
+	      username-parameter="UI_ID"        
+		  password-parameter="UI_PASSWORD"
+	    /> 
+	    
+	    <anonymous granted-authority="ANONYMOUS"  />
+	    
+	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_jcia" />  
+	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_jcia"/>
+	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+	
+	    <!-- enable csrf protection -->
+	    <csrf/>
+	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
+	</http> 
+	  
+	<http pattern="/**"  use-expressions="true"  access-denied-page="/txap/login/denied.do">    
+		<form-login login-page="/txap/user/login.do"
+			username-parameter="UI_ID"        
+			password-parameter="UI_PASSWORD"         
+		/> 
+		
+		<anonymous granted-authority="ANONYMOUS"  />
+		
+		<custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter" />	
+		<custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
+		<custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+		<custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
+
+		<!-- enable csrf protection -->
+		<csrf/>
+		<!-- .csrf().ignoringAntMatchers("/contact-email") -->
+	</http>
+	
+	
+	<!-- http 설정마다 customAuthFilter, logoutFilter 따로 정의 해야된다. login url 과 logout url 이 다름 -->
+	<beans:bean id="customAuthFilter" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/txap/j_spring_security_check.do"/>
+	    <beans:property name="authenticationManager" ref="authenticationManager" />
+	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+	</beans:bean>
+		
+	<beans:bean id="logoutFilter" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/txap/user/login.do"/>
+	    <beans:constructor-arg index="1" value="/txap/logout.do"/>
+	    <beans:constructor-arg index="2">
+	        <beans:list>
+	            <beans:ref bean="CustomLogoutHandler"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	
+	<beans:bean id="customAuthFilter_tour" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/tour/j_spring_security_check.do"/>
+	    <beans:property name="authenticationManager" ref="authenticationManager" />
+	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+	</beans:bean>
+		
+	<beans:bean id="logoutFilter_tour" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/tour/user/login.do"/>
+	    <beans:constructor-arg index="1" value="/tour/logout.do"/>
+	    <beans:constructor-arg index="2">
+	        <beans:list>
+	            <beans:ref bean="CustomLogoutHandler"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	 
+	<beans:bean id="customAuthFilter_jcia" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/jcia/j_spring_security_check.do"/>
+	    <beans:property name="authenticationManager" ref="authenticationManager" />
+	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+	</beans:bean>
+	
+	<beans:bean id="logoutFilter_jcia" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/jcia/index.do"/>
+	    <beans:constructor-arg index="1" value="/jcia/logout.do"/>
+	    <beans:constructor-arg index="2">
+	        <beans:list>
+	            <beans:ref bean="CustomLogoutHandler"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+   	
+   	<beans:bean id="customAuthFilter_user" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/cf/j_spring_security_check.do"/>
+	    <beans:property name="authenticationManager" ref="authenticationManager" />
+	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+	</beans:bean>
+	
+	<beans:bean id="logoutFilter_user" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/"/>
+	    <beans:constructor-arg index="1" value="/cf/logout.do"/>
+	    <beans:constructor-arg index="2">
+	        <beans:list>
+	            <beans:ref bean="CustomLogoutHandler"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	
+	<beans:bean id="customAuthFilter_jact" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/jact/j_spring_security_check.do"/>
+	    <beans:property name="authenticationManager" ref="authenticationManager" />
+	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
+	</beans:bean>
+	
+	<beans:bean id="logoutFilter_jact" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/jact/index.do"/>
+	    <beans:constructor-arg index="1" value="/jact/logout.do"/>
+	    <beans:constructor-arg index="2">
+	        <beans:list>
+	            <beans:ref bean="CustomLogoutHandler"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	
+	
+	<authentication-manager alias="authenticationManager"> 
+		    <authentication-provider ref="customAuthenticationProvider"/>
+	</authentication-manager>
+	
+	<beans:bean id="customAuthenticationProvider" class="com.tx.common.security.provider.CustomAuthenticationProvider">
+        <beans:property name="usedLimitMaxSession" value="false" />	<!-- 동일 아이디 동시접속 제한 여부 default false -->
+        <beans:property name="maxSessions" value="10" />	<!-- 동일 아이디 동시접속 제한 수 -->
+        <beans:property name="existingSessionKill" value="true" /> <!-- true : 기존 세션 죽임, false : 현재 세션 튕김 , 기본값 true -->
+	</beans:bean>
+	
+	
+	<beans:bean id="ajaxSessionTimeoutFilter" class="com.tx.common.security.filter.AjaxSessionCheckFilter">
+        <beans:property name="ajaxHeader" value="AJAX" />
+	</beans:bean>
+	
+	<beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+	
+	<beans:bean id="CustomLogoutHandler" class="com.tx.common.security.handler.CustomLogoutHandler"/>
+	
+   	<beans:bean id="customAuthenticationSuccessHandler" class="com.tx.common.security.handler.CustomAuthenticationSuccessHandler">
+	    <beans:property name="defaultUrl" value="/index.do" />
+	</beans:bean>
+   	
+   	<beans:bean id="customAuthenticationFailureHandler" class="com.tx.common.security.handler.CustomAuthenticationFailureHandler">
+   		<beans:property name="loginidname" value="UI_ID" />
+	    <beans:property name="loginpasswdname" value="UI_PASSWORD" />
+	    <beans:property name="loginredirectname" value="loginRedirect" />
+	    <beans:property name="exceptionmsgname" value="securityexceptionmsg" />
+	</beans:bean>
+   	
+   	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	   <beans:property name="basenames">
+	       <beans:list>
+	           <beans:value>/WEB-INF/messages/spring_security_messages</beans:value>
+				<beans:value>classpath:/egovframework/message/com/message-common</beans:value>
+				<beans:value>classpath:/egovframework/rte/fdl/idgnr/messages/idgnr</beans:value>
+				<beans:value>classpath:/egovframework/rte/fdl/property/messages/properties</beans:value>
+				<beans:value>classpath:/egovframework/egovProps/globals</beans:value>
+	       </beans:list>
+	   </beans:property>
+	   <beans:property name="defaultEncoding" value="UTF-8"/>
+	   <beans:property name="cacheSeconds" value="5"/>
+	</beans:bean>
+	
+	<beans:bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+	    <beans:property name="authenticationManager" ref="org.springframework.security.authenticationManager" />
+	    <beans:property name="accessDecisionManager" ref="accessDecisionManager" />
+	    <beans:property name="securityMetadataSource" ref="reloadableFilterInvocationSecurityMetadataSource" />
+	</beans:bean>
+	 
+	<beans:bean id="accessDecisionManager" class="com.tx.common.security.vote.AffirmativeBased">
+	    <beans:constructor-arg>
+	        <beans:list>
+	            <beans:bean class="org.springframework.security.access.vote.RoleVoter">
+	                <beans:property name="rolePrefix" value="" />
+	            </beans:bean>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	 
+	<beans:bean id="reloadableFilterInvocationSecurityMetadataSource" class="com.tx.common.security.handler.ReloadableFilterInvocationSecurityMetadataSource">
+	    <beans:constructor-arg ref="requestMap" />
+	    <beans:property name="securedObjectService" ref="securedObjectService" />
+	</beans:bean>
+	 
+	<beans:bean id="securedObjectService" class="com.tx.common.security.service.impl.SecuredObjectServiceImpl">
+	    <beans:property name="secureObjectDao" ref="securedObjectDao" />
+	</beans:bean>
+	 
+	<beans:bean id="securedObjectDao" class="com.tx.common.security.dao.SecuredObjectDao">
+	    <beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	 
+	<beans:bean id="requestMap" class="com.tx.common.security.provider.UrlResourcesMapFactoryBean" init-method="init">
+	    <beans:property name="securedObjectService" ref="securedObjectService" />
+	</beans:bean>
+	
+	<beans:bean id="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="maxUploadSize" value="100000000" />
+    </beans:bean>
+	
+	<!-- webInvocationPrivilegeEvaluator necessary to use <sec:authorized url="xx"> -->
+	<beans:bean id="webInvocationPrivilegeEvaluator" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+	    <beans:constructor-arg ref="filterSecurityInterceptor"/>
+	</beans:bean>
+	
+</beans:beans>
