@@ -106,17 +106,10 @@
 
 <c:if test="${currentMenu.MN_LEV ne 0 }">
 <div id="subContentsWrap_01">
-	<c:if test="${currentMenu.MN_KEYNO ne 'MN_0000001560' && currentMenu.MN_URL ne '/jact/member/regist.do' && currentMenu.MN_URL ne '/jact/mypage/info.do' && currentMenu.MN_URL ne '/jact/member/login.do' &&  currentMenu.MN_URL ne '/jact/member/private.do'}">
 		<tiles:insertAttribute name="subTop"/>
-    </c:if>
-<%--     	<tiles:insertAttribute name="leftmenu"/>            --%>
         		<div class="inner1200">
-        			<c:if test="${not fn:contains(currentMenu.MN_URL ,'/jact/hire') }">
         				<tiles:insertAttribute name="rightTop"/>
-        			</c:if>
         		</div>
-        		
-        	
         	
             	<tiles:insertAttribute name="body"/>	
             
@@ -137,12 +130,6 @@
 
 <tiles:insertAttribute name="footer"/>
 
-
-
-    <map name="map25"> 
-    	<area shape="rect" coords="42,442,160,479" href="http://jncf.or.kr/jact/Board/34216/detailView.do" alt="서울아트쇼 참가작품 공모" target="_blank"> 
-    	<area shape="rect" coords="225,442,343,480" href="http://jncf.or.kr/jact/Board/34287/detailView.do" alt="남도예술은행 미술작품 구입공모" target="_blank"> 
-    </map>
 <div class="loading_box">
 	<div class="bg"></div>
 	<img src="/resources/img/loading/loading.gif"
@@ -152,11 +139,6 @@
   
 </body>
 
-<script>
-	$(function(){
-		$("#pop471").find(".img_css").attr("usemap","#map25");
-	});
-</script>
 
 </html>
 

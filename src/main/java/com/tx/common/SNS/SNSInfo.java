@@ -2,8 +2,6 @@ package com.tx.common.SNS;
 
 
 /**
- * SNS META Tag 정보 VO
- * @author 이재령  2016/07/11
  *
  */
 public class SNSInfo {

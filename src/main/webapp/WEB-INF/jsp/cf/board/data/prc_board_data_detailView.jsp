@@ -194,7 +194,7 @@ function pf_checkPwd(){
 					<input type="hidden" name="BC_REGNM" id="BC_REGNM" value="${userInfo.UI_ID}">
 					<input type="hidden" name="BT_KEYNO" id="BT_KEYNO" value="${BoardType.BT_KEYNO }">
 					<input type="hidden" name="BN_TITLE" id="BN_TITLE" value="${BoardNotices.BN_TITLE }">
-					<input type="hidden" id="snsdesc" value="<c:out value="${SNSInfo.DESC}" escapeXml="true" ></c:out>" />
+<%-- 					<input type="hidden" id="snsdesc" value="<c:out value="${SNSInfo.DESC}" escapeXml="true" ></c:out>" /> --%>
 				</form:form>
 				
 				<div class="boardDetailViewBox">

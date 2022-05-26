@@ -894,13 +894,4 @@ public class JactFunctionController {
 		return  returnMap;
 	}
 	
-	//달력 기념일 이벤트
-	@RequestMapping(value="/eng/engpage.do")
-	public ModelAndView emg(HttpServletRequest req
-			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/eng/main/prc_main.none");
-		
-		return mv;
-	}
-	
 }

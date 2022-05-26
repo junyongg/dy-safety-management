@@ -41,7 +41,7 @@ function startTimer()
 <div class="row">
 	<div class="col-xs-6 col-sm-6">
 		<span class="txt-color-white"><spring:eval expression="@config.getProperty('cms.version')" /> <span
-			class="hidden-xs"> - Content management system</span> © 2017
+			class="hidden-xs"> - Daeyang</span>
 		</span>
 	</div>
 	<c:if test="${not empty currentMenu }">	

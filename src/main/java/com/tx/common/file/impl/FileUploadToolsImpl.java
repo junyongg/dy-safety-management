@@ -43,7 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.tx.admin.hire.dto.HireUserDTO;
 import com.tx.common.common.SettingData;
 import com.tx.common.component.CommonService;
 import com.tx.common.component.ComponentService;
@@ -1739,92 +1738,6 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 		}
 
 		return result;
-	}
-	
-	/**
- 	 * 파일 압축
- 	 * @param List<FileSub>
- 	 * @param String
- 	 * @throws Exception
- 	 */
-	@Override
-	@Transactional
-	public void FileZip(HireUserDTO hire, FileSub file)throws Exception {
-		FileSub filesub = new FileSub();
-		byte[] buf = new byte[1024];
-		//프로퍼티 경로 불러오기
-		String propertiespath = propertiesService.getString("FilePath");
-		//압축파일 이름
-		String zip_name = hire.getTH_USER() +"-"+ hire.getTH_KEYNO();
-		String uploadPath = SaveFolder(propertiespath);
-		
-		if(file != null) {
-			zip_name = file.getFS_CHANGENM();
-			uploadPath = file.getFS_FOLDER();
-			
-			String Pre_Path = propertiespath + uploadPath + zip_name + ".zip";
-			File ZipFile = new File(Pre_Path);
-	        //파일이 있으면 삭제(같은 이름으로 만들 때마다 새로 쓰기 위해서)
-	        if (ZipFile.isFile()) {
-	        	ZipFile.delete();
-	         }
-		}
-
-		filesub.setFS_FOLDER(uploadPath);
-		filesub.setFS_ORINM(zip_name + ".zip");
-		filesub.setFS_EXT("zip");
-		filesub.setFS_CHANGENM(zip_name);
-
-		/**알집 하나만**/
-		String attachments = propertiespath + uploadPath + zip_name + ".zip";
-		
-		List<FileSub> files = new ArrayList<>();
-		
-//		String[] keylist = hire.getTH_FILE().toString().split(",");
-		String temp = hire.getTH_FILE1()+","+hire.getTH_FILE2()+","+hire.getTH_FILE3()+","+hire.getTH_FILE4()+","+hire.getTH_FILE5()+","+hire.getTH_FILE6()+","+hire.getTH_FILE7()+","+hire.getTH_FILE8();
-		
-		String[] keylist = temp.split(",");
-		
-		for(String FS_KEYNO : keylist) {
-			files.add(Component.getData("File.AFS_SubFileDetailselect",FS_KEYNO));
-		}
-		
-		try( ZipOutputStream out = new ZipOutputStream(new FileOutputStream(attachments));) {
-			if(files != null) {
-				for(FileSub f : files) {
-					if(f.getFS_FILE_SIZE() != null) {
-						String Path = f.getFS_FOLDER() + f.getFS_CHANGENM() +"." + f.getFS_EXT();
-						try( FileInputStream in = new FileInputStream(propertiespath + Path);) {
-							ZipEntry ze = new ZipEntry(f.getFS_ORINM());
-							out.putNextEntry(ze);
-		                    int len;
-		                    while ((len = in.read(buf)) > 0) {
-		                        out.write(buf, 0, len);
-		                    }
-		                    out.closeEntry();
-						} catch (Exception e) {
-							e.printStackTrace();
-							System.out.println("압축파일에러");
-						}
-					}
-				}
-			}
-       } catch (IOException e) {
-    	   System.out.println("ZipOutputStream 에러");
-       }
-		
-		String FS_SIZE = new File(attachments).length() + "";
-		filesub.setFS_FILE_SIZE(FS_SIZE);
-		filesub.setFS_REGNM("txadmin");
-		
-		if(file != null) {
-			Component.updateData("FileManage.AFS_FileUpdateData", filesub);
-		}else {
-			filesub.setFS_KEYNO(CommonService.getTableKey("FS"));
-			Component.createData("File.AFS_FileInfoInsert", filesub);
-			hire.setTH_ZIP_KEYNO(filesub.getFS_KEYNO());
-			Component.updateData("Hire.ZipFileInsert", hire);
-		}
 	}
 	
 	/**

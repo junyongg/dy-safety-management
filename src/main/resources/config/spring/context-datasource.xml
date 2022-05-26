@@ -18,7 +18,7 @@
     </bean> 
     
  	<!-- Oracle --> 
-    <bean id="dataSourceSpied-oracle" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+<!--     <bean id="dataSourceSpied-oracle" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${oracle.driver}"/>
         <property name="url" value="${oracle.url}"/>
         <property name="username" value="${oracle.username}"/>
@@ -27,7 +27,8 @@
         <property name="testWhileIdle" value="true"/>
         <property name="timeBetweenEvictionRunsMillis" value="7200000"/>
     </bean>  
-    <!-- 쿼리 로그출력  --> 
+ -->    
+ 	<!-- 쿼리 로그출력  --> 
     <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
         <constructor-arg ref="dataSourceSpied-${db.type}" />
         <property name="logFormatter">

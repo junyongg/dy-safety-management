@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tx.admin.hire.dto.HireUserDTO;
 import com.tx.common.file.dto.FileSub;
 
 /**
@@ -322,9 +321,6 @@ public interface FileUploadTools{
 
 
 	public  String fileOverlapCheck(String uploadPath, String filename) ;
-
-
-	public void FileZip(HireUserDTO hire, FileSub file) throws Exception;
 
 
 	public HashMap<String,Object> FileZip2(ArrayList<String> keylist, String filename) throws Exception;

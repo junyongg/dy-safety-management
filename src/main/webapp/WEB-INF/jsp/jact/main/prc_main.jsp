@@ -50,20 +50,6 @@
 		<div class="main_notice_tab_box">
 			<ul class="main_notice_tab">
 				<li class="active">
-					<a href="javascript:;" onclick="setPath('notice')">공지</a>
-					<c:import url="/common/Board/MainMiniBoard/UserViewAjax.do?key=8"/> <!-- 공지  -->
-				</li>
-				<li>
-				<a href="javascript:;" onclick="setPath('collusion')">공모</a>
-				<c:import url="/common/Board/MainMiniBoard/UserViewAjax.do?key=15"/><!-- 공모 -->
-				</li>
-				<li>
-				<a href="javascript:;" onclick="setPath('hire')">채용</a>
-				<c:import url="/common/Board/MainMiniBoard/UserViewAjax.do?key=9"/> <!-- 채용 -->
-				</li>
-				<li>
-				<a href="javascript:;" onclick="setPath('biddannouncement')">입찰</a>
-				<c:import url="/common/Board/MainMiniBoard/UserViewAjax.do?key=10"/><!-- 입찰  -->
 				</li>
 			</ul>
 
@@ -84,51 +70,6 @@
 		</div>
 
 
-		<!-- <div class="side-bar_01">
-			<div class="quickMenu_2 n02">
-				<ul class="top_menu">
-					<li>
-						<a href="/jact/archives/material.do" title="서식자료 링크이동">
-							<span class="icon"><img src="/resources/img/main/new/icon_quick_01.jpg" alt=""></span>
-							<span class="txt">서식자료</span>
-						</a>
-					</li>
-					<li>
-						<a href="/jact/open/consulting/question.do" title="1대1문의 링크이동">
-							<span class="icon"><img src="/resources/img/main/new/icon_quick_02.jpg" alt=""></span>
-							<span class="txt">1:1문의</span>
-						</a>
-					</li>
-					<li>
-						<a href="/jact/open/consulting/free.do" title="고객의소리 링크이동">
-							<span class="icon"><img src="/resources/img/main/new/icon_quick_03.jpg" alt=""></span>
-							<span class="txt">고객의소리</span>
-						</a>
-					</li>
-					<li>
-						<a href="/jact/archives/reference.do" title="카드뉴스 링크이동">
-							<span class="icon"><img src="/resources/img/main/new/icon_quick_04.jpg" alt=""></span>
-							<span class="txt">카드뉴스</span>
-						</a>
-					</li>
-				</ul>
-				<ul class="bott_menu">
-					<li><a href="https://www.facebook.com/jact5800" title="페이스북 링크이동" target="_blank"><img alt="페이스북" src="/resources/img/main/new/icon_quick_facebook.jpg"></a></li>
-					<li><a href="https://www.instagram.com/jncf5800/" title="인스타그램 링크이동" target="_blank">
-						<img alt="인스타그램" src="/resources/img/main/new/icon_quick_insta.jpg"></a></li>
-					<li><a href="https://blog.naver.com/jact123" title="블로그 링크이동" target="_blank">
-						<img alt="블로그" src="/resources/img/main/new/icon_quick_blog.jpg"></a></li>
-					<li><a href="https://www.youtube.com/channel/UCCpPH4qc1xpanrUYpVEpWdg" target="_blank" title="유튜브 링크이동">
-						<img alt="유튜브" src="/resources/img/main/new/icon_quick_youtube.jpg"></a></li>
-					<li><button title="위로가기" class="upDown" onclick="browserTop()">
-						<img src="/resources/img/main/new/icon_quick_arrow.png" alt=""> TOP</button></li>
-				</ul>
-			</div>
-		</div>
-		 -->
-		
-		
-		
 		<div class="side-bar_01">
 			<div class="quickMenu_2 n02">
 				<ul class="top_menu top_menuBox">
@@ -191,25 +132,6 @@
 					<button type="button" class="btn_youtube prev" title="이전 유튜브영상"><i class="xi-angle-left-thin"></i></button>
 					<button type="button" class="btn_youtube next" title="다음 유튜브영상"><i class="xi-angle-right-thin"></i></button>
 					<ul class="main_youtube_slide_ul">
-
-							<c:forEach items="${movie }" var="movies" >
-								<c:set var="youtube_code" value="${fn:substring(movies.BM_URL ,fn:indexOf(movies.BM_URL,'?v=' ) + 3, fn:length(movies.BM_URL ))}"/>
-								
-								<li data-link="${youtube_code}" class="Middleslick">
-									<a href="javascript:;" class="a1" onclick="window.open('${movies.BM_URL}')" title="새창 열림">
-										<span class="img_s">
-											<span class="icon"><i class="xi-play"></i></span>
-											<img src="https://img.youtube.com/vi/${youtube_code }/mqdefault.jpg" alt="${movies.BM_TITLE }">
-										</span>
-									</a>
-									<div class="movie_box">
-										<%-- <a href="javascript" onclick="window.open('${movies.BM_URL}')" title="새창 열림">
-											<img src="https://img.youtube.com/vi/${youtube_code }/mqdefault.jpg" alt="${movies.BM_TITLE }">
-										</a> --%>
-									</div>
-								</li>
-
-							</c:forEach>
 
 					</ul>
 					<!-- 웹접근성 수정 2020-11-27 -->
@@ -290,131 +212,3 @@
 	</div>
 
 
-
-<script>
-$(function(){
-	var msg = '${msg}';
-	if(msg){
-		alert(msg);
-	}
-
-	$(".slick-dots .pause .xi-pause").append("<span style='position: absolute;font-size: 0;'>멈춤</span>")
-	
-	pf_activeSlide();
-
-	 $(".main_youtube_slide_ul").on("afterChange", function(){
-		 pf_activeSlide();
-	 });
-
-});
-
-var nextpath = '/jact/open/notice.do'; //공지사항
-//     /jact/open/hire.do //채용
-//    /jact/open/biddannouncement.do //입찰
-
-function setPath(key){
-	switch (key) {
-	case "notice":
-		nextpath = '/jact/open/notice.do';
-		break;
-
-	case "hire":
-		nextpath = '/jact/open/hire.do';
-		break;
-
-	case "biddannouncement":
-		nextpath = '/jact/open/biddannouncement.do';
-		break;
-
-	case "collusion":
-		nextpath = '/jact/open/collusion.do';
-		break;
-
-	default:
-		break;
-	}
-}
-
-function nextBoard(){
-	location.href=nextpath;
-}
-
-$(function(){
-	setDateTitle('default');
-
-	setDateTitle('default');
-    $('#prevYear').click(function(){
-    	y -= 1;
-    	setDateTitle();
-    })
-    $('#prevMonth').click(function(){
-    	if(m == 0){
-    		m = 11;
-    		y -= 1;
-    	}else{
-	    	m -= 1;
-    	}
-    	setDateTitle();
-    })
-    $('#nextYear').click(function(){
-    	y += 1;
-    	setDateTitle();
-    })
-    $('#nextMonth').click(function(){
-    	if(m == 11){
-    		m = 0;
-    		y += 1;
-    	}else{
-	    	m += 1;
-    	}
-    	setDateTitle();
-    })
-});
-
-
-
-var options;
-var tagVal;
-var date = new Date();
-var d = date.getDate();
-var m = date.getMonth();
-var y = date.getFullYear();
-var bxListSlider;
-var vWebType = "";
-
-var currentSelectedDate;
-function setDateTitle(type){
-// 	popUpClose()
-
-	var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
-	var mString = (m+1)+ '';
-	tagVal = y + '.<b>'+( mString.length == 1 ? '0'+mString:mString )+'</b>';
-	$('.yr').html(tagVal)
-	$('mt').html(monthNames[m])
-
-	var getTemp = getCalender(y,( mString.length == 1 ? '0'+mString:mString ))
-	$("#calenderList").html(getTemp)
-
-	var start = y+"-"+ ( mString.length == 1 ? '0'+mString:mString )+"-01";
-	var end = y+"-"+ ( mString.length == 1 ? '0'+mString:mString )+"-"+lastDay(y, ( mString.length == 1 ? '0'+mString:mString ));
-	options = "&start="+getDateTime(start)+"&end="+getDateTime(end);
-
-// 	getEventResultList(getEvents(options))
-
-}
-
-function pf_activeSlide(){
-    var obj = $(".slick-current > div > li.Middleslick");
-    var clonedBox= $(".slick-slide > div > li.Middleslick > div");
-    var currentBox = $(".slick-current > div > li.Middleslick > div");
-    var temp = "";
-    var link = obj.data("link");
-    var url = 'https://www.youtube.com/watch?v='+link;
-//     temp += '<a href="javascript" onclick="window.open(\'' + url + '\')"><img style="width:100%" src="https://img.youtube.com/vi/'+link+'/mqdefault.jpg" alt="새창 열림"></a>';
-    temp += '<iframe title="전남문화재단유튜브" width="100%" height="100%" src="https://www.youtube.com/embed/'+link+'"';
-    temp += ' frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; autoplay; mute;" allowfullscreen></iframe>';
-    clonedBox.html('');
-    currentBox.html(temp);
-}
-
-</script>

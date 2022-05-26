@@ -135,12 +135,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="Board_5_5" type="com.tx.migration.controller.Board_5_5" />
 		<typeAlias alias="TableName" type="com.tx.migration.controller.TableName" />
 
-
-		<typeAlias alias="HireUserDTO" type="com.tx.admin.hire.dto.HireUserDTO" />
-
-		<typeAlias alias="HireContentDTO" type="com.tx.admin.hire.dto.HireContentDTO" />
-		
-		<typeAlias alias="MapDTO" type="com.tx.map.dto.MapDTO" />
 	</typeAliases>
 	
 	<typeHandlers>
