@@ -32,8 +32,8 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * 
  * @FileName: AuthorityController.java
  * @Project : CT CMS
- * @Date    : 2017. 02. 28. 
- * @Author  : 트로닉스 이재령	
+ * @Date    : 2020. 02. 28. 
+ * @Author  : 트로닉스 신강철	
  * @Version : 1.0
  * @meno	:
  * 	슈퍼관리자는  항상 어디든 접근가능하다.

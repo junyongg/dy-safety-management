@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @FileName: CommonMapController.java
  * @Date    : 2018. 01. 15. 
- * @Author  : 이재령	
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

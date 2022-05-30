@@ -179,7 +179,7 @@ public class FileManageToolsImpl extends EgovAbstractServiceImpl implements File
 	
 	/**
 	 * 파일 압축하기( 현재는 js,css 만 가능)
-	 * 2019-07-03 이재령
+	 * 2019-07-03 신강철
 	 * 버그 있을 수 있음 테스트 좀더 해야됨
 	 * @param data
 	 * @return

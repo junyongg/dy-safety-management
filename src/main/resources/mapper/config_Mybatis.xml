@@ -74,30 +74,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- 휴일 관리 -->
 		<typeAlias alias="Holiday" type="com.tx.admin.operation.holiday.dto.HolidayDTO" />
 		
-		<!-- 검색 키워드 -->
-		<typeAlias alias="keyword" type="com.tx.admin.function.keyword.dto.KeywordDTO" />
-		
-		<!-- 검색 키워드 -->
 		<typeAlias alias="Log" type="com.tx.admin.statistics.dto.LogDTO" />
 		
 		<!-- QrCode 관리 -->
 		<typeAlias alias="QrCode" type="com.tx.admin.operation.qrcode.dto.QrCode" />
-		
-		<!-- 조직도 -->
-		<typeAlias alias="OrganDto" type="com.tx.admin.operation.organization.dto.OrganDTO" />
-		<typeAlias alias="OrganTree" type="com.tx.admin.operation.organization.dto.OrganTree" />
-		
-		<!-- 장소 관리 -->
-		<typeAlias alias="PlaceDTO" type="com.tx.admin.program.application.dto.PlaceDTO" />
-		
-		<!-- 단체예약 관리 -->
-		<typeAlias alias="Group" type="com.tx.admin.program.group.dto.GroupDTO" />
-
-		<!-- 장소 좌석배치 관리 -->
-		<typeAlias alias="PlaceSeatDTO" type="com.tx.admin.program.application.dto.PlaceSeatDTO" />
-		
-		<!-- 프로그램 관리 -->
-		<typeAlias alias="ApplicationDTO" type="com.tx.admin.program.application.dto.ApplicationDTO" />
 		
 		<!-- 설문관리 -->
 		<typeAlias alias="SmDTO" type="com.tx.admin.operation.survey.dto.SmDTO"/>

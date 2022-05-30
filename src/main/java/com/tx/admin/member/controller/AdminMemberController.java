@@ -26,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.admin.member.dto.UserDTO;
 import com.tx.admin.member.dto.UserSettingDTO;
-import com.tx.admin.program.application.dto.ApplicationDTO;
 import com.tx.common.annotation.CheckActivityHistory;
 import com.tx.common.common.SettingData;
 import com.tx.common.component.CommonService;
@@ -43,8 +42,8 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * 
  * @FileName: AdminController.java
  * @Project : demo
- * @Date    : 2017. 02. 06. 
- * @Author  : 이재령	
+ * @Date    : 2020. 02. 06. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

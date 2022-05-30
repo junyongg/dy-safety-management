@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * IP 체크 기본 노드
- * @author 이재령
+ * @author 신강철
  *
  */
 public class NumberNode {

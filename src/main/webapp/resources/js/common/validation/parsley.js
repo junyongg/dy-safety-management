@@ -1,6 +1,6 @@
 /*!
 * Parsley.js
-* Version 2.6.5 - built Fri, Feb 24th 2017, 3:50 pm
+* Version 2.6.5 - built Fri, Feb 24th 2020, 3:50 pm
 * http://parsleyjs.org
 * Guillaume Potier - <guillaume@wisembly.com>
 * Marc-Andre Lafortune - <petroselinum@marc-andre.ca>

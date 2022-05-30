@@ -6,7 +6,7 @@ package com.tx.admin.board.dto;
  * 
  * @author 박혜성
  * @version 1.0
- * @since 2017-02-06
+ * @since 2020-02-06
  */ 
 
 public class BoardColumnData extends BoardColumn {

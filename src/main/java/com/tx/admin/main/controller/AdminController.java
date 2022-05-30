@@ -27,9 +27,6 @@ import com.tx.common.component.ComponentService;
 /**
  * 
  * @FileName: AdminController.java
- * @Project : demo
- * @Date    : 2017. 02. 06. 
- * @Author  : 이재령	
  * @Version : 1.0
  */
 @Controller
@@ -47,35 +44,8 @@ public class AdminController {
 			,HttpServletResponse res
 			) throws Exception {
 		
-		ModelAndView mv  = new ModelAndView("/txap/pra_main.adm");
-		List<UserDTO> memberlist = Component.getListNoParam("member.UI_selectAdminMain");
-		for(UserDTO user : memberlist){
-			user.decode();
-		}
-		
-		Cookie[] cookies = req.getCookies();
-		String cookie_check = "0";
-		
-		for(Cookie cookie: cookies) {
-			if("main".equals(cookie.getName())) {
-				cookie_check = "1";
-			}
-		}
-		if(cookie_check.equals("0")) {
-			Cookie c1 = new Cookie("main", URLEncoder.encode("1,2,3,4,5"));
-			c1.setMaxAge(60*60*24);
-			c1.setPath("/");
-			res.addCookie(c1);
-		}
-		
-		mv.addObject("memberlist",memberlist);
-		mv.addObject("boardlist",Component.getListNoParam("BoardNotice.BN_getListAdminMain"));
-		
-		mv.addObject("resultList",Component.getListNoParam("Satisfaction.Pr_TPS_getList"));
-		mv.addObject("resultListcnt",Component.getData("Satisfaction.TPS_getListCnt"));
-		
-		mv.addObject("keywordList",Component.getListNoParam("keyword.Pr_SK_getDataList"));
-		mv.addObject("keywordListcnt",Component.getData("keyword.SK_getDataListCnt"));
+		ModelAndView mv  = new ModelAndView("redirect:/txap/homepage/menu.do");
+
 		return mv;
 	}
 	
@@ -102,67 +72,4 @@ public class AdminController {
 		return mv;
 	}
 	
-//	통계부분 관리자 페이지를 위한 ajax처리 
-	@ResponseBody
-	@RequestMapping("/txap/main/pr_pagingAjax.do")
-	public Object pr_ajaxsearchV(
-			HttpServletRequest req
-			, LogDTO log
-			) throws Exception {
-		
-//		log.setHOME_DIV("0");
-		List<LogDTO> list = Component.getList("Log.Pr_AH_selectPageCount", log);
-		
-		int total = 0;
-		if(list !=null && list.size()>0){
-			
-			for(int i=0; i<list.size(); i++){
-				total += list.get(i).getCOUNT();
-			}
-			
-			for(int i=0; i<list.size(); i++){ //평균
-				list.get(i).setNo(i+1);
-				float a = list.get(i).getCOUNT() / (float)total * 100;
-				a *= 100;
-				int ii =   (int) a;
-				a = (float) (ii* 0.01);
-				list.get(i).setPersent(a);
-			}
-		}
-		
-		StringBuilder bulder = new StringBuilder();
-		
-		log = null;
-		int totalCnt = 0;
-		float totalPercent = 0;
-		 if(list.size()>0){
-			 for(int i=0; i< list.size();  i++){
-				 log = list.get(i);
-				 bulder.append("<tr><td>")
-				 		.append(log.getNo())
-				 		.append("</td><td>")
-				 		.append(log.getMN_HOMEDIV_NAME())
-				 		.append("</td>")
-				 		.append("<td>" + log.getMN_NAME()) 
-				 		.append("</td><td><div class='visitor_bar chart'><span class='bar' data-number='")
-				 		.append(log.getPersent())
-				 		.append("'></span></div>")
-				 		.append("</td><td>")
-				 		.append(log.getCOUNT())
-				 		.append("</td><td>")
-				 		.append(log.getPersent())
-				 		.append("</td></tr>");
-				 totalCnt += log.getCOUNT();
-				 totalPercent += log.getPersent();
-			 } 
-		 }
-		 bulder.append("<tr class='footTr'><td colspan='4' class='footTd'>")
-			.append("총합</td><td>")
-		 	.append(totalCnt)
-	 		.append("<td>")
-	 		.append(Math.round(totalPercent*100)/100.0)
-	 		.append("</td></tr>");
-		
-		return bulder.toString();
-	}
 }

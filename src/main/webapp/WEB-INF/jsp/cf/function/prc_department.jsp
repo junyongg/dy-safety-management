@@ -64,7 +64,7 @@
         </div>
     </div>                                        	
     <div class="subRealTitleBox">
-        <h1>업무상세표 <span class="titleSubSpan">· 2017.05.19 기준</span></h1>
+        <h1>업무상세표 <span class="titleSubSpan">· 2020.05.19 기준</span></h1>
     </div>
     <div class="subRealSubTitleBox_02" id="groupCEO">
     	<h2 class="colorRightBlue"><font class="depMarker">◇</font> <font class="depName">대표이사</font></h2>

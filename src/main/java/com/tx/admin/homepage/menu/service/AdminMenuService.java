@@ -10,7 +10,7 @@ import com.tx.admin.homepage.menu.dto.Menu;
 
 /**
  * AdminMenuService
- * @author 이재령
+ * @author 신강철
  * @version 1.0
  * @since 2019-05-15
  */

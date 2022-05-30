@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tx.admin.member.dto.UserDTO;
 import com.tx.admin.member.dto.UserSettingDTO;
-import com.tx.admin.program.application.dto.ApplicationDTO;
 import com.tx.common.annotation.CheckActivityHistory;
 import com.tx.common.component.CommonService;
 import com.tx.common.component.ComponentService;
@@ -34,8 +32,8 @@ import com.tx.common.security.password.MyPasswordEncoder;
  * 
  * @FileName: MemberController.java
  * @Project : cf
- * @Date    : 2017. 05. 31. 
- * @Author  : 이재령	
+ * @Date    : 2020. 05. 31. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller
@@ -123,18 +121,6 @@ public class MemberController {
 		}else{ 
 			UserDTO.setUI_AUTH_YN("N");
 		}
-		
-		ApplicationDTO ApplicationDTO = new ApplicationDTO();
-		ApplicationDTO.setAPU_KEYNO(CommonService.getTableKey("APU"));
-		ApplicationDTO.setAPU_UI_KEYNO(UserDTO.getUI_KEYNO());
-		ApplicationDTO.setAPU_NAME(UserDTO.getUI_NAME());
-		ApplicationDTO.setAPU_RELATION("본인");
-		ApplicationDTO.setAPU_BIRTH(UserDTO.getUI_BIRTH());
-		ApplicationDTO.setAPU_GENDER(UserDTO.getUI_ZENDER());
-		ApplicationDTO.setAPU_PHONE(UserDTO.getUI_PHONE());
-		ApplicationDTO.setAPU_SELFYN("Y");
-		Component.createData("Application.APU_Insert", ApplicationDTO);
-		
 		
 		UserDTO.encode();
 		Component.createData("member.UI_insert", UserDTO);

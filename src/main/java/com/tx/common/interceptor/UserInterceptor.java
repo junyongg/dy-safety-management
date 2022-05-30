@@ -23,7 +23,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.tx.admin.function.keyword.service.KeywordService;
 import com.tx.admin.homepage.menu.dto.HomeManager;
 import com.tx.admin.homepage.menu.dto.Menu;
 import com.tx.admin.homepage.menu.service.AdminMenuSessionService;
@@ -44,10 +43,6 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 	
 	/** 메뉴관리 서비스2 */
 	@Autowired private AdminMenuSessionService AdminMenuSessionService;
-	
-	
-	/** 검색 키워드 */
-	@Autowired private KeywordService KeywordService;
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -394,11 +389,6 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 		//게시판 권한 처리
 		if(visiterMenu != null && visiterMenu.getMN_PAGEDIV_C().equals("SC_TFOVO")){
 			modelAndView.addObject("boardAuthList",getBoardAuthList(request,visiterMenu.getMN_URL())); 
-		}
-		
-		//키워드 셋팅
-		if(request.getSession().getAttribute("keywordList") == null){
-			request.getSession().setAttribute("keywordList", KeywordService.getKeywordList());
 		}
 		
 		// 타일즈에 따른 CSS/JS설정 조회

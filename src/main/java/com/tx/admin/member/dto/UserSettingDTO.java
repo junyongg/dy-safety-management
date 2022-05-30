@@ -2,7 +2,7 @@ package com.tx.admin.member.dto;
 
 /**
  * 회원관리 설정 DTO
- * @author 이재령
+ * @author 신강철
  *
  */
 public class UserSettingDTO  {

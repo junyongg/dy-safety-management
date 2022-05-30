@@ -7,7 +7,7 @@ var scheduleList = [];
 // var scheduleGroups = new Array();
 var Timenumber = 0;
 var setMonth = new Date().getMonth() + 1;
-//ConversionDate = "2017-1" //달력 오픈 년,월을 지정해야 하는경우 사용. 미사용 시 현재 년월 오픈
+//ConversionDate = "2020-1" //달력 오픈 년,월을 지정해야 하는경우 사용. 미사용 시 현재 년월 오픈
 function SetSchedule(getDate){
 	$(".tronixSchedules").remove();
 	$.each(scheduleList,function(i){

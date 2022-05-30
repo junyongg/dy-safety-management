@@ -370,7 +370,7 @@
 	
 	
 	
-	<!-- 2017-03-16 추가  -->
+	<!-- 2020-03-16 추가  -->
 	
   <div class="col-xs-3 col-md-1 col-sm-2 demo-icon-font">
     <i class="fa fa-adjust"></i>

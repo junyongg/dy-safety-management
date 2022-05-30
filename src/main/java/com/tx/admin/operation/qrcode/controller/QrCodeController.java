@@ -23,7 +23,7 @@ import com.tx.common.component.ComponentService;
  * 
  * @FileName: QrCodeController.java
  * @Project : QrCode
- * @Date    : 2017. 02. 27. 
+ * @Date    : 2020. 02. 27. 
  * @Author  : 양석기	
  * @Version : 1.0
  */

@@ -24,8 +24,8 @@ import com.tx.common.component.ComponentService;
  * 
  * @FileName: MainController.java
  * @Project : IP 체크
- * @Date    : 2017. 01. 31. 
- * @Author  : 이재령	
+ * @Date    : 2020. 01. 31. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

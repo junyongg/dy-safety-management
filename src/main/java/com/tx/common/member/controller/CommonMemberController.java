@@ -25,8 +25,8 @@ import com.tx.common.security.rsa.service.RsaService;
  * 
  * @FileName: LoginController.java
  * @Project : demo
- * @Date    : 2017. 02. 06. 
- * @Author  : 이재령	
+ * @Date    : 2020. 02. 06. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

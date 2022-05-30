@@ -21,7 +21,7 @@ import com.tx.common.mail.service.impl.EmailSender;
  * @FileName: CommonMailController.java
  * @Project : 메일
  * @Date : 2019. 02. 28.
- * @Author : 이재령
+ * @Author : 신강철
  * @Version : 1.0
  */
 @Controller

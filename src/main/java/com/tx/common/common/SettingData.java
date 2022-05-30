@@ -2,7 +2,7 @@ package com.tx.common.common;
 
 /**
  * 상수값들 정리
- * @author 이재령
+ * @author 신강철
  *
  */
 public class SettingData {

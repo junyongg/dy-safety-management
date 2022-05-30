@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tx.admin.member.dto.UserDTO;
 import com.tx.admin.member.dto.UserSettingDTO;
-import com.tx.admin.program.application.dto.ApplicationDTO;
 import com.tx.common.annotation.CheckActivityHistory;
 import com.tx.common.component.CommonService;
 import com.tx.common.component.ComponentService;
@@ -34,8 +33,8 @@ import com.tx.common.security.password.MyPasswordEncoder;
  * 
  * @FileName: MemberController.java
  * @Project : jact
- * @Date    : 2017. 05. 31. 
- * @Author  : 이재령	
+ * @Date    : 2020. 05. 31. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

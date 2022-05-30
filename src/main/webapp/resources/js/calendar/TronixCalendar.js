@@ -18,7 +18,7 @@ function prevMonth(){
 function nextMonth(){  
 	var tourType = $(".package_tour_box").text();
 	var cal = $(".year_month").text().replace(/ /g, '');
-	if(tourType == "패키지투어 온라인신청" && cal == "2016.12"	){ //2017년 패키지가 사라질 수 있어서 12월 이후 선택안되도록 조건을 줌
+	if(tourType == "패키지투어 온라인신청" && cal == "2016.12"	){ //2020년 패키지가 사라질 수 있어서 12월 이후 선택안되도록 조건을 줌
 	  return;
 	}else {
 	  	$('#calendar_div').html('');

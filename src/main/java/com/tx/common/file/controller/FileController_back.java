@@ -36,7 +36,7 @@ import egovframework.rte.fdl.property.EgovPropertyService;
  * @FileName: FileController.java
  * @Project : SafetheFood
  * @Date    : 2016. 12. 21. 
- * @Author  : 이재령
+ * @Author  : 신강철
  * @Version :
  */
 //@Controller

@@ -20,7 +20,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * 권한 관리 서비스
- * @author 이재령
+ * @author 신강철
  * @date 2019-06-01
  *
  */

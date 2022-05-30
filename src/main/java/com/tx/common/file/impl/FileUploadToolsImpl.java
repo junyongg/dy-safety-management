@@ -1017,7 +1017,7 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 	
  	/**
  	 * 업로드시 폴더 여부 확인 및 생성
- 	 * 2018-07-13 이재령
+ 	 * 2018-07-13 신강철
  	 * 날짜 분류 폴도 추가 
  	 * ex) upload/20180713/1... 2.... 3
  	 * @param Uploadpath
@@ -1077,7 +1077,7 @@ public class FileUploadToolsImpl extends EgovAbstractServiceImpl implements File
 	  *  웹에디터에서 이미지의 원활한 수정을 위해서
 	  *  100글자에서 10글자로 대폭 축소시킴.
 	  *  예측 위험발생가능성 - 폴더 당 최대생성하는 파일갯수 50회 중 1/36^15 의 확률로 발생 추측
-	  *  2018.07.12 이재령
+	  *  2018.07.12 신강철
 	  *  파일명에 현재시간 추가
 	  * @return
 	  */

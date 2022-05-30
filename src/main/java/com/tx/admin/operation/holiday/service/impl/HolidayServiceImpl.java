@@ -22,8 +22,8 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 /**
  * 
  * @FileName: HolidayService.java
- * @Date    : 2017. 03. 29. 
- * @Author  : 이재령	
+ * @Date    : 2020. 03. 29. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Service("HolidayService")

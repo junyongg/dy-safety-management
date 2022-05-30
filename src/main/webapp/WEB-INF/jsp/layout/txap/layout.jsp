@@ -38,7 +38,7 @@
 	
 	
 	
-	<body class="smart-style-4">
+	<body class="smart-style-2">
 		<!-- HEADER -->
 		<header id="header">
 			<tiles:insertAttribute name="header"/>
@@ -63,7 +63,7 @@
 			
 			<!-- MAIN CONTENT -->
 			<div id="content">
-				<c:if test="${not empty currentMenu }">	
+				<%-- <c:if test="${not empty currentMenu }">	
 				<div class="row">
 					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 						<h1 class="page-title txt-color-blueDark"><i class="${naviInfo[0].MN_ICON_CSS }"></i>
@@ -75,7 +75,7 @@
 						  </h1>
 					</div>
 				</div>
-				</c:if>	
+				</c:if>	 --%>
 				<tiles:insertAttribute name="body"/>
 			</div>
 			<!-- END MAIN CONTENT -->	

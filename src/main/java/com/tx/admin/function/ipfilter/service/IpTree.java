@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * IP 체크 트리구조 
- * @author 이재령
+ * @author 신강철
  * IP 규칙
  * 1.		1.2.3.4  : 단일
  * 2.		1.2.3.* : 0 ~ 255

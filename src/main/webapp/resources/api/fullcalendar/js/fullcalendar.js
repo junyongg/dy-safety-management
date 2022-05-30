@@ -1,7 +1,7 @@
 /*!
  * FullCalendar v3.3.0
  * Docs & License: https://fullcalendar.io/
- * (c) 2017 Adam Shaw
+ * (c) 2020 Adam Shaw
  */
 
 (function(factory) {

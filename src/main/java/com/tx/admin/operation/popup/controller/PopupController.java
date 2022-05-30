@@ -46,7 +46,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * 
  * @FileName: PopupController.java
  * @Project : popup
- * @Date    : 2017. 02. 10. 
+ * @Date    : 2020. 02. 10. 
  * @Author  : 양석기	
  * @Version : 1.0
  */

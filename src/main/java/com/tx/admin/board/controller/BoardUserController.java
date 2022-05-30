@@ -30,7 +30,6 @@ import com.tx.admin.board.dto.BoardColumnData;
 import com.tx.admin.board.dto.BoardComment;
 import com.tx.admin.board.dto.BoardNotice;
 import com.tx.admin.board.dto.BoardType;
-import com.tx.admin.function.keyword.service.KeywordService;
 import com.tx.admin.homepage.menu.dto.Menu;
 import com.tx.admin.operation.holiday.service.HolidayService;
 import com.tx.common.SNS.SNSInfo;
@@ -68,10 +67,6 @@ public class BoardUserController {
 	/** 페이지 처리 출 */
 	@Autowired
 	private PageAccess PageAccess;
-
-	/** 키워드 서비스 */
-	@Autowired
-	private KeywordService KeywordService;
 
 	/** 휴일 관리 */
 	@Autowired
@@ -227,10 +222,6 @@ public class BoardUserController {
 			mv.addObject("BoardHtml", Component.getData("BoardHtml.BIH_getData_pramMenukey_use", Menu.getMN_KEYNO()));
 		}
 		mv.addObject("BoardNotice", BoardNotice);
-
-		if (!BoardNotice.getSearchKeyword().equals("")) {
-			KeywordService.checkKeyword(BoardNotice.getSearchKeyword(), req);
-		}
 
 		return mv;
 	}
@@ -529,7 +520,7 @@ public class BoardUserController {
 		}
 		mv.addObject("SNSInfo", SNSInfo);
 
-		// 조회수 처리 2017-06-12 세션 추가
+		// 조회수 처리 2020-06-12 세션 추가
 		if (req.getSession().getAttribute(BoardNotice.getBN_KEYNO()) == null) {
 			Component.updateData("BoardNotice.BN_addHits", BoardNotice);
 			req.getSession().setAttribute(BoardNotice.getBN_KEYNO(), 'y');

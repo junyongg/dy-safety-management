@@ -7,7 +7,7 @@ public class CheckAgent {
 	
 	/**
 	 * 브라우저 구분 
-	 * @author 이재령 
+	 * @author 신강철 
 	 * @date 2019-01-10
 	 * @param agent
 	 * @return

@@ -9,7 +9,7 @@ import com.tx.admin.homepage.menu.dto.Menu;
 
 /**
  * 활동기록 서비스
- * @author 이재령
+ * @author 신강철
  * @date 2018-08-30
  *
  */

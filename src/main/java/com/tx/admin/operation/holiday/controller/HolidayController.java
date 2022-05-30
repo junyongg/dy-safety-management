@@ -28,8 +28,8 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 
  * @FileName: HolidayController.java
- * @Date    : 2017. 03. 28. 
- * @Author  : 이재령	
+ * @Date    : 2020. 03. 28. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller

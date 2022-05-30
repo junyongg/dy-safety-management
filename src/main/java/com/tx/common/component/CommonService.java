@@ -14,7 +14,7 @@ import com.tx.admin.homepage.menu.dto.HomeManager;
 /**
  * CommonService
  * 공통 인터 페이스를 관리한다.
- * @author 이재령
+ * @author 신강철
  * @version 1.0
  * @since 2018-09-21
  */

@@ -8,7 +8,7 @@ import com.tx.common.dto.Common;
  * 
  * @author 김영탁
  * @version 1.0
- * @since 2017-03-09
+ * @since 2020-03-09
  */ 
 
 public class SmDTO extends Common {

@@ -23,14 +23,16 @@
     </div>
 </div>
 
-<a href="/txap/index.do" id="cms_title">관리자페이지</a>
+<a href="/txap/index.do" id="dms_title">관리자페이지</a>
 <style>
-	#cms_title {display:inline-block;color:#555;font-size:1.2em;line-height:49px;padding-left:20px;}
+	#dms_title {
+		display:inline-block;color:#B2C1D5;font-size:1.2em;line-height:49px;padding-left:20px;
+	}
 	@media all and (max-width:979px){
-		#cms_title {color:#fff;}
+		#dms_title {color:#fff;}
 	}
 	@media all and (max-width:500px){
-		#cms_title {display:none;}
+		#dms_title {display:none;}
 	}
 </style>
 <div class="pull-right">

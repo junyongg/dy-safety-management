@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.beust.jcommander.internal.Console;
 import com.tx.admin.board.dto.BoardNotice;
-import com.tx.admin.function.keyword.service.impl.KeywordServiceImpl;
 import com.tx.admin.homepage.menu.dto.Menu;
 import com.tx.common.common.SettingData;
 import com.tx.common.component.ComponentService;
@@ -31,11 +29,6 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 
- * @FileName: SearchController.java
- * @Project : 
- * @Date    : 2017. 06. 12. 
- * @Author  : 이재령	
- * @Version : 1.0
  */
 @Controller
 public class jactSearchController {
@@ -46,9 +39,6 @@ public class jactSearchController {
 
 	/** 페이지 처리 출 */
 	@Autowired private PageAccess PageAccess;
-	
-	/** 키워드 서비스 */
-	@Autowired private KeywordServiceImpl KeywordService;
 	
 	/**
 	 * 통합검색
@@ -184,10 +174,6 @@ public class jactSearchController {
 			b.put("FS_MN_MAINNAMES", Component.getData("search.MN_getMainNames",b.get("BN_MN_KEYNO")));
 		}
 		mv.addObject("fileSearchList", fileSearchList );
-		
-		if(search.getSearchKeyword() != null && !search.getSearchKeyword().equals("")){
-			KeywordService.checkKeyword(search.getSearchKeyword(), req);
-		}
 		
 		//정확도순
 		mv.addObject("OrderCondition",BoardNotice.getOrderCondition());

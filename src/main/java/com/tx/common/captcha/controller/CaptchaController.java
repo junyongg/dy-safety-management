@@ -21,8 +21,8 @@ import cn.apiclub.captcha.Captcha;
  * 
  * @FileName: CaptchaController.java
  * @Project : cf
- * @Date    : 2017. 05. 31. 
- * @Author  : 이재령	
+ * @Date    : 2020. 05. 31. 
+ * @Author  : 신강철	
  * @Version : 1.0
  */
 @Controller
