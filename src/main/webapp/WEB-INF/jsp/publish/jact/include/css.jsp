@@ -22,8 +22,7 @@
 <link type="text/css" rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css">
 <link href="/resources/api/bxslider/jquery.bxslider.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="/resources/css/common/jquery-ui-timepicker-addon.css" />
-
+  
 <!-- CSS적용 -->
 <c:forEach items="${cssList }" var="cssCommon">
 	<link href="${cssCommon.RM_PATH }" type="text/css" rel="stylesheet">

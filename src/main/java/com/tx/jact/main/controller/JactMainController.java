@@ -31,45 +31,10 @@ public class JactMainController {
 		return mv;	
 	}
 			
-			
-			
 	@RequestMapping(value = "/jact/index.do")
 	public ModelAndView main(HttpServletRequest req
-			, Map<String, Object> commandMap
-			, @RequestParam(value = "msg", defaultValue = "") String msg
-			, @ModelAttribute BoardNotice BoardNotice
-			, SlideDTO slideDto
 			) throws Exception {
-		ModelAndView mv = new ModelAndView("/jact/main/prc_main");
-		//메인 슬라이드 가져오기
-		slideDto.setMM_MN_KEYNO(SettingData.HOMEDIV_JACT);
-		slideDto.setMM_LOCATION("H");
-		String BM_MN_KEYNO = SettingData.HOMEDIV_JACT;
-		mv.addObject("slide", Component.getList("Slide.get_slideList",slideDto));
-		mv.addObject("banner", Component.getList("Banner.BM_selectmain",BM_MN_KEYNO));
-		mv.addObject("movie", Component.getList("MainMovie.MM_selectmain",BM_MN_KEYNO));
-		
-		
-		mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지
-		return mv;
-	}
-	
-	@RequestMapping(value = "/culture/index.do")
-	public ModelAndView culture_main(HttpServletRequest req
-			, Map<String, Object> commandMap
-			, @RequestParam(value = "msg", defaultValue = "") String msg
-			, @ModelAttribute BoardNotice BoardNotice
-			, SlideDTO slideDto
-			) throws Exception {
-		ModelAndView mv = new ModelAndView("/culture/main/prc_main");
-		//메인 슬라이드 가져오기
-		slideDto.setMM_MN_KEYNO(SettingData.HOMEDIV_CULTURE);
-		slideDto.setMM_LOCATION("H");
-		String BM_MN_KEYNO = SettingData.HOMEDIV_CULTURE;
-		mv.addObject("slide", Component.getList("Slide.get_slideList",slideDto));
-		mv.addObject("banner", Component.getList("Banner.BM_selectmain",BM_MN_KEYNO));
-		
-		mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지
+		ModelAndView mv = new ModelAndView("/publish/jact/prc_main");
 		return mv;
 	}
 	

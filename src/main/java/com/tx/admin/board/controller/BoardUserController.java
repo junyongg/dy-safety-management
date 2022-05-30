@@ -32,7 +32,6 @@ import com.tx.admin.board.dto.BoardNotice;
 import com.tx.admin.board.dto.BoardType;
 import com.tx.admin.homepage.menu.dto.Menu;
 import com.tx.admin.operation.holiday.service.HolidayService;
-import com.tx.common.SNS.SNSInfo;
 import com.tx.common.annotation.CheckActivityHistory;
 import com.tx.common.annotation.service.ActivityHistoryService;
 import com.tx.common.common.CommandMap;
@@ -394,7 +393,7 @@ public class BoardUserController {
 	@Transactional
 	@CheckActivityHistory(type = "hashmap")
 	public ModelAndView BoardDataDetailView(@ModelAttribute BoardType BoardType,
-			@ModelAttribute BoardNotice BoardNotice, @ModelAttribute Menu Menu, @ModelAttribute SNSInfo SNSInfo,
+			@ModelAttribute BoardNotice BoardNotice, @ModelAttribute Menu Menu,
 			@ModelAttribute FileSub FileSub, HttpServletRequest req, @PathVariable String keyno,
 			@RequestParam(value = "BN_PWD", defaultValue = "") String BN_PWD, @PathVariable String tiles,
 			@RequestParam(value = "auth", defaultValue = "") String auth) throws Exception {
@@ -468,14 +467,7 @@ public class BoardUserController {
 		int BOARD_NUMBER = BoardNotice.getBOARD_NUMBER();
 		Map<String, Object> board = new HashMap<String, Object>();
 		board.put("BN_KEYNO", BoardNotice.getBN_KEYNO());
-		board.put("BOARD_NUMBER", BOARD_NUMBER);
-		//기존코드
-//		board.put("BOARD_NUMBER", BOARD_NUMBER - 1);
-//		mv.addObject("nextBoardNotice", Component.getData("BoardNotice.BN_getPrevNext", board));
-//		board.put("BOARD_NUMBER", BOARD_NUMBER + 1);
-//		mv.addObject("prevBoardNotice", Component.getData("BoardNotice.BN_getPrevNext", board));
-		
-		
+		board.put("BOARD_NUMBER", BOARD_NUMBER);	
 		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> user = (Map<String, Object>) req.getSession().getAttribute("userInfo");
@@ -484,13 +476,9 @@ public class BoardUserController {
 
 		
 		
-		// SNS
-		SNSInfo.setTITLE(BoardNotice.getBN_TITLE());
-		/* String content = BoardNotice.getBN_CONTENTS(); */
 		Pattern SCRIPTS = Pattern.compile("<script([^'\"]|\"[^\"]*\"|'[^']*')*?</script>", Pattern.DOTALL);
 		Pattern STYLE = Pattern.compile("<style[^>]*>.*</style>", Pattern.DOTALL);
 		Pattern TAGS = Pattern.compile("<(/)?([a-zA-Z0-9]*)(\\s[a-zA-Z0-9]*=[^>]*)?(\\s)*(/)?>");
-		// Pattern nTAGS = Pattern.compile("<\\w+\\s+[^<]*\\s*>");
 		Pattern ENTITY_REFS = Pattern.compile("&[^;]+;");
 		Pattern WHITESPACE = Pattern.compile("\\s\\s+");
 
@@ -513,12 +501,6 @@ public class BoardUserController {
 		if (content.length() > 200) {
 			content = content.substring(0, 200);
 		}
-		SNSInfo.setDESC(content);
-		String path = BoardNotice.getTHUMBNAIL_PATH();
-		if (path != null && !path.equals("")) {
-			SNSInfo.setIMG(path);
-		}
-		mv.addObject("SNSInfo", SNSInfo);
 
 		// 조회수 처리 2020-06-12 세션 추가
 		if (req.getSession().getAttribute(BoardNotice.getBN_KEYNO()) == null) {

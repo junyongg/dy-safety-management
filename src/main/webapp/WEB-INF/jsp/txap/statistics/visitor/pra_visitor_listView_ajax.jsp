@@ -111,9 +111,6 @@ $(function(){
 
 </script>
 
-
-<!-- <script src="/resources/smartadmin/js/plugin/Chart/jquery-1.11.1.min.js"></script>   -->
-<!-- <script src="/resources/smartadmin/js/plugin/Chart/jquery.canvasjs.min.js"></script> -->
 <script src="/resources/smartadmin/js/plugin/Chart/Chart.min.js"></script>
 <script>
 	

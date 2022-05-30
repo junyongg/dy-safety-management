@@ -164,34 +164,10 @@ public class VisitorController {
 		
 		ModelAndView mv = new ModelAndView("/txap/statistics/visitor/pra_visitor_listView_ajax");
 		
-		List<HashMap<String,Object>> list = getVisitorData(search);
-		
 		int total =0;
-		if(list !=null && list.size()>0){
-			
-			for(int i=0; i<list.size(); i++){
-				
-//				total += (long)list.get(i).get("COUNT");
-				String str = String.valueOf(list.get(i).get("COUNT"));
-				total += (long)Integer.parseInt(str);
-//				total += (long)list.get(i).get("COUNT");
-			}
-			for(int i=0; i<list.size(); i++){ //평균
-				list.get(i).put("no", i+1);
-//				long COUNT = (long)list.get(i).get("COUNT");
-				String str = String.valueOf(list.get(i).get("COUNT"));
-				long COUNT = (long)Integer.parseInt(str);
-				float a = COUNT / (float)total * 100;
-				a *= 100;
-				int ii =   (int) a;
-				a = (float) (ii* 0.01);
-				list.get(i).put("persent", a);
-			}
-		}
 		
 		mv.addObject("visitorCase",search.getCASE());
 		mv.addObject("total", total);
-		mv.addObject("html", list);
 		mv.addObject("search", search);
 		
 		if(excel != null){
@@ -218,35 +194,6 @@ public class VisitorController {
 			 list =  Component.getList("Log.AH_getVisitDomain", search);
 			
 			break;
-		case "브라우저":
-			 list =  Component.getList("Log.AH_getVisitBrower", search);
-			
-			break;
-		case "운영체제":
-			 list =  Component.getList("Log.AH_getVisitOs", search);
-			
-			break;
-		case "시간":
-			
-			list =  Component.getList("Log.AH_getVisitTime", search);
-			break;
-		case "요일":
-			list =  Component.getList("Log.AH_getVisitWeekOfDay", search);
-			
-			break;
-		case "일":
-			
-			list =  Component.getList("Log.AH_getVisitDay", search);
-			break;
-		case "월":
-			
-			list =  Component.getList("Log.AH_getVisitMonth", search);
-			break;
-		case "년":
-			
-			list =  Component.getList("Log.AH_getVisitYear", search);
-			break;
-
 		}
 		return list;
 	}

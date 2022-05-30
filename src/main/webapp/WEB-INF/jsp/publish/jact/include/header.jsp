@@ -18,28 +18,9 @@
 	
 	<div id="top_hdear">
 		<div class="inner1200  inner1400">
-			
-			<ul class="left_ul">
-<!--                 <li><a href="http://blog.jact.or.kr/tour/"  target="_blank"><span class="icon icon01"></span> 관광블로그</a></li> -->
-<!--                 <li><a href="https://www.jeonnam.go.kr/"  target="_blank"><span class="icon icon02"></span> 전라남도 도청</a></li> -->
-				<li><a href="/"><span class="icon icon03"></span> HOME</a></li>
-              <li><a href="/">
-						KOREA
-                </a></li>
-					<li><a href="/eng/engpage.do">
-						ENGLISH
-					</a></li>
-			</ul>
-
           <div style="float:right;height:100%;">
-            
+           
           
-              <ul class="right_sns_ul">
-				<li><a href="https://www.facebook.com/jact5800" target="_blank" title="전남문화재단 페이스북 새창열림"><img src="/resources/img/icon/icon_m_sns_01.png" alt="전남문화재단 페이스북으로 이동"></a></li>
-				<li><a href="https://www.youtube.com/channel/UCCpPH4qc1xpanrUYpVEpWdg" target="_blank" title="전남문화재단유튜브 새창열림"><img src="/resources/img/icon/icon_m_sns_02.png" alt="전남문화재단 유튜브로 이동"></a></li>
-				<li><a href="https://blog.naver.com/jact123" target="_blank" title="전남문화재단 블로그 새창열림"><img src="/resources/img/icon/icon_m_sns_03.png" alt="전남문화재단 블로그로 이동"></a></li>
-				<li><a href="https://www.instagram.com/jncf5800/" target="_blank" title="전남문화재단 인스타그램 새창열림"><img src="/resources/img/icon/icon_m_sns_04.png" alt="전남문화재단 인스타그램으로 이동"></a></li>
-			</ul>
 			<ul class="right_ul">
 				<li><a href="javascript:;" class="m-sarch-btn" title="통합검색어입력"><span class="icon icon01"></span><b>검색</b></a></li>
 				  <li>
@@ -51,13 +32,6 @@
 					   </c:if>
                         <li><a href="/jact/logout.do" title="로그아웃">로그아웃</a></li>
                     </ul>
-                </li>
-				<li>
-                        <button style="display: block;height: 100%;width: 100%;text-align: center;margin-top:5px;" class="hamburger hamburger--collapse siteMapBtn" type="button" title="사이트맵">
-                            <span class="hamburger-box">
-                              <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
                 </li>
 			</ul>
 		</div>
@@ -73,12 +47,6 @@
 		<!-- 위에헤더 -->
 		<div class="nav-wrap">
 			<div class="inner1200  inner1400">
-				<div class="logo-b">
-					<a href="/" title="전라남도 문화재단">
-                    <h1 style="text-indent: -9999px;position: fixed;">전라남도 문화재단</h1>
-						<img src="/resources/img/icon/img_top_logo.png" alt="전라남도 문화재단">
-					</a>
-				</div>
 
 			<div class="nav-b">
 					<ul class="m-gnb">
@@ -91,14 +59,6 @@
 										<c:forEach items="${menuList}" var="model2" varStatus="status">
 											<c:if test="${model.MN_KEYNO eq model2.MN_MAINKEY && model2.MN_LEV eq '2' }">
 												<li>
-													<c:choose>
-														<c:when test="${model2.MN_NAME eq '문화예술인DB' }">
-															<a href="javascript:;" onclick="alert('이 페이지에 접근할 권한이 없습니다.')" title="${model2.MN_NAME }">${model2.MN_NAME }</a>
-														</c:when>
-														<c:otherwise>
-														
-														</c:otherwise>
-													</c:choose>
 													<c:if test="${model2.MN_PAGEDIV_C eq MENU_TYPE_SUBMENU }">
 														<a href="javascript:;" onclick="plusBtnExe('plusB${status.count}')" title="${model2.MN_NAME }">${model2.MN_NAME }</a>
 														<div class="subMoreBtn">
@@ -137,17 +97,6 @@
 			</div>
 		</div>
 		
-		<!-- 서브메뉴 -->
-		<div class="subMenu-Wrap">
-			<div class="inner1200  inner1400">
-				<!--<div class="pic-box">
-					<img src="/resources/img/icon/icon_menu_logo_01.png" alt="전남문화관광재단 이미지">
-					<h2>전라남도 문화예술 및 관광 진흥</h2>
-				</div>-->
-
-			</div>
-		</div>
-
 		<!-- 검색창 -->
 		<div id="m-search-box">
 			<span class="search-s">통합검색</span>
@@ -166,8 +115,6 @@
 		<div class="top-box">
 			<button type="button" class="close-b" onclick="mobileMenuHide()"><i class="xi-close-thin"></i></button>
 			<ul>
-			                <li><a href="http://blog.jact.or.kr/tour/">관광블로그</a></li>
-                <li><a href="https://www.jeonnam.go.kr/">전라남도청</a></li>
                 <c:if test="${not empty userInfo }">
                     <li><a href="/jact/mypage/info.do">마이페이지</a></li>
                 </c:if>
@@ -275,24 +222,6 @@ function pf_moveMenu(URL,PAGEDIV){
 	
 	if(PAGEDIV == 'SC_QXCFB'){ // 소메뉴
 		
-/*		$.ajax({
-			type: "POST",
-			url: "/common/user/firstChildUrlAjax.do",
-			data: "MN_URL="+URL,
-			async:false,
-			success : function(data){
-			
-				if(data){
-					location.href=data;	
-				}else{
-					alert("하위 메뉴가 없습니다.");
-				}
-			},
-			error: function(){
-				alert('알수없는 링크. 관리자한테 문의하세요.')
-				return false;
-			}
-		});*/
 	}else if(PAGEDIV == 'SC_HFAIU'){ // 링크형
 		window.open(URL)
 	}else { 

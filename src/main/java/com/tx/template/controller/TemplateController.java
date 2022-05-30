@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.admin.homepage.menu.dto.Menu;
-import com.tx.common.SNS.SNSInfo;
 import com.tx.common.annotation.CheckActivityHistory;
 import com.tx.common.common.SettingData;
 import com.tx.common.component.ComponentService;
@@ -100,8 +99,6 @@ public class TemplateController {
 				model.addAttribute("HTMLViewData", hTMLViewData);
 				if(hTMLViewData != null){
 					// SNS
-					SNSInfo SNSInfo  = new SNSInfo();
-					SNSInfo.setTITLE(hTMLViewData.get("MN_NAME").toString());
 					String content = hTMLViewData.get("VIEW_DATA").toString();
 					try {
 						Pattern SCRIPTS = Pattern.compile("<script([^'\"]|\"[^\"]*\"|'[^']*')*?</script>",Pattern.DOTALL);
@@ -130,13 +127,11 @@ public class TemplateController {
 						if(content.length() > 200){
 							content = content.substring(0,200);
 						}
-						SNSInfo.setDESC(content);
 						
 					} catch (Exception e) {
 						System.err.println("Pattern 에러");
 					}
 					
-					model.addAttribute("SNSInfo", SNSInfo);
 				}
 				
 				return "/publish/"+hTMLViewData.get("TILES").toString()+"/views/"+hTMLViewData.get("VIEWNAME").toString();

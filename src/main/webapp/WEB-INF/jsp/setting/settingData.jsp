@@ -14,20 +14,8 @@
 
 <c:set var="SESSION_DURATION" value="<%=setting.SESSION_DURATION %>"/>
 
-<c:set var="MAP_TYPE" value="<%=setting.MAP_TYPE %>"/>
-
 <c:set var="BOARD_PAGE_SIZE" value="<%=setting.BOARD_PAGE_SIZE %>"/>
 <c:set var="BOARD_RECORD_COUNT_PER_PAGE" value="<%=setting.BOARD_RECORD_COUNT_PER_PAGE %>"/>
-
-<c:set var="PROGRAM_APPLY" value="<%=setting.PROGRAM_APPLY %>"/>
-<c:set var="PROGRAM_LECTURE" value="<%=setting.PROGRAM_LECTURE %>"/>
-
-<c:set var="APPLY_WAITING" value="<%=setting.APPLY_WAITING %>"/>
-<c:set var="APPLY_COMPLETE" value="<%=setting.APPLY_COMPLETE %>"/>
-<c:set var="APPLY_CANCEL" value="<%=setting.APPLY_CANCEL %>"/>
-<c:set var="APPLY_RESERVE" value="<%=setting.APPLY_RESERVE %>"/>
-<c:set var="APPLY_EXPIRED" value="<%=setting.APPLY_EXPIRED %>"/>
-<c:set var="APPLY_PREVIEW" value="<%=setting.APPLY_PREVIEW %>"/>
 
 <c:set var="MENU_TYPE_PAGE" value="<%=setting.MENU_TYPE_PAGE %>"/>
 <c:set var="MENU_TYPE_PAGE2" value="<%=setting.MENU_TYPE_PAGE2 %>"/>
@@ -79,17 +67,6 @@
 <c:set var="AUTHORITY_ROLE_DELETE" value="<%=setting.AUTHORITY_ROLE_DELETE %>"/>
 <c:set var="AUTHORITY_ROLE_REPLY" value="<%=setting.AUTHORITY_ROLE_REPLY %>"/>
 <c:set var="AUTHORITY_ROLE_COMMENT" value="<%=setting.AUTHORITY_ROLE_COMMENT %>"/>
-
-<c:set var="TOUR_DEFAULT_LAT" value="<%=setting.TOUR_DEFAULT_LAT %>"/>
-<c:set var="TOUR_DEFAULT_LNG" value="<%=setting.TOUR_DEFAULT_LNG %>"/>
-
-<c:set var="TOUR_DESTINATION" value="<%=setting.TOUR_DESTINATION %>"/>
-<c:set var="TOUR_THEME" value="<%=setting.TOUR_THEME %>"/>
-<c:set var="TOUR_COURSE" value="<%=setting.TOUR_COURSE %>"/>
-<c:set var="TOUR_LODGMENT" value="<%=setting.TOUR_LODGMENT %>"/>
-<c:set var="TOUR_RESTAURANT" value="<%=setting.TOUR_RESTAURANT %>"/>
-<c:set var="TOUR_FESTIVAL" value="<%=setting.TOUR_FESTIVAL %>"/>
-<c:set var="TOUR_CULTURAL_HERITAGE" value="<%=setting.TOUR_CULTURAL_HERITAGE %>"/>
 
 <c:set var="COLUMN_1" value="<%=setting.COLUMN_1 %>"/>
 <c:set var="COLUMN_2" value="<%=setting.COLUMN_2 %>"/>

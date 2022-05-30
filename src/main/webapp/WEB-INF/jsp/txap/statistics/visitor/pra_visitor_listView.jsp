@@ -134,14 +134,6 @@
 							<div class="tab-pane fade in active" id="hr1">
 								<ul class="mytab nav nav-tabs">
 									<li class="active"><a href="javascript:;">접속자</a></li>
-									<li><a href="javascript:;">도메인</a></li>
-									<li><a href="javascript:;">브라우저</a></li>
-									<li><a href="javascript:;">운영체제</a></li>
-									<li><a href="javascript:;">시간</a></li>
-									<li><a href="javascript:;">요일</a></li>
-									<li><a href="javascript:;">일</a></li>
-									<li><a href="javascript:;">월</a></li>
-									<li><a href="javascript:;">년</a></li>
 								</ul>
 								<div class="tab-content padding-10">
 									<div class="table-responsive">
@@ -178,30 +170,8 @@ $(document).ready(function() {
 });
 
 function pf_search() {
-	if ($('#CASE').val() != '접속자') {
-		pf_getHtml();
-	} else {
 		pf_LinkPage();
-	}
 }
-
-function pf_getHtml() {
-	$.ajax({
-		type : "post",
-		data : $('#Form').serialize(),
-		url : "/txap/statistics/visitor/dataAjax.do",
-		complete : function(XMLHttpRequest, statusText, response, data) {
-		},
-		success : function(data, textStatus, xhr) {
-			$("#tableWrap").html(data);
-
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
-			alert('에러 발생. 관리자에게 문의하세요.')
-		}
-	});
-}
-
 
 </script>
 
