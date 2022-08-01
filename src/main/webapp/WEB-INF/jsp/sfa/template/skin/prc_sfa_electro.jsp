@@ -992,6 +992,7 @@ function changesulbi(keyno) {
 	}); 
 }
 
+//연월 셋팅
 function yearselect(){
 	
 	var dt = new Date();
@@ -1014,7 +1015,7 @@ function monselect(){
 	}
 }
 
-
+//이전 양식 조회
 function view(){
 	
 	var a = $("#su_keyno").val();

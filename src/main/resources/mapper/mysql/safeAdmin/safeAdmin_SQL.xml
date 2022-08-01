@@ -42,7 +42,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		WHERE C.UIA_KEYNO = #{l}
 </select>
 
-
+<!-- 문자전송 이름, 전화번호 뽑기(관리자 페이지) -->
 <select id="Message_ad" resultType="USER" parameterType="hashmap">
 		SELECT A.UIA_KEYNO,C.UI_NAME, C.UI_PHONE
 		FROM t_userinfo_authority A
@@ -56,6 +56,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		</foreach>
 	</select>
 
+<!-- 전기 설비 점검결과 기록표 정보 저장 -->
 <insert id="sapaperInsert" parameterType="safeAdminDTO">
 			INSERT INTO dy_sa_paper
 			(
@@ -232,6 +233,7 @@ where UI_KEYNO = 'UI_HMWNH'
 			)
 		</insert>
 		
+		<!-- 전기 설비 점검결과 기록표 정보 수정 -->
 		<update id="sapaperUpdate" parameterType="safeAdminDTO">
 			UPDATE dy_sa_paper 
 			SET sa_sulbi = #{sa_sulbi},
@@ -321,6 +323,8 @@ where UI_KEYNO = 'UI_HMWNH'
 			WHERE sa_keyno = #{sa_keyno}
 		</update>
 	
+	
+	<!-- 페이징, 정렬, 검색 처리 sql -->
 	<sql id="Safe_getListBody">
 	from (
 		select B.*
@@ -412,17 +416,20 @@ where UI_KEYNO = 'UI_HMWNH'
 		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
 		</if>  
     </select>
-		
+	
+	<!-- 안전관리 양식 select -->
 	<select id="boardlist" resultType="hashmap">
 	    SELECT *
 	    from dy_sa_paper  
     </select>
     
+    <!-- 안전관리 발전소 전체 select -->
     <select id="safeuserselect" resultType="hashmap">
 	    SELECT *
 	    from dy_sa_user
     </select>
     
+    <!-- 안전관리 발전소 개별 select -->
     <select id="safeuserselect_one" parameterType="String" resultType="hashmap">
 	    SELECT *
 	    from dy_sa_user
@@ -440,14 +447,16 @@ where UI_KEYNO = 'UI_HMWNH'
 	    SELECT SU_SA_SULBI, SU_SA_PHONE
 	    from dy_sa_user
 	    where SU_KEYNO = #{SU_KEYNO}
-    </select>    
+    </select>
+    
+    <!-- 안전관리 양식 개별 select -->
     <select id="safepaperselect_one" parameterType="String" resultType="hashmap">
 	    SELECT *
 	    from dy_sa_paper
 	    where sa_keyno = #{sa_keyno}
     </select>
     
-    
+    <!-- 안전관리 발전소 등록(관리자 페이지) -->
     <insert id="safeUserInsert" parameterType="safeUserDTO">
 		INSERT INTO dy_sa_user
 		(
@@ -476,6 +485,7 @@ where UI_KEYNO = 'UI_HMWNH'
 		)
 	</insert>
 	
+	<!-- 안전관리 발전소 정보 수정(관리자 페이지) -->
 	<update id="safeUserUPdate" parameterType="safeUserDTO">
 		UPDATE dy_sa_user
 		SET SU_SA_SUJEONV = #{SU_SA_SUJEONV},
@@ -492,12 +502,13 @@ where UI_KEYNO = 'UI_HMWNH'
 		WHERE SU_KEYNO = #{SU_KEYNO}
 	</update>
 	
+	<!-- 안전관리 발전소 정보 삭제(관리자 페이지) -->
 	<delete id="safeUserDelete" parameterType="String">
 		DELETE  FROM dy_sa_user
 		where SU_KEYNO  = #{SU_KEYNO}
 	</delete>
     
-    
+    <!-- 안전관리 발전소 카톡, 문자 전송 여부 체크용 페이징, 검색, 정렬 sql -->
        <sql id="safeUser_getListBody">
 	from (
 		select B.*
