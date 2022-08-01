@@ -46,7 +46,7 @@ public class CommonMemberController {
 	public ModelAndView memberLogion(HttpServletRequest req, Map<String,Object> commandMap
 			,@PathVariable String tiles
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/"+tiles+"/member/prc_login");
+		ModelAndView mv  = new ModelAndView("/"+tiles+"/member/prc_login.notiles");
 		
 		
 		@SuppressWarnings("unchecked")

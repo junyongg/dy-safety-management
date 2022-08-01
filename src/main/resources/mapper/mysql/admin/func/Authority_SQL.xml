@@ -474,6 +474,12 @@
   			WHERE 		B.UIA_NAME IS NULL
 		)
 	</delete>
-	
+			<select id="UIA_GetList_message" resultType="USER">
+    	<![CDATA[ 
+    		SELECT 	* 
+    		FROM 	T_USERINFO_AUTHORITY
+    		WHERE	UIA_SYSTEM		!=	'Y'
+    	]]>
+	</select>
 </mapper>
  

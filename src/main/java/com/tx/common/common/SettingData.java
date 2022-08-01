@@ -136,4 +136,15 @@ public class SettingData {
 	public final static String COLUMN_2 = "BL_0000000103";  	// 예정금액
 	public final static String COLUMN_3 = "BL_0000000114";  	// 예정금액
 	
+	
+	//RequestAPI Setting값
+	public final static String Apikey = "qcp255q389pcsb3ddunfcb7ys93kbnli";
+	public final static String Userid = "daeyang";
+	public final static String Senderkey = "150329633d7b950290bfb0e577375705c0678a7f";
+	
+	
+	
+	public final static String SFA_REGISTER = "SFA_01";  	// 안전관리
+	public final static String SFA_ELECTRO = "SFA_02";  	// 전기 설비 점검결과 기록표
+	
 }

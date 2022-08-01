@@ -6,6 +6,6 @@
 		<jsp:include page="/WEB-INF/jsp/publish/${tilesNm }/include/leftmenu.jsp"/>
 	</c:when>
 	<c:otherwise>
-		<jsp:include page=""/>
+		<p>44908</p>
 	</c:otherwise>
 </c:choose>

@@ -3,9 +3,6 @@ package com.tx.common.page.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tx.common.common.SettingData;
-import com.tx.common.component.ComponentService;
-import com.tx.common.page.PageAccess;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -20,11 +17,11 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * @since 2014-11-14
  */
 @Service("PageAccess")
-public class PageAccessImpl extends EgovAbstractServiceImpl implements PageAccess{
+public class PageAccessImpl extends EgovAbstractServiceImpl implements com.tx.common.page.PageAccess{
 	
 
 	/** 공통 컴포넌트 */
-	@Autowired ComponentService Component;
+	@Autowired com.tx.common.component.ComponentService Component;
 	
 	/**
 	 * 페이지 계산 처리
@@ -32,16 +29,8 @@ public class PageAccessImpl extends EgovAbstractServiceImpl implements PageAcces
 	 */
 	@Override
 	public PaginationInfo getPagInfo(Integer pageIndex, String query) throws Exception{
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(pageIndex);
-		paginationInfo.setRecordCountPerPage(SettingData.BOARD_RECORD_COUNT_PER_PAGE);
-		paginationInfo.setPageSize(SettingData.BOARD_PAGE_SIZE);
-		paginationInfo.setTotalRecordCount(Component.getCount(query));
-		if(paginationInfo.getCurrentPageNo() > paginationInfo.getTotalPageCount()){
-			paginationInfo.setCurrentPageNo(paginationInfo.getTotalPageCount());
-		}
 		
-		return paginationInfo;
+		return getPagInfo(pageIndex, query, null,10,5);
 	}
 	
 	/**
@@ -50,16 +39,8 @@ public class PageAccessImpl extends EgovAbstractServiceImpl implements PageAcces
 	 */
 	@Override
 	public PaginationInfo getPagInfo(Integer pageIndex, String query, Object obj) throws Exception{
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(pageIndex);
-		paginationInfo.setRecordCountPerPage(SettingData.BOARD_RECORD_COUNT_PER_PAGE);
-		paginationInfo.setPageSize(SettingData.BOARD_PAGE_SIZE);
-		paginationInfo.setTotalRecordCount(Component.getCount(query, obj));
-		if(paginationInfo.getCurrentPageNo() > paginationInfo.getTotalPageCount()){
-			paginationInfo.setCurrentPageNo(paginationInfo.getTotalPageCount());
-		}
 		
-		return paginationInfo;
+		return getPagInfo(pageIndex, query, obj,10,5);
 	}
 	
 	/**
@@ -68,16 +49,8 @@ public class PageAccessImpl extends EgovAbstractServiceImpl implements PageAcces
 	 */
 	@Override
 	public PaginationInfo getPagInfo(Integer pageIndex, String query, Object obj,Integer PageUnit) throws Exception{
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(pageIndex);
-		paginationInfo.setRecordCountPerPage(PageUnit);
-		paginationInfo.setPageSize(SettingData.BOARD_PAGE_SIZE);
-		paginationInfo.setTotalRecordCount(Component.getCount(query,obj));
-		if(paginationInfo.getCurrentPageNo() > paginationInfo.getTotalPageCount()){
-			paginationInfo.setCurrentPageNo(paginationInfo.getTotalPageCount());
-		}
 		
-		return paginationInfo;
+		return getPagInfo(pageIndex, query, obj,PageUnit,5);
 	}
 	
 	/**
@@ -90,7 +63,12 @@ public class PageAccessImpl extends EgovAbstractServiceImpl implements PageAcces
 		paginationInfo.setCurrentPageNo(pageIndex);
 		paginationInfo.setRecordCountPerPage(PageUnit);
 		paginationInfo.setPageSize(PageSize);
-		paginationInfo.setTotalRecordCount(Component.getCount(query,obj));
+		
+		if(obj == null){
+			paginationInfo.setTotalRecordCount(Component.getCount(query));
+		}else{
+			paginationInfo.setTotalRecordCount(Component.getCount(query,obj));
+		}
 		
 		if(paginationInfo.getCurrentPageNo() > paginationInfo.getTotalPageCount()){
 			paginationInfo.setCurrentPageNo(paginationInfo.getTotalPageCount());

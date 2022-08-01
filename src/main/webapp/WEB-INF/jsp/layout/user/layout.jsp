@@ -15,7 +15,6 @@
   gtag('config', 'UA-144545189-1');
 </script>
 <head>
-
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -28,6 +27,8 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/resources/js/common/common.js"></script>
 
 <c:if test="${not empty SNSInfo}">
 <!-- 페이스북, 밴드, 구글, 카카오스토리 동일 meta -->
@@ -85,8 +86,8 @@
 <c:if test="${not empty currentMenu && not empty currentMenu.MN_MAINKEY}"> - ${currentMenu.MN_NAME }</c:if><c:if test="${not empty SearchKeywordss }"> - ${SearchKeywordss eq 'nosearch'?'전체': SearchKeywordss}</c:if>${currentMenu.MN_NAME  eq '회원가입' || not empty userInfoSetting? '- 회원가입약관':''} ${currentMenu.MN_NAME  eq '회원가입' && empty userInfoSetting ? '- 회원가입등록 ':''}
 </title>
 
-<tiles:insertAttribute name="css"/>
-<tiles:insertAttribute name="script"/>
+<%-- <tiles:insertAttribute name="css"/> --%>
+<%-- <tiles:insertAttribute name="script"/> --%>
 <meta name="naver-site-verification" content="1674c2c22c64d99f129e94920246b11d51dc88f3" />
 </head>
 <body>
@@ -115,12 +116,12 @@
             
             <c:if test="${currentMenu.MN_GONGNULI_YN eq 'Y' && currentMenu.MN_PAGEDIV_C ne MENU_TYPE_BOARD }">
 	            <div style="margin-top: 150px;">
-					<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                            
+<%-- 					<%@ include file="/WEB-INF/jsp/common/prc_gong_nuli.jsp" %>                             --%>
 	            </div>
             </c:if>
             <c:if test="${currentMenu.MN_RESEARCH eq 'Y' }">
 	            <div style="margin-top:65px;">
-					<%@ include file="/WEB-INF/jsp/txap/operation/research/prc_page_research.jsp" %>                            
+<%-- 					<%@ include file="/WEB-INF/jsp/txap/operation/research/prc_page_research.jsp" %>                             --%>
 	            </div>
             </c:if>
 </div>
@@ -130,11 +131,11 @@
 
 <tiles:insertAttribute name="footer"/>
 
-<div class="loading_box">
-	<div class="bg"></div>
-	<img src="/resources/img/loading/loading.gif"
-		title="Loading.." alt="로딩중"/>
-</div>
+<!-- <div class="loading_box"> -->
+<!-- 	<div class="bg"></div> -->
+<!-- 	<img src="/resources/img/loading/loading.gif" -->
+<!-- 		title="Loading.." alt="로딩중"/> -->
+<!-- </div> -->
 
   
 </body>

@@ -86,6 +86,17 @@ dependencies {
 	compile group: 'com.itextpdf.tool', name: 'xmlworker', version: '5.5.13'
 	//파일 변환 처리
 	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+	
+	
+		// MultipartEntityBuilder (문자 api연동시 필요한 선언)
+		// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+	implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.13'
+    
+    
+        //PDF 수정 기능
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
+    // https://mvnrepository.com/artifact/com.itextpdf/itext7-core
+    
     
 	//webjars
 	compile 'org.webjars:jquery:2.2.4'

@@ -80,7 +80,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 					visiterMenu = Component.getData("Menu.AMN_getMenuByURL", menu);
 					if(URL.startsWith("/txap")){
 						adminSetting(request,response,handler,modelAndView,URL,visiterMenu);
-					}else{
+					}else{ 
 						userSetting(request,response,handler,modelAndView,URL,visiterMenu);
 					}
 					
@@ -139,21 +139,16 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 					
 					
 				}
-				
-				if(checkUrlFilter(URL,"activityHistory")){	//활동기록 
-					//@CheckActivityHistory 어노테이션이 컨트롤러에 사용되었는지 체크함
-					CheckActivityHistory history = ((HandlerMethod) handler).getMethodAnnotation(CheckActivityHistory.class);
-			        //CheckActivityHistory 어노테이션이 없음으로 활동기록 남김
-			        if(history != null) {
-			        	if(!checkMirrorPage && visiterMenu == null){
-							visiterMenu = Component.getData("Menu.AMN_getMenuByURL", menu);
-						}
-						
-						setActivityHistoryInfo(visiterMenu,history,request,modelAndView);
-			        }
-			        
-				}
-				
+				/*
+				 * if(checkUrlFilter(URL,"activityHistory")){ //활동기록 //@CheckActivityHistory
+				 * 어노테이션이 컨트롤러에 사용되었는지 체크함 CheckActivityHistory history = ((HandlerMethod)
+				 * handler).getMethodAnnotation(CheckActivityHistory.class);
+				 * //CheckActivityHistory 어노테이션이 없음으로 활동기록 남김 if(history != null) {
+				 * if(!checkMirrorPage && visiterMenu == null){ //visiterMenu =
+				 * Component.getData("Menu.AMN_getMenuByURL", menu); }
+				 * 
+				 * setActivityHistoryInfo(visiterMenu,history,request,modelAndView); } }
+				 */
 			}
 			
 		}

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Banner"> 
+	
+	<sql id="BM_getListBody">
+		FROM(
+			SELECT 		CASE BM_TYPE WHEN 'S' THEN '관련사이트' WHEN 'B' THEN '배너' END BM_TYPENAME
+						,B.*, M.MN_NAME 	BM_MN_MAINNAME
+						,(SELECT COUNT(*) FROM T_BANNER_MANAGER B2 WHERE B2.BM_MN_KEYNO = M.MN_KEYNO AND B2.BM_TYPE = B.BM_TYPE  AND B2.BM_DEL_YN = 'N' AND B2.BM_USE_YN = 'Y') TOTAL_CNT
+			FROM 		T_BANNER_MANAGER B
+			LEFT JOIN 	T_MENU_MANAGER M
+			ON			B.BM_MN_KEYNO	=	M.MN_KEYNO
+            WHERE		BM_DEL_YN = 'N'
+            AND			BM_USE_YN = #{BM_USE_YN}
+            AND			BM_TYPE != 'M' 
+            ORDER BY 	B.BM_LEVEL*1
+		)AA
+		WHERE 1=1
+		
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		BM_MN_MAINNAME 			LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		BM_TITLE				LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		BM_URL 					LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		BM_REGDT 				LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		BM_LEVEL 				LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		BM_TYPENAME				LIKE CONCAT('%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				<if test='BM_USE_YN.equals("Y")'>
+ 				BM_LEVEL 				LIKE CONCAT('%',#{item.searchKeyword},'%')	OR
+ 				</if>
+ 				BM_MN_MAINNAME 			LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				BM_TITLE				LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				BM_URL 					LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR
+ 				BM_REGDT				LIKE CONCAT('%',#{item.searchKeyword},'%') 	OR 
+ 				BM_TYPENAME				LIKE CONCAT('%',#{item.searchKeyword},'%') 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		
+	</sql>
+	
+    <select id="BM_getListCnt" resultType="int">
+			SELECT	COUNT(*)
+		<include  refid="BM_getListBody"/>
+    </select>
+    <select id="BM_getList" resultType="hashmap">
+		SELECT	*
+		<include  refid="BM_getListBody"/>
+		
+		<choose>
+	 		<when test="orderBy == 1">
+	 		ORDER BY	BM_MN_MAINNAME ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 2">
+	 		ORDER BY	BM_TITLE ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	BM_URL ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	BM_REGDT ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	BM_LEVEL ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 6">
+	 		ORDER BY	BM_TYPENAME ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	BM_MN_MAINNAME
+	 		</otherwise>
+	 	</choose>
+		<if test="recordCountPerPage != 0">
+		 	LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex}
+		</if> 	
+		
+    </select>
+	
+	<!-- 배너 등록 -->
+	<insert id="BM_insert" parameterType="Banner">
+		INSERT INTO T_BANNER_MANAGER(
+			 BM_KEYNO
+			,BM_TITLE
+			,BM_FS_KEYNO
+			,BM_REGNM
+			,BM_REGDT
+			,BM_LEVEL
+			,BM_URL
+			,BM_TARGET
+			,BM_MN_KEYNO
+			,BM_TYPE
+			)
+		VALUES(
+			 #{BM_KEYNO}     
+			,#{BM_TITLE}     
+			,#{BM_FS_KEYNO}  
+			,#{BM_REGNM}     
+			,SYSDATE()     
+			,1     
+			,#{BM_URL}       
+			,#{BM_TARGET}    
+			,#{BM_MN_KEYNO}  
+			,#{BM_TYPE}  
+			)
+	</insert>
+	
+	<!-- 배너 순서 변경 --> 
+	<update id="BM_levelUpdate">
+		UPDATE T_BANNER_MANAGER A
+		SET BM_LEVEL = 
+		(
+			CASE WHEN BM_KEYNO = #{BM_KEYNO} THEN #{BM_LEVEL_AFTER}
+				 <![CDATA[
+				 WHEN	BM_LEVEL >= #{BM_LEVEL_AFTER} AND BM_LEVEL <= #{BM_LEVEL} THEN BM_LEVEL + 1
+				 WHEN	BM_LEVEL >= #{BM_LEVEL} AND BM_LEVEL <= #{BM_LEVEL_AFTER} THEN BM_LEVEL - 1
+				 ]]>
+				 ELSE 	BM_LEVEL
+			END
+		)
+		WHERE BM_USE_YN = 'Y'
+		AND	  BM_DEL_YN = 'N'
+		AND   BM_TYPE 			=    #{BM_TYPE}
+		AND	  BM_MN_KEYNO       =    #{BM_MN_KEYNO}
+	</update>
+	
+	<update id="BM_levelUpdate2" parameterType="Banner">
+    	
+    	UPDATE T_BANNER_MANAGER A
+		SET   BM_LEVEL  		= BM_LEVEL + 1
+		WHERE BM_USE_YN		 	=    'Y'
+		AND	  BM_DEL_YN		    =	 'N'
+		AND   BM_TYPE 			=    #{BM_TYPE}
+		AND	  BM_MN_KEYNO       =    #{BM_MN_KEYNO}
+		
+    </update>
+    
+    <select id="BM_select" resultType="HashMap">
+   		SELECT 		B.*,S.FS_ORINM,M.*
+		FROM 		T_BANNER_MANAGER B
+		LEFT JOIN	T_COMMON_FILE_SUB S
+		ON			B.BM_FS_KEYNO	=	S.FS_KEYNO
+		LEFT JOIN	T_MENU_MANAGER M
+		ON			B.BM_MN_KEYNO	=	M.MN_KEYNO
+		WHERE		BM_KEYNO = #{BM_KEYNO}
+    </select>
+    
+    <update id="BM_update">
+    	UPDATE T_BANNER_MANAGER
+	   	SET	     BM_TITLE      =    #{BM_TITLE}      
+				,BM_FS_KEYNO   =    #{BM_FS_KEYNO}  
+				,BM_MODNM      =    #{BM_MODNM}    
+				,BM_MODDT      =    SYSDATE()      
+				,BM_URL        =    #{BM_URL}        
+				,BM_TARGET     =    #{BM_TARGET}     
+				,BM_MN_KEYNO   =    #{BM_MN_KEYNO}     
+				,BM_TYPE   	   =    #{BM_TYPE}     
+			  
+    	WHERE  	BM_KEYNO       =	#{BM_KEYNO}
+    
+    </update>
+    
+     <!-- 배너 삭제 -->    
+    <update id="BM_delete" parameterType="hashmap">
+   
+        UPDATE T_BANNER_MANAGER 
+        SET BM_DEL_YN='Y' , BM_USE_YN ='N' 
+        WHERE BM_KEYNO =	#{BM_KEYNO}
+    </update>
+    
+     <!-- 사용여부 Y -->
+    <update id="BM_choiceY" parameterType="Banner">
+    	
+    	<selectKey resultType="int" keyProperty="BM_LEVEL" order="BEFORE">
+		    SELECT IFNULL(MAX(BM_LEVEL),0)+1
+			FROM T_BANNER_MANAGER
+			WHERE	BM_USE_YN		=	'Y'
+			AND		BM_DEL_YN		=	'N'
+			AND   	BM_TYPE 		=    #{BM_TYPE}
+			AND	  	BM_MN_KEYNO     =    #{BM_MN_KEYNO}
+		</selectKey>
+   		UPDATE 	   	T_BANNER_MANAGER
+    	SET		   	BM_USE_YN		=	 #{BM_USE_YN}
+    			  	,BM_LEVEL		=	 #{BM_LEVEL}
+    	WHERE	   	BM_KEYNO		=	 #{BM_KEYNO}
+    	AND   		BM_TYPE 		=    #{BM_TYPE}
+		AND	  		BM_MN_KEYNO     =    #{BM_MN_KEYNO}
+    </update>
+     <!-- 사용여부 N -->
+    <update id="BM_choiceN" parameterType="Banner">
+    	
+   		UPDATE 	T_BANNER_MANAGER
+    	SET 	BM_USE_YN		=	'N'
+    	WHERE	BM_KEYNO		=	#{BM_KEYNO}
+    	AND   	BM_TYPE 		=    #{BM_TYPE}
+		AND	  	BM_MN_KEYNO     =    #{BM_MN_KEYNO} 	
+    </update>
+    
+    <!-- 사용여부 N 추가 처리-->
+    <update id="BM_choiceN2" parameterType="Banner">
+   		<![CDATA[
+   		UPDATE T_BANNER_MANAGER
+    	SET  	BM_LEVEL 		= 	 BM_LEVEL - 1
+    	WHERE 	BM_USE_YN 		= 	 'Y'
+    	AND		BM_LEVEL 		>= 	 #{BM_LEVEL}
+    	AND   	BM_TYPE 		=    #{BM_TYPE}
+		AND	  	BM_MN_KEYNO     =    #{BM_MN_KEYNO}
+    	]]>
+    </update>
+    
+    <select id="get_siteList" resultType="HashMap">
+    	SELECT *
+		FROM T_BANNER_MANAGER
+		WHERE BM_MN_KEYNO 	= #{BM_MN_KEYNO}
+		AND   BM_TYPE  		= #{BM_TYPE}
+    </select>
+    
+      <select id="BM_selectmain" resultType="HashMap" parameterType="String">
+    	SELECT 		B.*,CONCAT('/resources/img/upload/',S.FS_FOLDER,S.FS_CHANGENM,'.',S.FS_EXT) FS_PATH
+		FROM 		T_BANNER_MANAGER B
+		LEFT JOIN	T_COMMON_FILE_SUB S
+		ON			B.BM_FS_KEYNO	=	S.FS_KEYNO
+		LEFT JOIN	T_MENU_MANAGER M
+		ON			B.BM_MN_KEYNO	=	M.MN_KEYNO
+		WHERE		M.MN_KEYNO 		=  #{BM_MN_KEYNO}
+		AND			B.BM_USE_YN	=	'Y'
+		AND			B.BM_DEL_YN	=	'N'
+		AND			B.BM_TYPE != 'M'
+    </select>
+</mapper>
+ 

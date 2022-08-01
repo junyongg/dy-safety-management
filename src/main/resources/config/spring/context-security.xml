@@ -14,25 +14,6 @@
 	<http pattern="/resources/**" security="none"/>
 	
 	
-	<http pattern="/tour/**"  use-expressions="true"  access-denied-page="/tour/login/denied.do">    
-	    <form-login login-page="/tour/member/login.do"
-	      username-parameter="UI_ID"        
-		  password-parameter="UI_PASSWORD"
-	    /> 
-	    
-	    <anonymous granted-authority="ANONYMOUS"  />
-	    
-	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_tour" />  
-	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_tour"/>
-	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
-	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
-	
-	    <!-- enable csrf protection -->
-	    <csrf/>
-	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
-	</http>
-	
-	
     <http pattern="/cf/**"  use-expressions="true"  access-denied-page="/cf/login/denied.do">    
 	    <form-login login-page="/cf/member/login.do" 
 	      username-parameter="UI_ID"        
@@ -52,16 +33,16 @@
   	</http> 
 	  
 	  
-	 <http pattern="/jact/**"  use-expressions="true"  access-denied-page="/jact/login/denied.do">    
-	    <form-login login-page="/jact/member/login.do" 
+	 <http pattern="/sfa/**"  use-expressions="true"  access-denied-page="/sfa/login/denied.do">    
+	    <form-login login-page="/sfa/member/login.do" 
 	      username-parameter="UI_ID"        
 		  password-parameter="UI_PASSWORD"
 	    /> 
 	    
 	    <anonymous granted-authority="ANONYMOUS"  />
 	    
-	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_jact" />  
-	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_jact"/>
+	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_sfa" />  
+	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_sfa"/>
 	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
 	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
 	
@@ -72,24 +53,6 @@
 	  
 	  
 	  
-	  
-	<http pattern="/jcia/**"  use-expressions="true"  access-denied-page="/jcia/login/denied.do">    
-	    <form-login login-page="/jcia/member/login.do"
-	      username-parameter="UI_ID"        
-		  password-parameter="UI_PASSWORD"
-	    /> 
-	    
-	    <anonymous granted-authority="ANONYMOUS"  />
-	    
-	    <custom-filter position="PRE_AUTH_FILTER" ref="customAuthFilter_jcia" />  
-	    <custom-filter position="LOGOUT_FILTER" ref="logoutFilter_jcia"/>
-	    <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
-	    <custom-filter after="EXCEPTION_TRANSLATION_FILTER" ref="ajaxSessionTimeoutFilter"/>
-	
-	    <!-- enable csrf protection -->
-	    <csrf/>
-	    <!-- .csrf().ignoringAntMatchers("/contact-email") -->
-	</http> 
 	  
 	<http pattern="/**"  use-expressions="true"  access-denied-page="/txap/login/denied.do">    
 		<form-login login-page="/txap/user/login.do"
@@ -128,39 +91,6 @@
 	    </beans:constructor-arg>
 	</beans:bean>
 	
-	<beans:bean id="customAuthFilter_tour" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
-	    <beans:constructor-arg index="0" value="/tour/j_spring_security_check.do"/>
-	    <beans:property name="authenticationManager" ref="authenticationManager" />
-	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
-	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
-	</beans:bean>
-		
-	<beans:bean id="logoutFilter_tour" class="com.tx.common.security.filter.CustomLogoutFilter">
-	    <beans:constructor-arg index="0" value="/tour/user/login.do"/>
-	    <beans:constructor-arg index="1" value="/tour/logout.do"/>
-	    <beans:constructor-arg index="2">
-	        <beans:list>
-	            <beans:ref bean="CustomLogoutHandler"/>
-	        </beans:list>
-	    </beans:constructor-arg>
-	</beans:bean>
-	 
-	<beans:bean id="customAuthFilter_jcia" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
-	    <beans:constructor-arg index="0" value="/jcia/j_spring_security_check.do"/>
-	    <beans:property name="authenticationManager" ref="authenticationManager" />
-	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
-	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
-	</beans:bean>
-	
-	<beans:bean id="logoutFilter_jcia" class="com.tx.common.security.filter.CustomLogoutFilter">
-	    <beans:constructor-arg index="0" value="/jcia/index.do"/>
-	    <beans:constructor-arg index="1" value="/jcia/logout.do"/>
-	    <beans:constructor-arg index="2">
-	        <beans:list>
-	            <beans:ref bean="CustomLogoutHandler"/>
-	        </beans:list>
-	    </beans:constructor-arg>
-	</beans:bean>
    	
    	<beans:bean id="customAuthFilter_user" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
 	    <beans:constructor-arg index="0" value="/cf/j_spring_security_check.do"/>
@@ -179,16 +109,16 @@
 	    </beans:constructor-arg>
 	</beans:bean>
 	
-	<beans:bean id="customAuthFilter_jact" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
-	    <beans:constructor-arg index="0" value="/jact/j_spring_security_check.do"/>
+	<beans:bean id="customAuthFilter_sfa" class="com.tx.common.security.filter.CustomUsernamePasswordAuthenticationFilter">
+	    <beans:constructor-arg index="0" value="/sfa/j_spring_security_check.do"/>
 	    <beans:property name="authenticationManager" ref="authenticationManager" />
 	    <beans:property name="authenticationSuccessHandler" ref="customAuthenticationSuccessHandler"/>
 	    <beans:property name="authenticationFailureHandler" ref="customAuthenticationFailureHandler"/>
 	</beans:bean>
 	
-	<beans:bean id="logoutFilter_jact" class="com.tx.common.security.filter.CustomLogoutFilter">
-	    <beans:constructor-arg index="0" value="/jact/index.do"/>
-	    <beans:constructor-arg index="1" value="/jact/logout.do"/>
+	<beans:bean id="logoutFilter_sfa" class="com.tx.common.security.filter.CustomLogoutFilter">
+	    <beans:constructor-arg index="0" value="/"/>
+	    <beans:constructor-arg index="1" value="/sfa/logout.do"/>
 	    <beans:constructor-arg index="2">
 	        <beans:list>
 	            <beans:ref bean="CustomLogoutHandler"/>

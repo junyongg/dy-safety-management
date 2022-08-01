@@ -37,6 +37,11 @@
 
 <link href="/resources/publish/jact/css/sub2.css" type="text/css" rel="stylesheet">
 <link href="/resources/publish/jact/css/common.css" type="text/css" rel="stylesheet">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/resources/js/common/common.js"></script>
+
 </head>
 <body style='font-family: MalgunGothic;'>
 <tiles:insertAttribute name="body"/>

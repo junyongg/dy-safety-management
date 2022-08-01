@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="sfa">
+
+<!-- 안전관리 양식 select -->
+<select id="jspselect" parameterType="String" resultType="hashmap">
+select *
+from t_popupinfo_sub
+</select>
+
+<!-- 안전관리 양식 select해서 뿌리기 -->
+<select id="jspselect2" parameterType="String" resultType="hashmap">
+select *
+from t_popupinfo_sub
+where PC_PI_KEYNO = #{PC_PI_KEYNO}
+</select>
+
+<select id="userinfo" parameterType="String" resultType="hashmap">
+select UI_NAME
+from t_userinfo
+where UI_KEYNO = 'UI_HMWNH'
+</select>
+
+<!-- 그룹전체선택 -->
+<select id = "Group_select_all" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM t_userinfo A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN t_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO
+</select>
+
+<!-- 그룹개별선택 -->	
+<select id = "Group_select" resultType="USER" parameterType="String" >
+		SELECT B.UI_KEYNO, UI_NAME
+		FROM t_userinfo A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UI_KEYNO = B.UI_KEYNO
+		LEFT JOIN t_userinfo_authority C
+		ON C.UIA_KEYNO = B.UIA_KEYNO 
+		WHERE C.UIA_KEYNO = #{l}
+</select>
+
+
+<select id="Message_ad" resultType="USER" parameterType="hashmap">
+		SELECT A.UIA_KEYNO,C.UI_NAME, C.UI_PHONE
+		FROM t_userinfo_authority A
+		LEFT JOIN t_userinfo_member_authority B
+		ON A.UIA_KEYNO = B.UIA_KEYNO
+		LEFT JOIN t_userinfo C
+		ON C.UI_KEYNO = B.UI_KEYNO
+		WHERE 
+		<foreach item = "l" index="index" collection="userlist" open="(" close=")" separator="or">
+		C.UI_KEYNO = #{l}
+		</foreach>
+	</select>
+
+<insert id="sapaperInsert" parameterType="safeAdminDTO">
+			INSERT INTO dy_sa_paper
+			(
+				sa_sulbi,
+				sa_date,
+				sa_gyuljae1,
+				sa_gyuljae2,
+				sa_gyuljae3,
+				sa_sujeonv,
+				sa_sujeonkw,
+				sa_balv,
+				sa_balkw,
+				sa_solarv,
+				sa_solarkw,
+				sa_transvolum,
+				sa_admintype,
+				sa_admincount,
+				sa_admincheck1,
+				sa_admincheck2,
+				sa_admincheck3,
+				sa_admincheck4,
+				sa_admincheck5,
+				sa_admincheck6,
+				sa_admincheck7,
+				sa_admincheck8,
+				sa_admincheck9,
+				sa_admincheck10,
+				sa_admincheck11,
+				sa_admincheck12,
+				sa_admincheck13,
+				sa_admincheck14,
+				sa_admincheck15,
+				sa_admincheck16,
+				sa_admincheck17,
+				sa_admincheck18,
+				sa_admincheck19,
+				sa_admincheck20,
+				sa_admincheck21,
+				sa_admincheck22,
+				sa_admincheck23,
+				sa_admincheck24,
+				sa_admincheck25,
+				sa_admincheck26,
+				sa_admincheck27,
+				sa_admincheck28,
+				sa_admincheck29,
+				sa_admincheck30,
+				sa_measureAV1,
+				sa_measureAV2,
+				sa_measureAV3,
+				sa_measureAA1,
+				sa_measureAA2,
+				sa_measureAA3,
+				sa_measureAC1,
+				sa_measureAC2,
+				sa_measureAC3,
+				sa_measureBV1,
+				sa_measureBV2,
+				sa_measureBV3,
+				sa_measureBA1,
+				sa_measureBA2,
+				sa_measureBA3,
+				sa_measureBC1,
+				sa_measureBC2,
+				sa_measureBC3,
+				sa_measureCV1,
+				sa_measureCV2,
+				sa_measureCV3,
+				sa_measureCA1,
+				sa_measureCA2,
+				sa_measureCA3,
+				sa_measureCC1,
+				sa_measureCC2,
+				sa_measureCC3,
+				sa_measureNV1,
+				sa_measureNV2,
+				sa_measureNV3,
+				sa_measureNA1,
+				sa_measureNA2,
+				sa_measureNA3,
+				sa_measureNC1,
+				sa_measureNC2,
+				sa_measureNC3,
+				sa_opinion,
+				sa_ceoname,
+				sa_adminname,
+				sa_writetype
+				
+			)VALUES(
+				#{sa_sulbi},
+				#{sa_date},
+				#{sa_gyuljae1},
+				#{sa_gyuljae2},
+				#{sa_gyuljae3},
+				#{sa_sujeonv},
+				#{sa_sujeonkw},
+				#{sa_balv},
+				#{sa_balkw},
+				#{sa_solarv},
+				#{sa_solarkw},
+				#{sa_transvolum},
+				#{sa_admintype},
+				#{sa_admincount},
+				#{sa_admincheck1},
+				#{sa_admincheck2},
+				#{sa_admincheck3},
+				#{sa_admincheck4},
+				#{sa_admincheck5},
+				#{sa_admincheck6},
+				#{sa_admincheck7},
+				#{sa_admincheck8},
+				#{sa_admincheck9},
+				#{sa_admincheck10},
+				#{sa_admincheck11},
+				#{sa_admincheck12},
+				#{sa_admincheck13},
+				#{sa_admincheck14},
+				#{sa_admincheck15},
+				#{sa_admincheck16},
+				#{sa_admincheck17},
+				#{sa_admincheck18},
+				#{sa_admincheck19},
+				#{sa_admincheck20},
+				#{sa_admincheck21},
+				#{sa_admincheck22},
+				#{sa_admincheck23},
+				#{sa_admincheck24},
+				#{sa_admincheck25},
+				#{sa_admincheck26},
+				#{sa_admincheck27},
+				#{sa_admincheck28},
+				#{sa_admincheck29},
+				#{sa_admincheck30},
+				#{sa_measureAV1},
+				#{sa_measureAV2},
+				#{sa_measureAV3},
+				#{sa_measureAA1},
+				#{sa_measureAA2},
+				#{sa_measureAA3},
+				#{sa_measureAC1},
+				#{sa_measureAC2},
+				#{sa_measureAC3},
+				#{sa_measureBV1},
+				#{sa_measureBV2},
+				#{sa_measureBV3},
+				#{sa_measureBA1},
+				#{sa_measureBA2},
+				#{sa_measureBA3},
+				#{sa_measureBC1},
+				#{sa_measureBC2},
+				#{sa_measureBC3},
+				#{sa_measureCV1},
+				#{sa_measureCV2},
+				#{sa_measureCV3},
+				#{sa_measureCA1},
+				#{sa_measureCA2},
+				#{sa_measureCA3},
+				#{sa_measureCC1},
+				#{sa_measureCC2},
+				#{sa_measureCC3},
+				#{sa_measureNV1},
+				#{sa_measureNV2},
+				#{sa_measureNV3},
+				#{sa_measureNA1},
+				#{sa_measureNA2},
+				#{sa_measureNA3},
+				#{sa_measureNC1},
+				#{sa_measureNC2},
+				#{sa_measureNC3},
+				#{sa_opinion},
+				#{sa_ceoname},
+				#{sa_adminname},
+				#{sa_writetype}
+			)
+		</insert>
+		
+		<update id="sapaperUpdate" parameterType="safeAdminDTO">
+			UPDATE dy_sa_paper 
+			SET sa_sulbi = #{sa_sulbi},
+				sa_date = #{sa_date},
+				sa_gyuljae1 = #{sa_gyuljae1},
+				sa_gyuljae2 = #{sa_gyuljae2},
+				sa_gyuljae3 = #{sa_gyuljae3},
+				sa_sujeonv = #{sa_sujeonv},
+				sa_sujeonkw = #{sa_sujeonkw},
+				sa_balv = #{sa_balv},
+				sa_balkw = #{sa_balkw},
+				sa_solarv = #{sa_solarv},
+				sa_solarkw = #{sa_solarkw},
+				sa_transvolum = #{sa_transvolum},
+				sa_admintype = #{sa_admintype},
+				sa_admincount = #{sa_admincount},
+				sa_admincheck1 = #{sa_admincheck1},
+				sa_admincheck2 = #{sa_admincheck2},
+				sa_admincheck3 = #{sa_admincheck3},
+				sa_admincheck4 = #{sa_admincheck4},
+				sa_admincheck5 = #{sa_admincheck5},
+				sa_admincheck6 = #{sa_admincheck6},
+				sa_admincheck7 = #{sa_admincheck7},
+				sa_admincheck8 = #{sa_admincheck8},
+				sa_admincheck9 = #{sa_admincheck9},
+				sa_admincheck10 = #{sa_admincheck10},
+				sa_admincheck11 = #{sa_admincheck11},
+				sa_admincheck12 = #{sa_admincheck12},
+				sa_admincheck13 = #{sa_admincheck13},
+				sa_admincheck14 = #{sa_admincheck14},
+				sa_admincheck15 = #{sa_admincheck15},
+				sa_admincheck16 = #{sa_admincheck16},
+				sa_admincheck17 = #{sa_admincheck17},
+				sa_admincheck18 = #{sa_admincheck18},
+				sa_admincheck19 = #{sa_admincheck19},
+				sa_admincheck20 = #{sa_admincheck20},
+				sa_admincheck21 = #{sa_admincheck21},
+				sa_admincheck22 = #{sa_admincheck22},
+				sa_admincheck23 = #{sa_admincheck23},
+				sa_admincheck24 = #{sa_admincheck24},
+				sa_admincheck25 = #{sa_admincheck25},
+				sa_admincheck26 = #{sa_admincheck26},
+				sa_admincheck27 = #{sa_admincheck27},
+				sa_admincheck28 = #{sa_admincheck28},
+				sa_admincheck29 = #{sa_admincheck29},
+				sa_admincheck30 = #{sa_admincheck30},
+				sa_measureAV1 = #{sa_measureAV1},
+				sa_measureAV2 = #{sa_measureAV2},
+				sa_measureAV3 = #{sa_measureAV3},
+				sa_measureAA1 = #{sa_measureAA1},
+				sa_measureAA2 = #{sa_measureAA2},
+				sa_measureAA3 = #{sa_measureAA3},
+				sa_measureAC1 = #{sa_measureAC1},
+				sa_measureAC2 = #{sa_measureAC2},
+				sa_measureAC3 = #{sa_measureAC3},
+				sa_measureBV1 = #{sa_measureBV1},
+				sa_measureBV2 = #{sa_measureBV2},
+				sa_measureBV3 = #{sa_measureBV3},
+				sa_measureBA1 = #{sa_measureBA1},
+				sa_measureBA2 = #{sa_measureBA2},
+				sa_measureBA3 = #{sa_measureBA3},
+				sa_measureBC1 = #{sa_measureBC1},
+				sa_measureBC2 = #{sa_measureBC2},
+				sa_measureBC3 = #{sa_measureBC3},
+				sa_measureCV1 = #{sa_measureCV1},
+				sa_measureCV2 = #{sa_measureCV2},
+				sa_measureCV3 = #{sa_measureCV3},
+				sa_measureCA1 = #{sa_measureCA1},
+				sa_measureCA2 = #{sa_measureCA2},
+				sa_measureCA3 = #{sa_measureCA3},
+				sa_measureCC1 = #{sa_measureCC1},
+				sa_measureCC2 = #{sa_measureCC2},
+				sa_measureCC3 = #{sa_measureCC3},
+				sa_measureNV1 = #{sa_measureNV1},
+				sa_measureNV2 = #{sa_measureNV2},
+				sa_measureNV3 = #{sa_measureNV3},
+				sa_measureNA1 = #{sa_measureNA1},
+				sa_measureNA2 = #{sa_measureNA2},
+				sa_measureNA3 = #{sa_measureNA3},
+				sa_measureNC1 = #{sa_measureNC1},
+				sa_measureNC2 = #{sa_measureNC2},
+				sa_measureNC3 = #{sa_measureNC3},
+				sa_opinion = #{sa_opinion},
+				sa_ceoname = #{sa_ceoname},
+				sa_adminname = #{sa_adminname}
+				
+			WHERE sa_keyno = #{sa_keyno}
+		</update>
+	
+	<sql id="Safe_getListBody">
+	from (
+		select B.*
+			, @ROWNUM:=@ROWNUM+1 as COUNT
+		from (
+			select *
+			from dy_sa_paper
+			order by sa_keyno
+		) B
+		where (@ROWNUM:=0)=0
+		<if test="AH_HOMEDIV_C != null and AH_HOMEDIV_C != ''">
+	 		AND			sa_writetype 	=	#{AH_HOMEDIV_C}
+		 	</if>
+		 	<if test="UI_ID != null and UI_ID != ''">
+	 		AND			sa_sulbi 			=	#{UI_ID}
+		 	</if>
+	        <if test="searchBeginDate != null and searchBeginDate != ''">
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	>=	#{searchBeginDate}
+		 	</if>
+		 	<if test="searchEndDate != null and searchEndDate != ''">
+		 	<![CDATA[
+	 		AND			DATE_FORMAT(Conn_date,'%Y-%m-%d') 	<=	#{searchEndDate}
+		 	]]>
+		 	</if>
+	)AA
+	where 1=1
+	<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		sa_writetype 		LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		sa_sulbi			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		sa_date				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		sa_opinion			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa_writetype 			LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa_sulbi 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa_date					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				sa_opinion				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+ 				
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+	
+	<select id="Safe_getListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="Safe_getListBody"/>
+    </select>
+    
+    <select id="Safe_getList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="Safe_getListBody"/>
+		<choose>
+			<when test="orderBy == 1">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+			<when test="orderBy == 2">
+	 		ORDER BY	sa_writetype ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	sa_sulbi ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	sa_date ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	sa_opinion ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+		
+	<select id="boardlist" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_paper  
+    </select>
+    
+    <select id="safeuserselect" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_user
+    </select>
+    
+    <select id="safeuserselect_one" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>
+    
+    <!-- 문자 전송을 위한 데이터 뽑기(이름, 전화번호) -->
+    <select id="safeuserselect_alim" parameterType="String" resultType="safeUserDTO">
+	    SELECT *
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>
+	
+	 <select id="safeuserselect_phone" parameterType="String" resultType="safeUserDTO">
+	    SELECT SU_SA_SULBI, SU_SA_PHONE
+	    from dy_sa_user
+	    where SU_KEYNO = #{SU_KEYNO}
+    </select>    
+    <select id="safepaperselect_one" parameterType="String" resultType="hashmap">
+	    SELECT *
+	    from dy_sa_paper
+	    where sa_keyno = #{sa_keyno}
+    </select>
+    
+    
+    <insert id="safeUserInsert" parameterType="safeUserDTO">
+		INSERT INTO dy_sa_user
+		(
+			SU_SA_SUJEONV,
+			SU_SA_SUJEONKW,
+			SU_SA_BALV,
+			SU_SA_BALKW,
+			SU_SA_SOLARV,
+			SU_SA_SOLARKW,
+			SU_SA_TRANSVOLUM,
+			SU_SA_ADMINTYPE,
+			SU_SA_SULBI,
+			SU_SA_PHONE
+			
+		)VALUES(
+			#{SU_SA_SUJEONV},
+			#{SU_SA_SUJEONKW},
+			#{SU_SA_BALV},
+			#{SU_SA_BALKW},
+			#{SU_SA_SOLARV},
+			#{SU_SA_SOLARKW},
+			#{SU_SA_TRANSVOLUM},
+			#{SU_SA_ADMINTYPE},
+			#{SU_SA_SULBI},
+			#{SU_SA_PHONE}
+		)
+	</insert>
+	
+	<update id="safeUserUPdate" parameterType="safeUserDTO">
+		UPDATE dy_sa_user
+		SET SU_SA_SUJEONV = #{SU_SA_SUJEONV},
+			SU_SA_SUJEONKW = #{SU_SA_SUJEONKW},
+			SU_SA_BALV = #{SU_SA_BALV},
+			SU_SA_BALKW = #{SU_SA_BALKW},
+			SU_SA_SOLARV = #{SU_SA_SOLARV},
+			SU_SA_SOLARKW = #{SU_SA_SOLARKW},
+			SU_SA_TRANSVOLUM = #{SU_SA_TRANSVOLUM},
+			SU_SA_ADMINTYPE = #{SU_SA_ADMINTYPE},
+			SU_SA_SULBI = #{SU_SA_SULBI},
+			SU_SA_PHONE = #{SU_SA_PHONE}
+			
+		WHERE SU_KEYNO = #{SU_KEYNO}
+	</update>
+	
+	<delete id="safeUserDelete" parameterType="String">
+		DELETE  FROM dy_sa_user
+		where SU_KEYNO  = #{SU_KEYNO}
+	</delete>
+    
+    
+       <sql id="safeUser_getListBody">
+	from (
+		select B.*
+			, @ROWNUM:=@ROWNUM+1 as COUNT
+		from (
+			select *
+			from dy_sa_user 
+			order by SU_KEYNO
+		) B
+		where (@ROWNUM:=0)=0
+	)AA
+	where 1=1
+	<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 				LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		SU_SA_SULBI			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		SU_SA_PHONE			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		SU_SA_KAKAOYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		SU_SA_MSGYN			LIKE CONCAT( '%',#{item.searchKeyword},'%')					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT						LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_SULBI 				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_PHONE					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_KAKAOYN				LIKE CONCAT( '%',#{item.searchKeyword},'%') 	OR
+ 				SU_SA_MSGYN					LIKE CONCAT( '%',#{item.searchKeyword},'%') 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+	</sql>
+	
+	<select id="safeUser_getListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="safeUser_getListBody"/>
+    </select>
+    
+    <select id="safeUser_getList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="safeUser_getListBody"/>
+		<choose>
+			<when test="orderBy == 1">
+	 		ORDER BY	COUNT ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 2">
+	 		ORDER BY	SU_SA_SULBI ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 3">
+	 		ORDER BY	SU_SA_PHONE ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 4">
+	 		ORDER BY	SU_SA_KAKAOYN ${sortDirect}
+	 		</when>
+	 		<when test="orderBy == 5">
+	 		ORDER BY	SU_SA_MSGYN ${sortDirect}
+	 		</when>
+	 		<otherwise>
+	 		ORDER BY 	COUNT DESC
+	 		</otherwise>
+ 		</choose>
+		<if test=" recordCountPerPage != 0">
+		LIMIT  	#{recordCountPerPage} OFFSET #{firstIndex} 
+		</if>  
+    </select>
+    
+    <!-- 카카오톡 전송 여부 Y/N 업데이트 -->
+    <update id="kakaoupdateY">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_KAKAOYN		=	'Y'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <update id="kakaoupdateN">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_KAKAOYN		=	'N'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <!-- 문자 전송 여부 Y/N 업데이트 -->
+    <update id="msgupdateY">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_MSGYN		=	'Y'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+    <update id="msgupdateN">
+		UPDATE 		dy_sa_user 
+		SET 		SU_SA_MSGYN		=	'N'
+		WHERE       SU_KEYNO        =   #{SU_KEYNO}
+    </update>
+    
+   <!-- 안전관리 양식 이전 정보 조회(연,월별) -->
+	<select id="preview" parameterType="DateDTO" resultType="hashmap">
+		SELECT * 
+		FROM dy_sa_paper a 
+		join dy_sa_user b
+		on a.sa_sulbi = b.SU_SA_SULBI
+		where date_format(a.Conn_date, '%Y') =  #{Year}
+		and date_format(a.Conn_date, '%m') = #{Month}
+		and b.SU_KEYNO = #{su_keyno}
+	</select>
+    
+</mapper>

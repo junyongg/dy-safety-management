@@ -79,10 +79,7 @@
 		<%-- 화살표 정렬 --%>
 		<tr>
 			<th class="arrow" data-index="1">번호</th>
-			<c:forEach items="${BoardColumnList }" var="model">
-			<th class="arrow ${model.BL_TYPE eq BOARD_COLUMN_TYPE_TITLE ? 'min400':'min200' }" data-index="data${model.KEYNO }">${model.BL_COLUMN_NAME }</th>
-			</c:forEach>
-			<th class="arrow" data-index="2">작성자</th>
+			<th class="arrow" data-index="2">제목	</th>
 			<th class="arrow" data-index="3">작성일</th>
 			<th class="arrow" data-index="4">사용여부</th>
 		</tr>

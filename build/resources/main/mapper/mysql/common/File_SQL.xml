@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="File"> 
+  
+		
+  	
+  	<!-- 메인 파일 존재 여부 조회 -->
+	<select id="AFM_MainFileChecking" resultType="int" parameterType="FileMain">
+ 		 SELECT 	COUNT(*)
+       	 FROM 		T_COMMON_FILE_MAIN
+       	 WHERE 		FM_KEYNO = #{FM_KEYNO}
+    </select>
+	
+	<!-- 메인 파일 정보 등록 처리 -->
+	<insert id="AFM_FileInfoInsert" parameterType="FileMain">
+       	INSERT INTO T_COMMON_FILE_MAIN
+		(
+			   FM_KEYNO
+			 , FM_REGDT
+			 , FM_REGNM
+			 , FM_WHERE_KEYS
+			 , FM_COMMENTS
+		)
+		VALUES
+		(
+	   	       #{FM_KEYNO}
+			 , SYSDATE()
+			 , #{FM_REGNM}
+			 , #{FM_WHERE_KEYS}
+			 , #{FM_COMMENTS}
+		)
+    </insert>
+	
+	<!-- 서브 파일 정보 등록 처리 -->
+	<insert id="AFS_FileInfoInsert" parameterType="FileSub">
+       	INSERT INTO T_COMMON_FILE_SUB
+		(
+			  FS_KEYNO
+			 ,FS_FM_KEYNO
+			 ,FS_FILE_SIZE
+			 ,FS_ORINM
+			 ,FS_CHANGENM
+			 ,FS_EXT
+			 ,FS_FOLDER
+			 ,FS_M_KEYNO
+			 ,FS_REGDT
+			 ,FS_REGNM
+			 ,FS_THUMBNAIL
+			 ,FS_ALT
+			 ,FS_COMMENTS
+			 ,FS_ORIWIDTH
+			 ,FS_ORIHEIGHT
+			 <!-- 이미지 추가 -->
+		)
+		VALUES
+		(
+				 #{FS_KEYNO}
+				,#{FS_FM_KEYNO}
+				,#{FS_FILE_SIZE}
+				,#{FS_ORINM}
+				,#{FS_CHANGENM}
+				,#{FS_EXT}
+				,#{FS_FOLDER}
+				,#{FS_M_KEYNO}
+				,NOW()
+				,#{FS_REGNM}
+				,#{FS_THUMBNAIL}
+				,#{FS_ALT}
+				,#{FS_COMMENTS}
+				,#{FS_ORIWIDTH}
+				,#{FS_ORIHEIGHT}
+		)
+    </insert>
+	
+	<!-- 메인키별 파일 목록 조회 -->
+	<select id="AFS_FileSelectPutMainkey" resultType="FileSub" parameterType="FileSub">
+ 		 SELECT 	a.*, CONCAT('/resources/img/upload/',FS_FOLDER,FS_THUMBNAIL, '.',FS_EXT) FS_PATH
+       	 FROM 		T_COMMON_FILE_SUB a
+       	 WHERE 		FS_FM_KEYNO = #{FS_FM_KEYNO}
+       	 ORDER BY	FS_ORDER,FS_KEYNO 
+    </select>
+     
+    
+	<!-- 서브 파일 키로 상세 조회 -->
+	<select id="AFS_SubFileDetailselect" resultType="FileSub" parameterType="FileSub" >
+ 		 SELECT 	* 
+       	 FROM 		T_COMMON_FILE_SUB
+       	 WHERE		FS_KEYNO = #{FS_KEYNO}
+    </select>
+    
+    <!-- 서브 파일 다운로드 카운팅 처리 -->
+	<update id="AFS_FileDownCouting" parameterType="FileSub" >
+	<![CDATA[
+		UPDATE		T_COMMON_FILE_SUB
+		SET			FS_DOWNCNT	=	FS_DOWNCNT + 1
+		WHERE		FS_KEYNO 	= 	#{FS_KEYNO}
+	]]>
+	</update>
+	
+	<!-- 업로드 수정시 파일 삭제 처리 -->
+	<delete id="AFS_FileUploadDelete" parameterType="FileSub">
+	<![CDATA[
+		DELETE	FROM	T_COMMON_FILE_SUB
+		WHERE	FS_KEYNO = #{FS_KEYNO}
+	]]>
+	</delete>
+	
+	
+	
+	<!-- 배열을 이용한 상세정보 조회 -->
+	<select id="AFS_getArraySubFile" resultType="FileSub" parameterType="FileSub" >
+	<![CDATA[
+ 		 SELECT 	* 
+       	 FROM 		T_COMMON_FILE_SUB
+       	 WHERE      1=1 
+    ]]>
+    <!-- <iterate prepend="AND" property="GroupFS_KeyArray" open="(" close=")" conjunction="OR">
+    	FS_KEYNO = #GroupFS_KeyArray[]#
+    </iterate> -->
+    </select>
+    
+    <!-- test -->
+	<select id="allselect" resultType="FileSub" >
+ 		 SELECT 	FS.* 
+       	 FROM 		T_COMMON_FILE_SUB FS
+       	 LEFT JOIN	T_COMMON_FILE_MAIN FM
+       	 ON			FS.FS_FM_KEYNO = FM.FM_KEYNO
+       	 WHERE		FM_REGNM = 'ryanius'
+    </select>
+    
+    <!-- test: File Main 조회 -->
+	<select id="AFS_FileSelectFileMain" resultType="HashMap" >
+ 		 SELECT 	FM_KEYNO,
+ 		 			DATE_FORMAT(FM_REGDT,'%Y-%m-%d') AS FM_REGDT,
+ 		 			FM_REGNM,
+ 		 			(SELECT COUNT(*) FROM T_COMMON_FILE_SUB B WHERE A.FM_KEYNO = B.FS_FM_KEYNO GROUP BY B.FS_FM_KEYNO) AS FS_CNT
+       	 FROM 		T_COMMON_FILE_MAIN A
+    </select>
+    
+    <!-- test: File Sub 조회 -->
+	<select id="AFS_FileSelectFileSub" resultType="FileSub" parameterType="FileMain">
+ 		 SELECT 	FS_KEYNO,
+ 		 			FS_FM_KEYNO,
+ 		 			FS_FILE_SIZE,
+ 		 			FS_ORINM,
+ 		 			FS_CHANGENM,
+ 		 			FS_EXT,
+ 		 			FS_FOLDER,
+ 		 			FS_ALT,
+ 		 			FS_COMMENTS,
+ 		 			FS_ORDER,
+ 		 			FS_DOWNCNT,
+ 		 			FS_REGDT
+       	 FROM 		T_COMMON_FILE_SUB
+       	 WHERE		FS_FM_KEYNO = #{FM_KEYNO}
+       	 ORDER BY 	FS_ORDER
+    </select>
+    
+    <!-- test: File Sub PDF만 조회 -->
+	<select id="AFS_FileSelectFileSub_PDF" resultType="FileSub" parameterType="FileMain">
+ 		 SELECT 	FS_KEYNO,
+ 		 			FS_FM_KEYNO,
+ 		 			FS_FILE_SIZE,
+ 		 			FS_ORINM,
+ 		 			FS_CHANGENM,
+ 		 			FS_EXT,
+ 		 			FS_FOLDER,
+ 		 			FS_ALT,
+ 		 			FS_COMMENTS,
+ 		 			FS_ORDER,
+ 		 			FS_DOWNCNT
+       	 FROM 		T_COMMON_FILE_SUB
+       	 WHERE		FS_FM_KEYNO = #{FM_KEYNO}
+       	 AND 		FS_EXT = 'pdf'
+       	 ORDER BY 	FS_ORDER
+    </select>
+    
+    
+    
+    <!-- test: File Sub 삭제 -->
+	<delete id="AFS_FileDeleteFileSub" parameterType="FileSub">
+ 		 DELETE FROM T_COMMON_FILE_SUB
+       	 where		FS_KEYNO = #{FS_KEYNO}
+    </delete>
+    
+     <!-- test:FM키로  File Sub 삭제 -->
+	<delete id="AFSM_FileDeleteFileSub" parameterType="FileSub">
+ 		 DELETE FROM T_COMMON_FILE_SUB
+       	 WHERE		FS_FM_KEYNO = #{FM_KEYNO}
+    </delete>
+    
+    <!-- test:FM키로  File Main 삭제 -->
+	<delete id="AFM_FileDeleteFileSub" parameterType="FileSub">
+ 		 DELETE FROM T_COMMON_FILE_MAIN
+       	 WHERE		FM_KEYNO = #{FM_KEYNO}
+    </delete>
+	
+</mapper>
+ 

@@ -105,13 +105,7 @@ public class BoardUserController {
 		if (Type_menu == null) {
 			Type_menu = "list";
 		}
-		if (Type_menu.equals("card")) {
-			BoardType.setBT_CODEKEY("card");
-		}
 		int cnt = 8;
-		if (selected_views.equals("twelve") && selected_views != null) {
-			cnt = 12;
-		}
 
 		mv.addObject("BoardType", BoardType);
 
@@ -153,42 +147,13 @@ public class BoardUserController {
 			map.put("isAdmin", "N");
 		}
 		
-		if (Type_menu.equals("card")) {
-			PaginationInfo pageInfo = PageAccess.getPagInfo(BoardNotice.getPageIndex(),
-					"BoardNotice.BN_getUserDataCount", map, 6, BoardType.getBT_PAGESIZE());
-			map.put("firstIndex", pageInfo.getFirstRecordIndex());
-			map.put("lastIndex", pageInfo.getLastRecordIndex());
-			map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
-			map.put("pageIndex", pageInfo.getCurrentPageNo());
-			mv.addObject("paginationInfo", pageInfo);
-		}
-		// 동영상, 이미지 처리
-		else if (BoardType.getBT_CODEKEY().equals("SC_0000000006")
-				|| BoardType.getBT_CODEKEY().equals("SC_0000000407")) {
-			PaginationInfo pageInfo = PageAccess.getPagInfo(BoardNotice.getPageIndex(),
-					"BoardNotice.BN_getUserDataCount", map, 8, BoardType.getBT_PAGESIZE());
-			map.put("firstIndex", pageInfo.getFirstRecordIndex());
-			map.put("lastIndex", pageInfo.getLastRecordIndex());
-			map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
-			map.put("pageIndex", pageInfo.getCurrentPageNo());
-			mv.addObject("paginationInfo", pageInfo);
-		} else if (BoardType.getBT_CODEKEY().equals("SC_0000000408")) {
-			PaginationInfo pageInfo = PageAccess.getPagInfo(BoardNotice.getPageIndex(),
-					"BoardNotice.BN_getUserDataCount", map, cnt, BoardType.getBT_PAGESIZE());
-			map.put("firstIndex", pageInfo.getFirstRecordIndex());
-			map.put("lastIndex", pageInfo.getLastRecordIndex());
-			map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
-			map.put("pageIndex", pageInfo.getCurrentPageNo());
-			mv.addObject("paginationInfo", pageInfo);
-		} else {
-			PaginationInfo pageInfo = PageAccess.getPagInfo(BoardNotice.getPageIndex(),
-					"BoardNotice.BN_getUserDataCount", map, BoardType.getBT_PAGEUNIT(), BoardType.getBT_PAGESIZE());
-			map.put("firstIndex", pageInfo.getFirstRecordIndex());
-			map.put("lastIndex", pageInfo.getLastRecordIndex());
-			map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
-			map.put("pageIndex", pageInfo.getCurrentPageNo());
-			mv.addObject("paginationInfo", pageInfo);
-		}
+		PaginationInfo pageInfo = PageAccess.getPagInfo(BoardNotice.getPageIndex(),
+				"BoardNotice.BN_getUserDataCount", map, BoardType.getBT_PAGEUNIT(), BoardType.getBT_PAGESIZE());
+		map.put("firstIndex", pageInfo.getFirstRecordIndex());
+		map.put("lastIndex", pageInfo.getLastRecordIndex());
+		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
+		map.put("pageIndex", pageInfo.getCurrentPageNo());
+		mv.addObject("paginationInfo", pageInfo);
 
 		List<HashMap<String, Object>> BoardNoticeDataList = Component.getList("BoardNotice.BN_getUserDataList", map);
 		mv.addObject("BoardNoticeDataList", BoardNoticeDataList);

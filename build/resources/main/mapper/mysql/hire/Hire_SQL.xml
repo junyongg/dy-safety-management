@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Hire"> 
+  
+  
+  <insert id="UserInsert" parameterType="HireUserDTO" useGeneratedKeys="true" keyProperty="TH_KEYNO">
+  	INSERT INTO T_HIRE_USER (
+		TH_USER,
+		TH_PHONE,
+		TH_EMAIL,
+		TH_PASSWORD,
+		TH_TYPE,
+		TH_BNKEYNO,
+		TH_CLASSTYPE
+  	)VALUES(
+		#{TH_USER},
+		#{TH_PHONE},
+		#{TH_EMAIL},
+		#{TH_PASSWORD},
+		#{TH_TYPE},
+		#{TH_BNKEYNO},
+		#{TH_CLASSTYPE}
+  	)
+  </insert>
+	
+	<select id="ClassNumber" resultType="int" parameterType="HireUserDTO">
+		SELECT COUNT(*)
+		FROM T_HIRE_USER A
+		LEFT JOIN T_HIRE_CONTETNS B
+		ON 		A.TH_KEYNO = B.THC_USERKEY
+		WHERE 	A.TH_BNKEYNO = #{TH_BNKEYNO}
+		AND		A.TH_CLASSTYPE = #{TH_CLASSTYPE}
+		AND		B.THC_KEYNO IS NOT NULL
+		
+	</select>
+
+	<!-- 이메일 중복체크 -->
+	<select id="EmailCheck" resultType="int" parameterType="HireUserDTO">
+			SELECT COUNT(*)
+			FROM T_HIRE_USER
+			WHERE 	TH_EMAIL = #{TH_EMAIL}
+			AND		TH_BNKEYNO	= #{TH_BNKEYNO}
+	</select>
+	
+	<!-- 비번 찾기 위한 작업-->
+	<select id="SelectPw" resultType="HireUserDTO" parameterType="HireUserDTO">
+			SELECT *
+			FROM T_HIRE_USER
+			WHERE 	TH_EMAIL = #{TH_EMAIL}
+			AND		TH_BNKEYNO	= #{TH_BNKEYNO}
+			AND		TH_USER	= #{TH_USER}
+	</select>
+	
+	<select id="Usercheck" parameterType="HireUserDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM T_HIRE_USER
+		WHERE 	TH_USER = #{TH_USER}
+		AND		TH_EMAIL = #{TH_EMAIL}
+		AND		TH_PASSWORD	= #{TH_PASSWORD}
+		AND		TH_BNKEYNO	= #{TH_BNKEYNO}
+	</select>	
+	
+	<select id="UserKeySelect" parameterType="HireUserDTO" resultType="HireUserDTO">
+		SELECT *
+		FROM T_HIRE_USER
+		WHERE 	TH_USER = #{TH_USER}
+		AND		TH_EMAIL = #{TH_EMAIL}
+		AND		TH_PASSWORD	= #{TH_PASSWORD}
+		AND		TH_BNKEYNO	= #{TH_BNKEYNO}
+	</select>	
+	
+	<select id="UserKeySelect2" parameterType="HireUserDTO" resultType="HireUserDTO">
+		SELECT *
+		FROM T_HIRE_USER
+		WHERE 	TH_USER = #{TH_USER}
+		AND		TH_EMAIL = #{TH_EMAIL}
+		AND		TH_BNKEYNO	= #{TH_BNKEYNO2}
+	</select>	
+
+	<select id="GetUserData" parameterType="HireUserDTO" resultType="HireUserDTO">
+		SELECT *
+		FROM T_HIRE_USER
+		WHERE 	TH_KEYNO = #{TH_KEYNO}
+	</select>	
+		
+		
+	<select id="ContentChecking" parameterType="HireContentDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM T_HIRE_CONTETNS
+		WHERE THC_USERKEY = #{THC_USERKEY}
+	</select>		
+		
+		
+  <insert id="ContentInsert" parameterType="HireContentDTO" useGeneratedKeys="true" keyProperty="THC_KEYNO">
+  	INSERT INTO T_HIRE_CONTETNS (
+		THC_USERKEY,
+		THC_DEPARTMENT,
+		THC_NUMBER,
+		THC_NAME,
+		THC_CNAME,
+		THC_ENAME,
+		THC_ADD,
+		THC_ADD1,
+		THC_ADD2,
+		THC_ARMY,
+		THC_BOHUN,
+		THC_LOWPAY,
+		THC_DISABLED,
+		THC_DISABLED1,
+		THC_DISABLED2,
+		THC_EDUTYPE,
+		THC_EDUSUBJECT,
+		THC_EDUSTARTTIME,
+		THC_EDUENDTIME,
+		THC_EDUDO,
+		THC_CERTIFICATE,
+		THC_CERTIFICATEAGENCY,
+		THC_CERTIFICATETIME,
+		THC_CAREERTYPE,
+		THC_CAREERAGENCY,
+		THC_CAREERPOSITION,
+		THC_CAREERSATRTTIME,
+		THC_CAREERENDTIME,
+		THC_CAREERDO,
+		THC_OTHERDO,
+		THC_CONTENT1,
+		THC_CONTENT2,
+		THC_CONTENT3,
+		THC_CONTENT4,
+		THC_UNYOUNG1,
+		THC_UNYOUNG2,
+		THC_UNYOUNG3,
+		THC_UNYOUNG4,
+		THC_UNYOUNG5,
+		THC_UNYOUNG6,
+		THC_UNYOUNG7,
+		THC_USE_YN,
+		THC_DELETE,
+		THC_INSERT_DATE
+  	)VALUES(
+		#{THC_USERKEY},
+		#{THC_DEPARTMENT},
+		#{THC_NUMBER},
+		#{THC_NAME},
+		#{THC_CNAME},
+		#{THC_ENAME},
+		#{THC_ADD},
+		#{THC_ADD1},
+		#{THC_ADD2},
+		#{THC_ARMY},
+		#{THC_BOHUN},
+		#{THC_LOWPAY},
+		#{THC_DISABLED},
+		#{THC_DISABLED1},
+		#{THC_DISABLED2},
+		#{THC_EDUTYPE},
+		#{THC_EDUSUBJECT},
+		#{THC_EDUSTARTTIME},
+		#{THC_EDUENDTIME},
+		#{THC_EDUDO},
+		#{THC_CERTIFICATE},
+		#{THC_CERTIFICATEAGENCY},
+		#{THC_CERTIFICATETIME},
+		#{THC_CAREERTYPE},
+		#{THC_CAREERAGENCY},
+		#{THC_CAREERPOSITION},
+		#{THC_CAREERSATRTTIME},
+		#{THC_CAREERENDTIME},
+		#{THC_CAREERDO},
+		#{THC_OTHERDO},
+		#{THC_CONTENT1},
+		#{THC_CONTENT2},
+		#{THC_CONTENT3},
+		#{THC_CONTENT4},
+		#{THC_UNYOUNG1},
+		#{THC_UNYOUNG2},
+		#{THC_UNYOUNG3},
+		#{THC_UNYOUNG4},
+		#{THC_UNYOUNG5},
+		#{THC_UNYOUNG6},
+		#{THC_UNYOUNG7},
+		#{THC_USE_YN},
+		#{THC_DELETE},
+		#{THC_INSERT_DATE}
+  	)
+  </insert>	
+		
+		
+	<update id="ContentUpdate" parameterType="HireContentDTO">
+		UPDATE 	T_HIRE_CONTETNS
+		SET		THC_USERKEY				=	#{THC_USERKEY},
+				THC_DEPARTMENT			=	#{THC_DEPARTMENT},
+				THC_NUMBER				=	#{THC_NUMBER},
+				THC_NAME				=	#{THC_NAME},
+				THC_CNAME				=	#{THC_CNAME},
+				THC_ENAME				=	#{THC_ENAME},
+				THC_ADD					=	#{THC_ADD},
+				THC_ADD1				=	#{THC_ADD1},
+				THC_ADD2				=	#{THC_ADD2},
+				THC_ARMY				=	#{THC_ARMY},
+				THC_BOHUN				=	#{THC_BOHUN},
+				THC_LOWPAY				=	#{THC_LOWPAY},
+				THC_DISABLED			=	#{THC_DISABLED},
+				THC_DISABLED1			=	#{THC_DISABLED1},
+				THC_DISABLED2			=	#{THC_DISABLED2},
+				THC_EDUTYPE				=	#{THC_EDUTYPE},
+				THC_EDUSUBJECT			=	#{THC_EDUSUBJECT},
+				THC_EDUSTARTTIME		=	#{THC_EDUSTARTTIME},
+				THC_EDUENDTIME			=	#{THC_EDUENDTIME},
+				THC_EDUDO				=	#{THC_EDUDO},
+				THC_CERTIFICATE			=	#{THC_CERTIFICATE},
+				THC_CERTIFICATEAGENCY	=	#{THC_CERTIFICATEAGENCY},
+				THC_CERTIFICATETIME		=	#{THC_CERTIFICATETIME},
+				THC_CAREERTYPE			=	#{THC_CAREERTYPE},
+				THC_CAREERAGENCY		=	#{THC_CAREERAGENCY},
+				THC_CAREERPOSITION		=	#{THC_CAREERPOSITION},
+				THC_CAREERSATRTTIME		=	#{THC_CAREERSATRTTIME},
+				THC_CAREERENDTIME		=	#{THC_CAREERENDTIME},
+				THC_CAREERDO			=	#{THC_CAREERDO},
+				THC_OTHERDO				=	#{THC_OTHERDO},
+				THC_CONTENT1			=	#{THC_CONTENT1},
+				THC_CONTENT2			=	#{THC_CONTENT2},
+				THC_CONTENT3			=	#{THC_CONTENT3},
+				THC_CONTENT4			=	#{THC_CONTENT4},
+				THC_UNYOUNG1			=	#{THC_UNYOUNG1},
+				THC_UNYOUNG2			=	#{THC_UNYOUNG2},
+				THC_UNYOUNG3			=	#{THC_UNYOUNG3},
+				THC_UNYOUNG4			=	#{THC_UNYOUNG4},
+				THC_UNYOUNG5			=	#{THC_UNYOUNG5},
+				THC_UNYOUNG6			=	#{THC_UNYOUNG6},
+				THC_UNYOUNG7			=	#{THC_UNYOUNG7},
+				THC_USE_YN				=	#{THC_USE_YN},
+				THC_DELETE				=	#{THC_DELETE},
+				THC_UPDATE_DATE			=	#{THC_UPDATE_DATE}
+		WHERE	THC_USERKEY				= 	#{THC_USERKEY}
+	</update>
+		
+	<select id="ContentSelect" resultType="HireContentDTO" parameterType="HireContentDTO">
+		SELECT *
+		FROM T_HIRE_CONTETNS
+		WHERE THC_USERKEY = #{THC_USERKEY}
+	</select>
+	
+	<!-- bn키로 타이틀과 채용일자 구하기-->
+	<select id="BnTitle" resultType="HashMap" parameterType="HireUserDTO">
+		SELECT BN_TITLE, BN_REGDT
+		FROM T_BOARD_NOTICE
+		WHERE BN_KEYNO = #{TH_BNKEYNO}
+	</select>
+	
+	<!-- th_key로 전체 다 구하기 -->
+	<select id="GetAllData" resultType="HashMap" parameterType="HireUserDTO">
+		SELECT *
+		FROM T_HIRE_USER A
+		LEFT JOIN T_HIRE_CONTETNS B
+		ON A.TH_KEYNO = B.THC_USERKEY
+		WHERE A.TH_KEYNO = #{TH_KEYNO}
+	</select>
+	
+	<select id="Usercheck2" parameterType="HireUserDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM T_HIRE_USER
+		WHERE 	TH_USER = #{TH_USER}
+		AND		TH_EMAIL = #{TH_EMAIL}
+		AND		TH_PASSWORD	= #{TH_PASSWORD}
+		AND		TH_BNKEYNO2	= #{TH_BNKEYNO}
+	</select>
+	
+	<insert id="BnKey2Insert" parameterType="HireUserDTO">
+		UPDATE 	T_HIRE_USER
+		SET  	TH_BNKEYNO2 = #{TH_BNKEYNO}
+		WHERE 	TH_USER = #{TH_USER}
+		AND		TH_EMAIL = #{TH_EMAIL}
+		AND		TH_PASSWORD	= #{TH_PASSWORD}
+		AND		TH_BNKEYNO	= #{TH_BNKEYNO2}
+	</insert>
+	
+	<update id="UserFileKey" parameterType="HireUserDTO">
+		UPDATE T_HIRE_USER
+		SET TH_FILE = #{TH_FILE}
+		WHERE TH_KEYNO = #{TH_KEYNO}
+	</update>
+	
+	
+	<select id="AdminHireBoardSelect" resultType="hashmap">
+		SELECT BN_KEYNO, BN_TITLE
+		FROM T_BOARD_NOTICE 
+		WHERE BN_MN_KEYNO = 'MN_0000001510'
+		AND	BN_USE_YN = 'Y'
+		AND BN_SECRET_YN = 'N'
+		AND BN_DEL_YN = 'N'
+		ORDER BY BN_KEYNO DESC
+	</select>
+	
+	<select id="UserSelect" resultType="HireUserDTO" parameterType="hashmap"> 
+		SELECT * , B.THC_NUMBER AS TH_NUMBER
+		FROM T_HIRE_USER A
+		LEFT JOIN T_HIRE_CONTETNS B
+		ON A.TH_KEYNO = B.THC_USERKEY
+		WHERE TH_BNKEYNO = #{BN_KEYNO}
+		AND	B.THC_USE_YN = 'Y'
+	</select>
+
+	<select id="UserSelect2" resultType="HireUserDTO" parameterType="hashmap"> 
+		SELECT * , B.THC_NUMBER AS TH_NUMBER
+		FROM T_HIRE_USER A
+		LEFT JOIN T_HIRE_CONTETNS B
+		ON A.TH_KEYNO = B.THC_USERKEY
+		WHERE TH_BNKEYNO2 = #{BN_KEYNO}
+		AND	B.THC_USE_YN = 'Y'
+	</select>
+
+	<select id="UserSelectCnt" resultType="int" parameterType="hashmap"> 
+		SELECT COUNT(*) 
+		FROM T_HIRE_USER
+		WHERE TH_BNKEYNO = #{BN_KEYNO}
+	</select>
+	
+	<select id="UserSelectCnt2" resultType="int" parameterType="hashmap"> 
+		SELECT COUNT(*) 
+		FROM T_HIRE_USER
+		WHERE TH_BNKEYNO2 = #{BN_KEYNO}
+	</select>
+	
+	<select id="UserSelectAll" resultType="hashmap" parameterType="HireUserDTO"> 
+		SELECT * 
+		FROM T_HIRE_USER A
+		LEFT JOIN T_HIRE_CONTETNS B
+		ON A.TH_KEYNO = B.THC_USERKEY
+		WHERE A.TH_KEYNO = #{TH_KEYNO}
+	</select>
+	
+	<!-- 합격 변경 -->
+	<update id="PassUpdate" parameterType="HireUserDTO">
+		UPDATE T_HIRE_USER
+		SET TH_PASS_YN = #{TH_PASS_YN}
+		WHERE TH_KEYNO = #{TH_KEYNO}
+	</update>
+	
+	<!-- 알집 키 주입 -->
+	<update id="ZipFileInsert" parameterType="HireUserDTO">
+		UPDATE T_HIRE_USER
+		SET TH_ZIP_KEYNO = #{TH_ZIP_KEYNO}
+		WHERE TH_KEYNO = #{TH_KEYNO}
+	</update>
+
+	<!-- PDF 키 주입 -->
+	<update id="PdfFileInsert" parameterType="HireUserDTO">
+		UPDATE T_HIRE_USER
+		SET TH_PDF_KEYNO = #{TH_PDF_KEYNO}
+		WHERE TH_KEYNO = #{TH_KEYNO}
+	</update>
+	
+</mapper>
+ 

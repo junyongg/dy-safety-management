@@ -146,9 +146,8 @@ public class BoardController {
 		map.put("recordCountPerPage", pageInfo.getRecordCountPerPage());
 
 		mv.addObject("paginationInfo", pageInfo);
-
+		
 		mv.addObject("resultList", Component.getList("BoardNotice.BN_getDataList", map));
-
 		mv.addObject("BoardColumnList", BoardColumnList);
 		mv.addObject("search", search);
 		return mv;

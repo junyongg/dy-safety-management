@@ -111,5 +111,10 @@
     
     </select>
     
+     <select id="safeboardInfo" resultType="hashmap" parameterType="hashmap">    
+    	SELECT *
+    	from dy_sa_paper  
+    </select>
+    
 </mapper>
  

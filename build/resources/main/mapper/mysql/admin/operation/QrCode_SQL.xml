@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QrCode"> 
+	
+	<!-- 서브 파일 정보 등록 처리 -->
+	<insert id="CQ_insert" parameterType="QrCode">
+       	INSERT INTO T_COMMON_QRCODE
+		(
+			  CQ_KEYNO
+			 ,CQ_URL
+			 ,CQ_FS_KEYNO
+			 ,CQ_NAME
+			 ,CQ_WIDTH
+			 ,CQ_HEIGHT
+		)
+		VALUES
+		(
+	   		  #{CQ_KEYNO}
+			 ,#{CQ_URL}
+			 ,#{CQ_FS_KEYNO}
+			 ,#{CQ_NAME}
+		  	 ,#{CQ_WIDTH}
+		     ,#{CQ_HEIGHT}		     
+		)
+    </insert>   
+    
+    <select id="CQ_getImg" resultType="QrCode">
+       	 SELECT 	q.*, CONCAT(f.FS_FOLDER ,f.FS_CHANGENM) FS_CHANGENM
+	     FROM 		T_COMMON_QRCODE q , T_COMMON_FILE_SUB f
+		 WHERE		q.CQ_FS_KEYNO = f.FS_KEYNO
+		 AND		CQ_URL 		= 	#{CQ_URL}
+         AND		CQ_WIDTH	=	#{CQ_WIDTH}
+         AND		CQ_HEIGHT	=	#{CQ_HEIGHT}
+    </select> 
+    
+    <!-- 키로 상세 조회 -->
+	<select id="CQ_select" resultType="QrCode" parameterType="QrCode" >
+ 		 SELECT 	* 
+       	 FROM 		T_COMMON_QRCODE
+       	 WHERE		CQ_KEYNO = #{CQ_KEYNO}
+    </select>
+	
+</mapper>
+ 

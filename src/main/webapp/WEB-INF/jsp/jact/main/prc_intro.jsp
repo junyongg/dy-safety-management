@@ -3,8 +3,6 @@
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 <%@ include file="/WEB-INF/jsp/setting/settingData.jsp"%>
 
-
-
 <div id="wrap">
 	인트로
 </div>

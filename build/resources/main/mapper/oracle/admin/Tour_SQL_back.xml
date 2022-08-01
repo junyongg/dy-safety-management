@@ -1,0 +1,1913 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Tour">
+	<resultMap id="TOUR_MAP" type="HashMap">
+		<result property="TC_CONTENTS" column="TC_CONTENTS" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="TC_SHOW_COLUMN" column="TC_SHOW_COLUMN" jdbcType="CLOB" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<select id="TC_getSimpleList" resultType="hashmap">
+		SELECT		A.TC_KEYNO
+					, A.TC_TYPE
+					, A.TC_TITLE
+					, A.TC_LAT
+					, A.TC_LNG
+					, B.SC_CODENM TC_TYPE_NAME
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_COMMON_CODE_SUB B
+		ON			A.TC_TYPE = B.SC_KEYNO
+		WHERE		TC_USE	!=	'D'
+		<if test="TC_TYPE != null and TC_TYPE != ''">
+		AND			TC_TYPE	=	#{TC_TYPE}
+		</if>
+		<choose>
+			<when test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE	=	#{TC_USE}
+			</when>
+			<otherwise>
+		AND			TC_USE	!=	'D'
+			</otherwise>
+		</choose>
+		ORDER BY	TC_KEYNO DESC
+	</select>
+	
+	<select id="TC_getData" resultType="hashmap">
+		SELECT		A.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getDestinationData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, D.*
+					, I.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+					, NVL2(FS_KEYNO,('/resources/img/upload/'||FS_FOLDER||FS_CHANGENM||'.'||FS_EXT),'')  FS_PATH
+					, FS_ORINM
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_DESTINATION D
+		ON			A.TC_KEYNO = D.TA_TC_KEYNO
+		LEFT JOIN	T_TOURISM_INFOMATION I
+		ON			D.TA_TI_KEYNO = I.TI_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		LEFT JOIN   T_COMMON_FILE_SUB FS
+		ON			A.TC_THUMBNAIL  =  FS.FS_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getCourseData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, TCM.*
+					, I.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_COURSE_MAIN TCM
+		ON			A.TC_KEYNO = TCM.TCM_TC_KEYNO
+		LEFT JOIN	T_TOURISM_INFOMATION I
+		ON			TCM.TCM_TI_KEYNO = I.TI_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getThemeData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, TT.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_THEME TT
+		ON			A.TC_KEYNO = TT.TT_TC_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getLodgmentData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, L.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_LODGMENT L
+		ON			A.TC_KEYNO = L.TL_TC_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getrestaurnatData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, R.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_RESTAURANT R
+		ON			A.TC_KEYNO = R.TR_TC_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TG_getRoomList" resultType="hashmap">
+		SELECT		G.*
+		FROM		T_TOURISM_LODGMENT L
+		LEFT JOIN   T_TOURISM_GUESTROOM G
+		ON 			L.TL_KEYNO = G.TG_TL_KEYNO
+		WHERE 		L.TL_TC_KEYNO = #{TC_KEYNO}
+	</select>
+	
+	<select id="TM_getMenuList" resultType="hashmap">
+		SELECT		M.*
+		FROM		T_TOURISM_RESTAURANT R
+		LEFT JOIN   T_TOURISM_MENU M
+		ON 			R.TR_KEYNO = M.TM_TR_KEYNO
+		WHERE 		R.TR_TC_KEYNO = #{TC_KEYNO}
+	</select>
+	
+	<select id="TC_getculturalheritageData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, TCH.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_CULTURAL_HERITAGE TCH
+		ON			A.TC_KEYNO = TCH.TCH_TC_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	<select id="TC_getfestivalData" resultType="hashmap" resultMap="TOUR_MAP">
+		SELECT		A.*
+					, F.*
+					, B.UI_ID TC_REGID
+					, C.UI_ID TC_MODID
+					, (SELECT COUNT(*) FROM T_MENU_MANAGER WHERE MN_TOURKEY = A.TC_KEYNO) MENUYN
+		FROM		T_TOURISM_COMMON A
+		LEFT JOIN	T_TOURISM_FESTIVAL F
+		ON			A.TC_KEYNO = F.TF_TC_KEYNO
+		LEFT JOIN	T_USERINFO B
+		ON			A.TC_REGNM = B.UI_KEYNO
+		LEFT JOIN	T_USERINFO C
+		ON			A.TC_MODNM = C.UI_KEYNO
+		WHERE		TC_KEYNO	=	#{TC_KEYNO}
+		<if test="TC_USE != null and TC_USE != ''">
+		AND			TC_USE		=	#{TC_USE}
+		</if>
+	</select>
+	
+	
+	<insert id="TC_insertData">
+		INSERT INTO T_TOURISM_COMMON (
+			  TC_KEYNO
+			, TC_TITLE
+			, TC_SUBTITLE
+			, TC_TAG
+			, TC_THUMBNAIL
+			, TC_SUMMARY
+			, TC_CONTENTS
+			, TC_PLACE
+			, TC_ADDR
+			, TC_ADDR2
+			, TC_POST
+			, TC_CONTACT
+			, TC_MANAGER
+			, TC_DEPARTMENT
+			, TC_CONTACTS
+			, TC_LAT
+			, TC_LNG
+			, TC_DICTIONARY
+			, TC_HOME_URL
+			, TC_BLOG_URL
+			, TC_SNS_URL
+			, TC_RESERVATION_URL
+			, TC_WAY_JAGA
+			, TC_WAY_PUBLIC
+			, TC_WAY_GUIDE
+			, TC_TYPE
+			, TC_USE
+			, TC_SHOW_COLUMN
+			, TC_REGNM
+			, TC_REGDT
+		)
+		VALUES (
+			  #{TC_KEYNO}
+			, #{TC_TITLE}
+			, #{TC_SUBTITLE}
+			, #{TC_TAG}
+			, #{TC_THUMBNAIL}
+			, #{TC_SUMMARY}
+			, #{TC_CONTENTS}
+			, #{TC_PLACE}
+			, #{TC_ADDR}
+			, #{TC_ADDR2}
+			, #{TC_POST}
+			, #{TC_CONTACT}
+			, #{TC_MANAGER}
+			, #{TC_DEPARTMENT}
+			, #{TC_CONTACTS}
+			, #{TC_LAT}
+			, #{TC_LNG}
+			, #{TC_DICTIONARY}
+			, #{TC_HOME_URL}
+			, #{TC_BLOG_URL}
+			, #{TC_SNS_URL}
+			, #{TC_RESERVATION_URL}
+			, #{TC_WAY_JAGA}
+			, #{TC_WAY_PUBLIC}
+			, #{TC_WAY_GUIDE}
+			, #{TC_TYPE}
+			, #{TC_USE}
+			, #{TC_SHOW_COLUMN}
+			, #{TC_REGNM}
+			, SYSDATE
+		)
+	</insert>
+	
+	<update id="TC_updateData">
+		UPDATE 	T_TOURISM_COMMON
+		SET		TC_TITLE			=	#{TC_TITLE}
+			  , TC_SUBTITLE			=	#{TC_SUBTITLE}
+			  , TC_TAG				=	#{TC_TAG}
+			  , TC_THUMBNAIL		=	#{TC_THUMBNAIL}
+			  , TC_SUMMARY			=	#{TC_SUMMARY}
+			  , TC_CONTENTS			=	#{TC_CONTENTS}
+			  , TC_PLACE			=	#{TC_PLACE}
+			  , TC_ADDR				=	#{TC_ADDR}
+			  , TC_ADDR2			=	#{TC_ADDR2}
+			  , TC_POST				=	#{TC_POST}
+			  , TC_CONTACT			=	#{TC_CONTACT}
+			  , TC_MANAGER			=	#{TC_MANAGER}
+			  , TC_DEPARTMENT		=	#{TC_DEPARTMENT}
+			  , TC_CONTACTS			=	#{TC_CONTACTS}
+			  , TC_LAT				=	#{TC_LAT}
+			  , TC_LNG				=	#{TC_LNG}
+			  , TC_DICTIONARY		=	#{TC_DICTIONARY}
+			  , TC_HOME_URL			=	#{TC_HOME_URL}
+			  , TC_BLOG_URL			=	#{TC_BLOG_URL}
+			  , TC_SNS_URL			=	#{TC_SNS_URL}
+			  , TC_RESERVATION_URL	=	#{TC_RESERVATION_URL}
+			  , TC_WAY_JAGA			=	#{TC_WAY_JAGA}
+			  , TC_WAY_PUBLIC		=	#{TC_WAY_PUBLIC}
+			  , TC_WAY_GUIDE		=	#{TC_WAY_GUIDE}
+			  , TC_TYPE				=	#{TC_TYPE}
+			  , TC_USE				=	#{TC_USE}
+			  , TC_SHOW_COLUMN		=	#{TC_SHOW_COLUMN}
+			  , TC_MODNM			=	#{TC_MODNM}
+			  , TC_MODDT			=	SYSDATE
+		WHERE	TC_KEYNO			=	#{TC_KEYNO}
+	</update>
+	
+	
+	<update id="TC_deleteData">
+		UPDATE 	T_TOURISM_COMMON
+		SET		TC_USE				=	#{TC_USE}
+		WHERE	TC_KEYNO			=	#{TC_KEYNO}
+	</update>
+	
+	
+	
+	
+	<select id="TIM_getList" resultType="hashmap">
+		SELECT		A.*
+					, NVL2(FS_KEYNO,('/resources/img/upload/'||FS_FOLDER||FS_CHANGENM||'.'||FS_EXT),'') FS_PATH
+					, FS_ORINM
+					, FS_FM_KEYNO TIM_FM_KEYNO
+		FROM		T_TOURISM_IMAGE A
+		LEFT JOIN	T_COMMON_FILE_SUB B
+		ON			A.TIM_FS_KEYNO = B.FS_KEYNO
+		WHERE		A.TIM_TC_KEYNO = #{TC_KEYNO}
+		ORDER BY	TIM_ORDER
+	</select>
+	
+	<select id="TIM_getMenuList" resultType="hashmap">
+		SELECT		A.*
+					, NVL2(FS_KEYNO,('/resources/img/upload/'||FS_FOLDER||FS_CHANGENM||'.'||FS_EXT),'') FS_PATH
+					, FS_ORINM
+					, FS_FM_KEYNO TIM_FM_KEYNO
+		FROM		T_TOURISM_IMAGE A
+		LEFT JOIN	T_TOURISM_MENU M
+		ON			A.TIM_TM_KEYNO = M.TM_KEYNO
+		LEFT JOIN 	T_TOURISM_RESTAURANT R
+		ON			M.TM_TR_KEYNO = R.TR_KEYNO
+		LEFT JOIN	T_COMMON_FILE_SUB B
+		ON			A.TIM_FS_KEYNO 	 = B.FS_KEYNO
+		WHERE		R.TR_TC_KEYNO	 = #{TC_KEYNO}
+		ORDER BY	TIM_ORDER
+	</select>
+	
+	<select id="TIM_getRoomList" resultType="hashmap">
+		SELECT		A.*
+					, NVL2(FS_KEYNO,('/resources/img/upload/'||FS_FOLDER||FS_CHANGENM||'.'||FS_EXT),'') FS_PATH
+					, FS_ORINM
+					, FS_FM_KEYNO TIM_FM_KEYNO
+		FROM		T_TOURISM_IMAGE A
+		LEFT JOIN	T_TOURISM_GUESTROOM G
+		ON			A.TIM_TG_KEYNO = G.TG_KEYNO
+		LEFT JOIN 	T_TOURISM_LODGMENT L
+		ON			G.TG_TL_KEYNO = L.TL_KEYNO
+		LEFT JOIN	T_COMMON_FILE_SUB B
+		ON			A.TIM_FS_KEYNO 	 = B.FS_KEYNO
+		WHERE		L.TL_TC_KEYNO	 = #{TC_KEYNO}
+		ORDER BY	TIM_ORDER
+	</select>
+	
+	<insert id="TIM_insertData">
+		INSERT ALL
+		<foreach collection="imgList" item="item">
+		INTO T_TOURISM_IMAGE (
+			  TIM_TC_KEYNO
+			, TIM_TM_KEYNO
+			, TIM_TG_KEYNO
+			, TIM_FS_KEYNO
+			, TIM_ORDER
+		)
+		VALUES
+		(       
+			  #{item.TIM_TC_KEYNO}
+			, #{item.TIM_TM_KEYNO}
+			, #{item.TIM_TG_KEYNO}
+			, #{item.TIM_FS_KEYNO}
+			, #{item.TIM_ORDER}
+		)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+	
+	<delete id="TIM_deleteData">
+		DELETE FROM	T_TOURISM_IMAGE
+		WHERE	TIM_TC_KEYNO = #{TC_KEYNO}
+	</delete>
+	
+	
+	
+	<sql id="TC_getDestinationtListBody">
+		FROM (
+			SELECT AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TA_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+			 		) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+						, D2.SC_CODENM TA_DIVISION_NAME  
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE, 'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_DESTINATION D
+					 ON			T.TC_KEYNO = D.TA_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB D2
+					 ON			D.TA_DIVISION = D2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'			
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TA_DIVISION_NAME	=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'			
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'			
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TA_DIVISION_NAME	=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getDestinationtListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getDestinationtListBody"/>
+    </select>
+    
+    <select id="TC_getDestinationtList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getDestinationtListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>
+    
+	<sql id="TC_getCoursetListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TA_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+			 		) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.* 		
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+						, C2.SC_CODENM TCM_TYPE_NAME  
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+						, DECODE(NVL(TCM_TIME,''), NULL,'정보없음',TCM_TIME) TCM_TIME
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_COURSE_MAIN C
+					 ON			T.TC_KEYNO = C.TCM_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB C2
+					 ON			C.TCM_TYPE = C2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TA_DIVISION_NAME	=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TA_DIVISION_NAME	=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getCoursetListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getCoursetListBody"/>
+    </select>
+    
+    <select id="TC_getCoursetList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getCoursetListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>
+    
+    
+    <insert id="TA_insertData">
+    	INSERT INTO T_TOURISM_DESTINATION (
+			  TA_KEYNO
+			, TA_TC_KEYNO
+			, TA_TI_KEYNO
+			, TA_DIVISION
+			, TA_GIGAN
+			, TA_YAGAN
+			, TA_SEASON
+			, TA_SAN_SOGCHING
+			, TA_SAN_SCALE
+			, TA_SAN_HANJANAME
+			, TA_BEACH_AREA
+			, TA_BEACH_LONG
+			, TA_BEACH_WIDTH
+			, TA_BEACH_SHAPE
+			, TA_BEACH_SLOPE
+			, TA_BEACH_SAFE_DISTANCE
+			, TA_SUM_AREA
+			, TA_SUM_GAGU_CNT
+			, TA_SUM_TYPE
+			, TA_SUM_COASTLINE
+			, TA_TIME
+		)
+		VALUES (
+			  #{TA_KEYNO}
+			, #{TC_KEYNO}
+			, #{TI_KEYNO}
+			, #{TA_DIVISION}
+			, #{TA_GIGAN}
+			, #{TA_YAGAN}
+			, #{TA_SEASON}
+			, #{TA_SAN_SOGCHING}
+			, #{TA_SAN_SCALE}
+			, #{TA_SAN_HANJANAME}
+			, #{TA_BEACH_AREA}
+			, #{TA_BEACH_LONG}
+			, #{TA_BEACH_WIDTH}
+			, #{TA_BEACH_SHAPE}
+			, #{TA_BEACH_SLOPE}
+			, #{TA_BEACH_SAFE_DISTANCE}
+			, #{TA_SUM_AREA}
+			, #{TA_SUM_GAGU_CNT}
+			, #{TA_SUM_TYPE}
+			, #{TA_SUM_COASTLINE}
+			, #{TA_TIME}
+		)
+    </insert>
+    
+    <update id="TA_updateData">
+		UPDATE 	T_TOURISM_DESTINATION
+		SET		TA_DIVISION				=	#{TA_DIVISION}
+			  , TA_GIGAN				=	#{TA_GIGAN}
+			  , TA_YAGAN				=	#{TA_YAGAN}
+			  , TA_SEASON				=	#{TA_SEASON}
+			  , TA_SAN_SOGCHING			=	#{TA_SAN_SOGCHING}
+			  , TA_SAN_SCALE			=	#{TA_SAN_SCALE}
+			  , TA_SAN_HANJANAME		=	#{TA_SAN_HANJANAME}
+			  , TA_BEACH_AREA			=	#{TA_BEACH_AREA}
+			  , TA_BEACH_LONG			=	#{TA_BEACH_LONG}
+			  , TA_BEACH_WIDTH			=	#{TA_BEACH_WIDTH}
+			  , TA_BEACH_SHAPE			=	#{TA_BEACH_SHAPE}
+			  , TA_BEACH_SLOPE			=	#{TA_BEACH_SLOPE}
+			  , TA_BEACH_SAFE_DISTANCE	=	#{TA_BEACH_SAFE_DISTANCE}
+			  , TA_SUM_AREA				=	#{TA_SUM_AREA}
+			  , TA_SUM_GAGU_CNT			=	#{TA_SUM_GAGU_CNT}
+			  , TA_SUM_TYPE				=	#{TA_SUM_TYPE}
+			  , TA_SUM_COASTLINE		=	#{TA_SUM_COASTLINE}
+			  , TA_TIME					=	#{TA_TIME}
+		WHERE	TA_KEYNO				=	#{TA_KEYNO}
+	</update>
+	
+	
+	<insert id="TI_insertData">
+    	INSERT INTO T_TOURISM_INFOMATION (
+			  TI_KEYNO
+			, TI_TIME
+			, TI_DETAIL
+			, TI_ENTRANCE_FEE
+			, TI_CLOSED_DAY
+			, TI_PARKING_YN
+			, TI_PARKING_PLACE
+			, TI_CONVENIENCE_SISEOL
+			, TI_BUDAE_SISEOL
+			, TI_ETC_SISEOL
+			, TI_ETC_DETAIL
+			, TI_LANG_SERVICE
+		)
+		VALUES (
+			  #{TI_KEYNO}
+			, #{TI_TIME}
+			, #{TI_DETAIL}
+			, #{TI_ENTRANCE_FEE}
+			, #{TI_CLOSED_DAY}
+			, #{TI_PARKING_YN}
+			, #{TI_PARKING_PLACE}
+			, #{TI_CONVENIENCE_SISEOL}
+			, #{TI_BUDAE_SISEOL}
+			, #{TI_ETC_SISEOL}
+			, #{TI_ETC_DETAIL}
+			, #{TI_LANG_SERVICE}
+		)
+    </insert>
+    
+    <update id="TI_updateData">
+		UPDATE 	T_TOURISM_INFOMATION
+		SET		TI_TIME					=	#{TI_TIME}
+			  , TI_DETAIL				=	#{TI_DETAIL}
+			  , TI_ENTRANCE_FEE			=	#{TI_ENTRANCE_FEE}
+			  , TI_CLOSED_DAY			=	#{TI_CLOSED_DAY}
+			  , TI_PARKING_YN			=	#{TI_PARKING_YN}
+			  , TI_PARKING_PLACE		=	#{TI_PARKING_PLACE}
+			  , TI_CONVENIENCE_SISEOL	=	#{TI_CONVENIENCE_SISEOL}
+			  , TI_BUDAE_SISEOL			=	#{TI_BUDAE_SISEOL}
+			  , TI_ETC_SISEOL			=	#{TI_ETC_SISEOL}
+			  , TI_ETC_DETAIL			=	#{TI_ETC_DETAIL}
+			  , TI_LANG_SERVICE			=	#{TI_LANG_SERVICE}
+		WHERE	TI_KEYNO				=	#{TI_KEYNO}
+	</update>
+	
+	<!-- 테마 -->
+	<sql id="TC_getThemeListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TT_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*		
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+					    , L2.SC_CODENM TT_DIVISION_NAME
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_THEME L
+					 ON			T.TC_KEYNO = L.TT_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB L2
+					 ON			L.TT_DIVISION = L2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TT_DIVISION_NAME		=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TT_DIVISION_NAME		=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getThemeListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getThemeListBody"/>
+    </select>
+    
+    <select id="TC_getThemeList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getThemeListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>		
+		
+	 <insert id="TT_insertData">
+    	INSERT INTO T_TOURISM_THEME (
+			  TT_KEYNO
+			, TT_TC_KEYNO
+			, TT_TI_KEYNO
+			, TT_DIVISION
+			, TT_APPLY
+			, TT_CHE_DIVISION
+			, TT_FAX
+			, TT_TARGET
+			, TT_BAE_NAME
+			, TT_BAE_CAPTAIN
+			, TT_INWON
+			, TT_BAE_TON
+			, TT_BAE_START_TIME
+			, TT_TIME
+			, TT_BAE_PLACE
+			, TT_BAE_END_TIME
+			, TT_COURCE
+			, TT_WALK_DISTANCE
+			, TT_START_PLACE
+			, TT_END_PLACE
+			, TT_WALK_NANIDO
+			, TT_WALK_BOLGEOLI
+			, TT_TEMPLE_GUIDE
+			, TT_TEMPLE_BOOKS_WAY
+			, TT_TEMPLE_PROGRAM_NAME
+			, TT_TEMPLE_PROGRAM_CONTANT
+			, TT_TEMPLE_EFFECT
+			, TT_TOWN_ORIGIN
+			, TT_TOWN_GREETING
+			, TT_TOWN_SPECIALTY
+			, TT_TOWN_KEYNO
+			, TT_TOWN_SALGEOLI
+			, TT_SUP_MANAGE
+			, TT_SUP_KINDS
+		)
+		VALUES (
+			  #{TT_KEYNO}
+			, #{TC_KEYNO}
+			, #{TI_KEYNO}
+			, #{TT_DIVISION}
+			, #{TT_APPLY}
+			, #{TT_CHE_DIVISION}
+			, #{TT_FAX}
+			, #{TT_TARGET}
+			, #{TT_BAE_NAME}
+			, #{TT_BAE_CAPTAIN}
+			, #{TT_INWON}
+			, #{TT_BAE_TON}
+			, #{TT_BAE_START_TIME}
+			, #{TT_TIME}
+			, #{TT_BAE_PLACE}
+			, #{TT_BAE_END_TIME}
+			, #{TT_COURCE}
+			, #{TT_WALK_DISTANCE}
+			, #{TT_START_PLACE}
+			, #{TT_END_PLACE}
+			, #{TT_WALK_NANIDO}
+			, #{TT_WALK_BOLGEOLI}
+			, #{TT_TEMPLE_GUIDE}
+			, #{TT_TEMPLE_BOOKS_WAY}
+			, #{TT_TEMPLE_PROGRAM_NAME}
+			, #{TT_TEMPLE_PROGRAM_CONTANT}
+			, #{TT_TEMPLE_EFFECT}
+			, #{TT_TOWN_ORIGIN}
+			, #{TT_TOWN_GREETING}
+			, #{TT_TOWN_SPECIALTY}
+			, #{TT_TOWN_KEYNO}
+			, #{TT_TOWN_SALGEOLI}
+			, #{TT_SUP_MANAGE}
+			, #{TT_SUP_KINDS}
+		)
+    </insert>
+    
+     <update id="TT_updateData">
+		UPDATE 	T_TOURISM_THEME		
+		SET		TT_DIVISION					=	#{TT_DIVISION}
+		      , TT_APPLY					=	#{TT_APPLY}
+		      , TT_CHE_DIVISION				=	#{TT_CHE_DIVISION}
+		      , TT_FAX						=	#{TT_FAX}
+		      , TT_TARGET					=	#{TT_TARGET}
+		      , TT_BAE_NAME					=	#{TT_BAE_NAME}
+		      , TT_BAE_CAPTAIN				=	#{TT_BAE_CAPTAIN}
+		      , TT_INWON					=	#{TT_INWON}
+		      , TT_BAE_TON					=	#{TT_BAE_TON}
+		      , TT_BAE_START_TIME			=	#{TT_BAE_START_TIME}
+		      , TT_TIME						=	#{TT_TIME}
+		      , TT_BAE_PLACE				=	#{TT_BAE_PLACE}
+		      , TT_BAE_END_TIME				=	#{TT_BAE_END_TIME}
+		      , TT_COURCE					=	#{TT_COURCE}
+		      , TT_WALK_DISTANCE			=	#{TT_WALK_DISTANCE}
+		      , TT_START_PLACE				=	#{TT_START_PLACE}
+		      , TT_END_PLACE				=	#{TT_END_PLACE}
+		      , TT_WALK_NANIDO				=	#{TT_WALK_NANIDO}
+		      , TT_TEMPLE_GUIDE				=	#{TT_TEMPLE_GUIDE}
+		      , TT_TEMPLE_BOOKS_WAY			=	#{TT_TEMPLE_BOOKS_WAY}
+		      , TT_TEMPLE_PROGRAM_NAME		=	#{TT_TEMPLE_PROGRAM_NAME}
+		      , TT_TEMPLE_PROGRAM_CONTANT	=	#{TT_TEMPLE_PROGRAM_CONTANT}
+		      , TT_TEMPLE_EFFECT			=	#{TT_TEMPLE_EFFECT}
+		      , TT_TOWN_ORIGIN				=	#{TT_TOWN_ORIGIN}
+		      , TT_TOWN_GREETING			=	#{TT_TOWN_GREETING}
+		      , TT_TOWN_SPECIALTY			=	#{TT_TOWN_SPECIALTY}
+		      , TT_TOWN_SALGEOLI			=	#{TT_TOWN_SALGEOLI}
+		      , TT_SUP_MANAGE				=	#{TT_SUP_MANAGE}
+		      , TT_SUP_KINDS				=	#{TT_SUP_KINDS}
+		WHERE	TT_KEYNO					=	#{TT_KEYNO}
+	</update>
+	
+		
+	<!-- 숙박 -->
+	<sql id="TC_getLodgmentListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TL_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+		FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*	
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+					    , L2.SC_CODENM TL_DIVISION_NAME
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_LODGMENT L
+					 ON			T.TC_KEYNO = L.TL_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB L2
+					 ON			L.TL_DIVISION = L2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TL_DIVISION_NAME		=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TL_DIVISION_NAME		=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getLodgmentListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getLodgmentListBody"/>
+    </select>
+    
+    <select id="TC_getLodgmentList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getLodgmentListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>	
+    
+     <insert id="TL_insertData">
+    	INSERT INTO T_TOURISM_LODGMENT (
+			  TL_KEYNO
+			, TL_DIVISION
+			, TL_TEL
+			, TL_IBSIL_TIME
+			, TL_TOESIL_TIME
+			, TL_GUBI_SISEOL
+			, TL_USE_JOGEON
+			, TL_USE_RULE
+			, TL_BREAKFAST_YN
+			, TL_BEDROOM_CNT
+			, TL_ONDOLROOM_CNT
+			, TL_GROUPROOM_CNT
+			, TL_CAMPING_SISEOL
+			, TL_WIFI_YN
+			, TL_TC_KEYNO
+			, TL_PRICE_CONTENT
+		)
+		VALUES (
+			  #{TL_KEYNO}
+			, #{TL_DIVISION}
+			, #{TL_TEL}
+			, #{TL_IBSIL_TIME}
+			, #{TL_TOESIL_TIME}
+			, #{TL_GUBI_SISEOL}
+			, #{TL_USE_JOGEON}
+			, #{TL_USE_RULE}
+			, #{TL_BREAKFAST_YN}
+			, #{TL_BEDROOM_CNT}
+			, #{TL_ONDOLROOM_CNT}
+			, #{TL_GROUPROOM_CNT}
+			, #{TL_CAMPING_SISEOL}
+			, #{TL_WIFI_YN}
+			, #{TC_KEYNO}
+			, #{TL_PRICE_CONTENT}
+		)
+    </insert>
+    
+    <delete id="TL_deleteData">
+		DELETE 	FROM	T_TOURISM_GUESTROOM
+		WHERE	TG_TL_KEYNO = #{TL_KEYNO}
+	</delete>
+	
+	<delete id="TIM_TG_deleteData">
+		DELETE 	FROM	T_TOURISM_IMAGE
+		WHERE	TIM_TG_KEYNO = #{TG_KEYNO}
+	</delete>
+	
+    <update id="TL_updateData">
+		UPDATE 	T_TOURISM_LODGMENT
+		SET		TL_DIVISION			= 	#{TL_DIVISION}
+			  , TL_TEL				= 	#{TL_TEL}
+			  , TL_IBSIL_TIME		= 	#{TL_IBSIL_TIME}
+			  , TL_TOESIL_TIME		= 	#{TL_TOESIL_TIME}
+			  , TL_GUBI_SISEOL		= 	#{TL_GUBI_SISEOL}
+			  , TL_USE_JOGEON		= 	#{TL_USE_JOGEON}
+			  , TL_USE_RULE			= 	#{TL_USE_RULE}
+			  , TL_BREAKFAST_YN		= 	#{TL_BREAKFAST_YN}
+			  , TL_BEDROOM_CNT		= 	#{TL_BEDROOM_CNT}
+			  , TL_ONDOLROOM_CNT	= 	#{TL_ONDOLROOM_CNT}
+			  , TL_GROUPROOM_CNT	= 	#{TL_GROUPROOM_CNT}
+			  , TL_CAMPING_SISEOL	= 	#{TL_CAMPING_SISEOL}
+			  , TL_WIFI_YN			= 	#{TL_WIFI_YN}
+			  , TL_PRICE_CONTENT	= 	#{TL_PRICE_CONTENT}
+		WHERE	TL_KEYNO			=	#{TL_KEYNO}
+	</update>
+	
+	 <insert id="TG_insertData">
+		INSERT ALL
+		<foreach collection="roomList" item="item">
+		INTO T_TOURISM_GUESTROOM (
+			  TG_KEYNO
+			, TG_TL_KEYNO
+			, TG_NAME
+			, TG_INWON_MIN_CNT
+			, TG_INWON_MAX_CNT
+			, TG_SIZE_METER
+			, TG_SIZE_FLAT
+			, TG_PRICE_CONTENT
+			, TG_SUMMARY
+			, TG_IMG
+			, TG_ORDER
+		)
+		VALUES
+		(       
+			  #{item.TG_KEYNO}
+			, #{item.TG_TL_KEYNO}
+			, #{item.TG_NAME}
+			, #{item.TG_INWON_MIN_CNT}
+			, #{item.TG_INWON_MAX_CNT}
+			, #{item.TG_SIZE_METER}
+			, #{item.TG_SIZE_FLAT}
+			, #{item.TG_PRICE_CONTENT}
+			, #{item.TG_SUMMARY}
+			, #{item.TG_IMG}
+			, #{item.TG_ORDER}
+		)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+	
+	<!-- 식당 -->
+	<sql id="TC_getRestaurnatListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER(
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TR_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+					    , R2.SC_CODENM TR_DIVISION_NAME
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_RESTAURANT R
+					 ON			T.TC_KEYNO = R.TR_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB R2
+					 ON			R.TR_DIVISION = R2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TR_DIVISION_NAME	=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TR_DIVISION_NAME	=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getRestaurnatListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getRestaurnatListBody"/>
+    </select>
+    
+    <select id="TC_getRestaurnatList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getRestaurnatListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>	
+    
+    <insert id="TR_insertData">
+    	INSERT INTO T_TOURISM_RESTAURANT (
+			  TR_KEYNO
+			, TR_DIVISION
+			, TR_TC_KEYNO
+			, TR_START_TIME
+			, TR_END_TIME
+			, TR_GUBI_SISEOL
+			, TR_FOOD_TYPE
+			, TR_PACKING_YN
+			, TR_HOLIDAY
+			, TR_PETS_YN
+			, TR_WIFI_YN
+			, TR_STROLLER_YN
+			, TR_ROOM_CNT
+			, TR_SMOKING_CNT
+			, TR_PARKING
+			, TR_SEAT_CNT
+			, TR_BOOKING
+		)
+		VALUES (
+			  #{TR_KEYNO}
+			, #{TR_DIVISION}
+			, #{TC_KEYNO}
+			, #{TR_START_TIME}
+			, #{TR_END_TIME}
+			, #{TR_GUBI_SISEOL}
+			, #{TR_FOOD_TYPE}
+			, #{TR_PACKING_YN}
+			, #{TR_HOLIDAY}
+			, #{TR_PETS_YN}
+			, #{TR_WIFI_YN}
+			, #{TR_STROLLER_YN}
+			, #{TR_ROOM_CNT}
+			, #{TR_SMOKING_CNT}
+			, #{TR_PARKING}
+			, #{TR_SEAT_CNT}
+			, #{TR_BOOKING}
+		)
+    </insert>
+    
+    <update id="TR_updateData">
+		UPDATE 	 T_TOURISM_RESTAURANT
+		SET		 TR_DIVISION		= 	#{TR_DIVISION}
+				,TR_START_TIME		= 	#{TR_START_TIME}
+				,TR_END_TIME		= 	#{TR_END_TIME}
+				,TR_GUBI_SISEOL		= 	#{TR_GUBI_SISEOL}
+				,TR_FOOD_TYPE		= 	#{TR_FOOD_TYPE}
+				,TR_PACKING_YN		= 	#{TR_PACKING_YN}
+				,TR_HOLIDAY			= 	#{TR_HOLIDAY}
+				,TR_PETS_YN			= 	#{TR_PETS_YN}
+				,TR_WIFI_YN			= 	#{TR_WIFI_YN}
+				,TR_STROLLER_YN		= 	#{TR_STROLLER_YN}
+				,TR_ROOM_CNT		= 	#{TR_ROOM_CNT}
+				,TR_SMOKING_CNT		= 	#{TR_SMOKING_CNT}
+				,TR_PARKING			= 	#{TR_PARKING}
+				,TR_SEAT_CNT		= 	#{TR_SEAT_CNT}
+				,TR_BOOKING			= 	#{TR_BOOKING}
+		WHERE	 TR_KEYNO			=	#{TR_KEYNO}
+	</update>
+    
+    <insert id="TM_insertData">
+		INSERT ALL
+		<foreach collection="menuList" item="item">
+		INTO T_TOURISM_MENU (
+			  TM_KEYNO
+			, TM_TR_KEYNO
+			, TM_NAME
+			, TM_PRICE
+			, TM_IMG
+			, TM_SUMMARY
+			, TM_ORDER
+			, TM_MAINYN
+		)
+		VALUES
+		(       
+			  #{item.TM_KEYNO}
+			, #{item.TM_TR_KEYNO}
+			, #{item.TM_NAME}
+			, #{item.TM_PRICE}
+			, #{item.TM_IMG}
+			, #{item.TM_SUMMARY}
+			, #{item.TM_ORDER}
+			, #{item.TM_MAINYN}
+		)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+	
+	<delete id="TM_deleteData">
+		DELETE 	FROM	T_TOURISM_MENU
+		WHERE	TM_TR_KEYNO = #{TR_KEYNO}
+	</delete>
+	
+	<delete id="TIM_TM_deleteData">
+		DELETE 	FROM	T_TOURISM_IMAGE
+		WHERE	TIM_TM_KEYNO = #{TM_KEYNO}
+	</delete>
+	
+	<!-- 문화재 -->
+	<sql id="TC_getCulturalHeritageListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TCH_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+					    , L2.SC_CODENM TCH_DIVISION_NAME
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_CULTURAL_HERITAGE L
+					 ON			T.TC_KEYNO = L.TCH_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB L2
+					 ON			L.TCH_DIVISION = L2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TCH_DIVISION_NAME	=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TCH_DIVISION_NAME	=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getCulturalHeritageListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getCulturalHeritageListBody"/>
+    </select>
+    
+    <select id="TC_getCulturalHeritageList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getCulturalHeritageListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>	
+    
+    <insert id="TCH_insertData">
+    	INSERT INTO T_TOURISM_CULTURAL_HERITAGE (
+			  TCH_KEYNO
+			, TCH_TC_KEYNO
+			, TCH_TI_KEYNO
+			, TCH_DIVISION
+			, TCH_TYPE
+			, TCH_LOCATION
+			, TCH_JIJEONG_DAY
+			, TCH_JIJEONG_NUM
+			, TCH_ERA
+		)
+		VALUES (
+			  #{TCH_KEYNO}
+			, #{TC_KEYNO}
+			, #{TI_KEYNO}
+			, #{TCH_DIVISION}
+			, #{TCH_TYPE}
+			, #{TCH_LOCATION}
+			, #{TCH_JIJEONG_DAY}
+			, #{TCH_JIJEONG_NUM}
+			, #{TCH_ERA}
+		)
+    </insert>
+    
+     <update id="TCH_updateData">
+		UPDATE 	T_TOURISM_CULTURAL_HERITAGE
+		SET		TCH_DIVISION		=	#{TCH_DIVISION}
+			  , TCH_TYPE			=	#{TCH_TYPE}
+			  , TCH_LOCATION		=	#{TCH_LOCATION}
+			  , TCH_JIJEONG_DAY		=	#{TCH_JIJEONG_DAY}
+			  , TCH_JIJEONG_NUM		=	#{TCH_JIJEONG_NUM}
+			  , TCH_ERA				=	#{TCH_ERA}
+		WHERE	TCH_KEYNO			=	#{TCH_KEYNO}
+	</update>
+	
+    <!-- 축제 -->
+	<sql id="TC_getFestivalListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER(
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	TF_DIVISION_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_UP_CNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	TC_REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*
+				FROM (
+					SELECT 
+						  T.TC_KEYNO
+					    , L2.SC_CODENM TF_DIVISION_NAME
+						, T.TC_TITLE
+						, T.TC_UP_CNT
+						, DECODE(TC_USE,'Y','O','X') TC_USE
+						, UI_ID
+						, TO_CHAR(TC_REGDT,'yyyy-MM-dd HH24:mi:ss') TC_REGDT 
+					 FROM 		T_TOURISM_COMMON T
+					 LEFT JOIN	T_TOURISM_FESTIVAL L
+					 ON			T.TC_KEYNO = L.TF_TC_KEYNO
+					 LEFT JOIN	T_COMMON_CODE_SUB L2
+					 ON			L.TF_DIVISION = L2.SC_KEYNO
+					 LEFT JOIN 	T_USERINFO U
+					 ON			T.TC_REGNM 	= 	U.UI_KEYNO
+					 WHERE		T.TC_TYPE	=	#{TC_TYPE}
+					 AND		T.TC_USE	!= 	'D'	
+					 ORDER BY 	T.TC_REGDT
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+ 		AND		TF_DIVISION_NAME	=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TF_DIVISION_NAME	=	#{item.searchKeyword} 	OR
+ 				TC_TITLE 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_UP_CNT				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_REGDT 				LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TC_getFestivalListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TC_getFestivalListBody"/>
+    </select>
+    
+    <select id="TC_getFestivalList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TC_getFestivalListBody"/>
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>
+    
+     <insert id="TF_insertData">
+    	INSERT INTO T_TOURISM_FESTIVAL (
+			  TF_KEYNO
+			, TF_TC_KEYNO
+			, TF_TI_KEYNO
+			, TF_START_TIME
+			, TF_END_TIME
+			, TF_JUGWAN
+			, TF_PURPOSE
+			, TF_PROGRAM
+			, TF_TERM
+			, TF_NIGHT_STARTIME
+			, TF_NIGHT_ENDTIME
+			, TF_DIVISION
+		)
+		VALUES (
+			  #{TF_KEYNO}
+			, #{TC_KEYNO}
+			, #{TI_KEYNO}
+			, #{TF_START_TIME}
+			, #{TF_END_TIME}
+			, #{TF_JUGWAN}
+			, #{TF_PURPOSE}
+			, #{TF_PROGRAM}
+			, #{TF_TERM}
+			, #{TF_NIGHT_STARTIME}
+			, #{TF_NIGHT_ENDTIME}
+			, #{TF_DIVISION}
+		)
+    </insert>
+    
+     <update id="TF_updateData">
+		UPDATE 	T_TOURISM_FESTIVAL
+		SET		  TF_START_TIME			=	#{TF_START_TIME}
+				, TF_END_TIME			=	#{TF_END_TIME}
+				, TF_JUGWAN				=	#{TF_JUGWAN}
+				, TF_PURPOSE			=	#{TF_PURPOSE}
+				, TF_PROGRAM			=	#{TF_PROGRAM}
+				, TF_TERM				=	#{TF_TERM}
+				, TF_NIGHT_STARTIME		=	#{TF_NIGHT_STARTIME}
+				, TF_NIGHT_ENDTIME		=	#{TF_NIGHT_ENDTIME}
+				, TF_DIVISION			=	#{TF_DIVISION}
+		WHERE	  TF_KEYNO				=	#{TF_KEYNO}
+	</update>	
+	
+    <sql id="TIM_getPagingListBody">
+		FROM (
+			SELECT	AB.*
+					, ROW_NUMBER() OVER (
+					<choose>
+				 		<when test="orderBy == 1">
+				 		ORDER BY	COUNT ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 2">
+				 		ORDER BY	FS_ORINM ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 3">
+				 		ORDER BY	TC_TYPE_NAME ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 4">
+				 		ORDER BY	TC_TITLE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 5">
+				 		ORDER BY	TC_USE ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 6">
+				 		ORDER BY	UI_ID ${sortDirect}
+				 		</when>
+				 		<when test="orderBy == 7">
+				 		ORDER BY	REGDT ${sortDirect}
+				 		</when>
+				 		<otherwise>
+				 		ORDER BY 	COUNT DESC
+				 		</otherwise>
+			 		</choose>
+					) RNUM
+			FROM(
+			 	SELECT 	ROWNUM "COUNT", B.*
+				FROM (
+					SELECT		  SC_CODENM TC_TYPE_NAME
+								, TC_TITLE
+								, DECODE(TC_USE,'Y','O','X') TC_USE
+								, TC_KEYNO
+								, TC_TYPE
+								, FS.*
+								, TIM.*
+								, NVL2(FS_KEYNO,('/resources/img/upload/'||FS_FOLDER||FS_CHANGENM||'.'||FS_EXT),'') FS_PATH
+								, TO_CHAR(FS_REGDT,'yyyy-MM-dd HH24:mi:ss') REGDT
+								, UI_ID
+					FROM		T_TOURISM_IMAGE TIM,T_TOURISM_COMMON TC,T_COMMON_FILE_SUB FS,T_COMMON_CODE_SUB SC, T_USERINFO UI
+					WHERE		TIM.TIM_TC_KEYNO 	= 	TC.TC_KEYNO
+					AND			TIM.TIM_FS_KEYNO 	= 	FS.FS_KEYNO
+					AND			TC.TC_TYPE 			= 	SC.SC_KEYNO
+					AND			FS.FS_REGNM			=	UI.UI_KEYNO
+					AND			TC.TC_USE			!=	'D'
+					ORDER BY	FS_KEYNO
+				) B
+			) AB	
+		WHERE 1=1
+		<if test="searchList != null">
+	 	<foreach collection="searchList" item="item">
+	 		<choose>
+	 			<when test='item.searchIndex.equals("1")'>
+ 		AND		COUNT 					LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("2")'>
+		AND		FS_ORINM 				LIKE '%' || #{item.searchKeyword} || '%'
+	 			</when>
+	 			<when test='item.searchIndex.equals("3")'>
+ 		AND		TC_TYPE_NAME		=	#{item.searchKeyword}					
+	 			</when>
+	 			<when test='item.searchIndex.equals("4")'>
+ 		AND		TC_TITLE				LIKE '%' || #{item.searchKeyword} || '%'				
+	 			</when>
+	 			<when test='item.searchIndex.equals("5")'>
+ 		AND		TC_USE				=	#{item.searchKeyword}						
+	 			</when>
+	 			<when test='item.searchIndex.equals("6")'>
+ 		AND		UI_ID 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("7")'>
+ 		AND		REGDT 					LIKE '%' || #{item.searchKeyword} || '%'					
+	 			</when>
+	 			<when test='item.searchIndex.equals("all")'>
+ 		AND (
+ 				COUNT 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				FS_ORINM 				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_TYPE_NAME		=	#{item.searchKeyword} 	OR
+ 				TC_TITLE				LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				TC_USE				=	#{item.searchKeyword} 	OR
+ 				UI_ID 					LIKE '%' || #{item.searchKeyword} || '%' 	OR
+ 				REGDT 					LIKE '%' || #{item.searchKeyword} || '%' 	
+ 		)							
+	 			</when>
+	 		</choose>
+	 	</foreach>
+	 	</if>
+		)AA
+	
+	</sql>
+  	
+    <select id="TIM_getPagingListCnt" resultType="int">
+		SELECT	COUNT(*)
+		<include  refid="TIM_getPagingListBody"/>
+    </select>
+    
+    <select id="TIM_getPagingList" resultMap="ResultMap.rownumHashMap">
+    	SELECT	* 
+		<include  refid="TIM_getPagingListBody"/>
+		
+		<if test=" recordCountPerPage != 0">
+		WHERE 1=1
+		AND 	RNUM BETWEEN  #{firstIndex} AND #{lastIndex} 
+		</if>  
+    </select>
+    
+    <insert id="TCM_insertData">
+    	INSERT INTO T_TOURISM_COURSE_MAIN (
+			  TCM_KEYNO
+			, TCM_TC_KEYNO
+			, TCM_TI_KEYNO
+			, TCM_SEASON
+			, TCM_TIME
+			, TCM_TYPE
+		)
+		VALUES (
+			  #{TCM_KEYNO}
+			, #{TC_KEYNO}
+			, #{TI_KEYNO}
+			, #{TCM_SEASON}
+			, #{TCM_TIME}
+			, #{TCM_TYPE}
+		)
+    </insert>
+    
+    <update id="TCM_updateData">
+		UPDATE 	  T_TOURISM_COURSE_MAIN
+		SET		  TCM_SEASON		= 	#{TCM_SEASON}
+				, TCM_TIME			= 	#{TCM_TIME}
+				, TCM_TYPE			= 	#{TCM_TYPE}
+		WHERE	  TCM_KEYNO			=	#{TCM_KEYNO}
+	</update>
+	
+	<insert id="TCS_insertData">
+		INSERT ALL
+		<foreach collection="courseList" item="item">
+		INTO T_TOURISM_COURSE_SUB (
+			  TCM_KEYNO
+			, TCS_LAT
+			, TCS_LNG
+			, TCS_LEVEL
+			, TCS_COMMENT
+			, TCS_TYPE
+			, TCS_TYPE_KEYNO
+			, TCS_TITLE
+		)
+		VALUES
+		(       
+			  #{TCM_KEYNO}
+			, #{item.TCS_LAT}
+			, #{item.TCS_LNG}
+			, #{item.TCS_LEVEL}
+			, #{item.TCS_COMMENT}
+			, #{item.TCS_TYPE}
+			, #{item.TCS_TYPE_KEYNO}
+			, #{item.TCS_TITLE}
+		)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+	
+	<delete id="TCS_deleteData">
+		DELETE FROM	T_TOURISM_COURSE_SUB
+		WHERE	TCM_KEYNO = #{TCM_KEYNO}
+	</delete>
+	
+	<select id="TCS_getList" resultType="hashmap">
+		SELECT		TCS.*
+					, CASE TCS_TYPE   
+						WHEN 'etc' THEN '직접입력'
+						ELSE (SC_CODENM||' - '||TC_TITLE)
+					END TCS_TYPE_NAME
+		FROM		T_TOURISM_COURSE_SUB TCS
+		LEFT JOIN	T_TOURISM_COURSE_MAIN TCM
+		ON			TCS.TCM_KEYNO 	= 	TCM.TCM_KEYNO
+		LEFT JOIN	T_COMMON_CODE_SUB SC
+		ON			TCS_TYPE		=	SC.SC_KEYNO
+		LEFT JOIN	T_TOURISM_COMMON TC
+		ON			TCS_TYPE_KEYNO	=	TC.TC_KEYNO
+		WHERE		TCM_TC_KEYNO	=	#{TC_KEYNO}
+	
+	</select>
+    
+    <select id="get_aroundInfo" resultType="HashMap">
+    	<![CDATA[
+    	SELECT B.* FROM(
+			SELECT A.MN_KEYNO
+					, A.TC_KEYNO
+	    			, A.TC_TITLE
+	    			, A.TC_CONTACTS
+	    			, A.TC_ADDR
+	    			, A.TC_ADDR2
+	    			, A.TC_POST
+	    			, A.TC_LAT
+	    			, A.TC_LNG
+					, NVL2(A.FS_KEYNO, ('/resources/img/upload/'||A.FS_FOLDER||A.FS_CHANGENM||'.'||A.FS_EXT),'') FS_PATH
+					, DISTNACE_WGS84(TO_NUMBER(#{TC_LAT}),TO_NUMBER(#{TC_LNG}),TO_NUMBER(TRIM(A.TC_LAT)),TO_NUMBER(TRIM(A.TC_LNG))) AS distance 
+					, ROW_NUMBER() OVER (PARTITION BY A.TC_KEYNO ORDER BY A.TC_KEYNO) AS RN
+			FROM (
+				SELECT *
+				FROM 		T_TOURISM_COMMON	TC
+				LEFT JOIN 	T_MENU_MANAGER 		M
+				ON			TC.TC_KEYNO = M.MN_TOURKEY
+				LEFT JOIN 	T_COMMON_FILE_SUB FS
+				ON   		TC.TC_THUMBNAIL = FS.FS_KEYNO
+				WHERE		M.MN_TOURKEY != ' ' 
+				AND 		TC_TYPE = #{TC_TYPE}
+				AND			TC_KEYNO != #{TC_KEYNO}
+				AND			M.MN_DEL_YN = 'N'
+				AND			M.MN_USE_YN = 'Y'
+				ORDER BY 	TC.TC_KEYNO
+			) A
+		) B
+		WHERE B.RN = 1
+		AND   distance <= #{distance}
+		ORDER BY 	distance 
+		]]>
+    </select> 
+</mapper>
+ 

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<configuration>
+
+	<settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+<!-- Value Object 설정 -->
+
+	<typeAliases>
+		<!-- 파일관리 -->
+		<typeAlias alias="FileMain" type="com.tx.common.file.dto.FileMain"/>
+		<typeAlias alias="FileSub" type="com.tx.common.file.dto.FileSub" />
+		
+		<!-- 코드관리 -->
+		<typeAlias alias="MainCode" type="com.tx.admin.function.code.dto.MainCode" />
+		<typeAlias alias="SubCode" type="com.tx.admin.function.code.dto.SubCode" />
+		
+		<!-- 회원관리 -->
+		<typeAlias alias="USER" type="com.tx.admin.member.dto.UserDTO" />
+		
+		<!-- 회원관리 셋팅-->
+		<typeAlias alias="USERSETTING" type="com.tx.admin.member.dto.UserSettingDTO" />
+		
+		<!-- 권한관리 -->
+		<typeAlias alias="Resource" type="com.tx.admin.homepage.authority.dto.Resource" />
+		
+		<typeAlias alias="SecuredResource" type="com.tx.admin.homepage.authority.dto.SecuredResource" />
+		
+		<!-- IP필터관리 -->
+		<typeAlias alias="IP" type="com.tx.admin.function.ipfilter.dto.IP" />
+		
+		<!-- 메뉴관리 : 메뉴 관리 -->
+    	<typeAlias alias="Menu" type="com.tx.admin.homepage.menu.dto.Menu" />
+    
+		<!-- 메뉴관리 : 홈페이지 관리 -->
+   		<typeAlias alias="HomeManager" type="com.tx.admin.homepage.menu.dto.HomeManager" />
+
+		<!-- 메뉴관리 : 메뉴 관리 -->
+   		<typeAlias alias="HTMLViewData" type="com.tx.admin.homepage.menu.dto.HTMLViewData" />
+    
+		<!-- 게시판 타입관리 -->
+		<typeAlias alias="BoardType" type="com.tx.admin.board.dto.BoardType" />
+		
+		<!-- 게시판 컬럼관리 -->
+		<typeAlias alias="BoardColumn" type="com.tx.admin.board.dto.BoardColumn" />
+
+		<!-- 게시판 컬럼데이터관리 -->
+		<typeAlias alias="BoardColumnData" type="com.tx.admin.board.dto.BoardColumnData" />
+		
+		<!-- 게시물 관리 -->
+		<typeAlias alias="BoardNotice" type="com.tx.admin.board.dto.BoardNotice" />
+
+		<!-- 게시판 댓글관리 -->
+		<typeAlias alias="BoardComment" type="com.tx.admin.board.dto.BoardComment" />
+		
+		<!-- 게시판HTML필요페이지 -->
+		<typeAlias alias="BoardHtml" type="com.tx.admin.board.dto.BoardHtml" />
+		
+		<!-- 팝업관리 -->
+		<typeAlias alias="PopupDTO" type="com.tx.admin.operation.popup.dto.PopupDTO" />
+		
+		<!-- 팝업관리 서브 -->
+        <typeAlias alias="Popup_subDTO" type="com.tx.admin.operation.popup.dto.Popup_subDTO" />
+				
+		<!-- 휴일 관리 -->
+		<typeAlias alias="Holiday" type="com.tx.admin.operation.holiday.dto.HolidayDTO" />
+		
+		<!-- 검색 키워드 -->
+		<typeAlias alias="keyword" type="com.tx.admin.function.keyword.dto.KeywordDTO" />
+		
+		<!-- 검색 키워드 -->
+		<typeAlias alias="Log" type="com.tx.admin.statistics.dto.LogDTO" />
+		
+		<!-- QrCode 관리 -->
+		<typeAlias alias="QrCode" type="com.tx.admin.operation.qrcode.dto.QrCode" />
+		
+		<!-- 조직도 -->
+		<typeAlias alias="OrganDto" type="com.tx.admin.operation.organization.dto.OrganDTO" />
+		<typeAlias alias="OrganTree" type="com.tx.admin.operation.organization.dto.OrganTree" />
+		
+		<!-- 장소 관리 -->
+		<typeAlias alias="PlaceDTO" type="com.tx.admin.program.application.dto.PlaceDTO" />
+		
+		<!-- 단체예약 관리 -->
+		<typeAlias alias="Group" type="com.tx.admin.program.group.dto.GroupDTO" />
+
+		<!-- 장소 좌석배치 관리 -->
+		<typeAlias alias="PlaceSeatDTO" type="com.tx.admin.program.application.dto.PlaceSeatDTO" />
+		
+		<!-- 프로그램 관리 -->
+		<typeAlias alias="ApplicationDTO" type="com.tx.admin.program.application.dto.ApplicationDTO" />
+		
+		<!-- 설문관리 -->
+		<typeAlias alias="SmDTO" type="com.tx.admin.operation.survey.dto.SmDTO"/>
+		
+		<!-- 설문문항관리 -->
+		<typeAlias alias="SqDTO" type="com.tx.admin.operation.survey.dto.SqDTO"/>
+		
+		<!-- 설문결과관리 -->
+		<typeAlias alias="SrmDTO" type="com.tx.admin.operation.survey.dto.SrmDTO"/>
+		
+		<!-- 관광정보관리 -->
+		<typeAlias alias="Tour" type="com.tx.admin.tour.dto.TourDTO"/>
+		
+		<!-- 베너관리 -->
+		<typeAlias alias="Banner" type="com.tx.admin.operation.banner.dto.BannerDTO"/>
+		
+		<!-- 슬라이드 관리 -->
+		<typeAlias alias="Slide" type="com.tx.admin.operation.slide.dto.SlideDTO"/>
+		
+		<!-- CSS설정 -->
+		<typeAlias alias="Resources" type="com.tx.admin.homepage.resource.dto.ResourcesDTO"/>
+		
+		<!-- 미니게시판 -->
+		<typeAlias alias="BoardMainMini" type="com.tx.admin.board.dto.BoardMainMini"/>
+		
+		<!-- 카테고리 관리 -->
+		<typeAlias alias="CategoryDTO" type="com.tx.admin.operation.popupzone.dto.CategoryDTO"/>
+		
+		<!-- 리스트 관리 -->
+		<typeAlias alias="ListDTO" type="com.tx.admin.operation.popupzone.dto.ListDTO"/>
+		<!-- 마이그레이션 유저 -->
+		<typeAlias alias="UserJact" type="com.tx.migration.controller.UserJact"/>
+		
+		<!-- 게시판 업로드파일   -->
+		<typeAlias alias="boardFileDto" type="com.tx.migration.controller.boardFileDto" />
+		
+		<!-- 자유게시판 마이그레이션 -->
+		<typeAlias alias="Board_5_5" type="com.tx.migration.controller.Board_5_5" />
+		<typeAlias alias="TableName" type="com.tx.migration.controller.TableName" />
+
+
+		<typeAlias alias="HireUserDTO" type="com.tx.admin.hire.dto.HireUserDTO" />
+
+		<typeAlias alias="HireContentDTO" type="com.tx.admin.hire.dto.HireContentDTO" />
+	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler handler="org.apache.ibatis.type.ClobTypeHandler" jdbcType="CLOB" javaType="java.lang.String"/>
+	</typeHandlers>
+
+</configuration>

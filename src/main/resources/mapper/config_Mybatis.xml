@@ -27,6 +27,22 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- 회원관리 -->
 		<typeAlias alias="USER" type="com.tx.admin.member.dto.UserDTO" />
 		
+		<!-- 사이트 프로퍼티 관리 -->
+		<typeAlias alias="SiteManager" type="com.tx.admin.homepage.site.dto.SiteManagerDTO" />
+		
+		
+		<!-- 세금계산서 정보 관리 -->
+		<typeAlias alias="safebillDTO" type="com.tx.safeAdmin.dto.safebillDTO" />
+		
+		<!--  안전관리 발전소 관리 -->
+		<typeAlias alias="safeUserDTO" type="com.tx.safeAdmin.dto.safeUserDTO" />
+		
+		<!-- 안전관리 기록표 정보 관리 -->
+		<typeAlias alias="safeAdminDTO" type="com.tx.safeAdmin.dto.safeAdminDTO" />
+		
+		<!-- 안전관리 기록표 날짜별 조회용 -->
+		<typeAlias alias="DateDTO" type="com.tx.safeAdmin.dto.DateDTO" />
+		
 		<!-- 회원관리 셋팅-->
 		<typeAlias alias="USERSETTING" type="com.tx.admin.member.dto.UserSettingDTO" />
 		
@@ -78,15 +94,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		
 		<!-- QrCode 관리 -->
 		<typeAlias alias="QrCode" type="com.tx.admin.operation.qrcode.dto.QrCode" />
-		
-		<!-- 설문관리 -->
-		<typeAlias alias="SmDTO" type="com.tx.admin.operation.survey.dto.SmDTO"/>
-		
-		<!-- 설문문항관리 -->
-		<typeAlias alias="SqDTO" type="com.tx.admin.operation.survey.dto.SqDTO"/>
-		
-		<!-- 설문결과관리 -->
-		<typeAlias alias="SrmDTO" type="com.tx.admin.operation.survey.dto.SrmDTO"/>
 		
 		<!-- 베너관리 -->
 		<typeAlias alias="Banner" type="com.tx.admin.operation.banner.dto.BannerDTO"/>

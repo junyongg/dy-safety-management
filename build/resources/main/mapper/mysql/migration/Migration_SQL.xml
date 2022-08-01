@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="migration"> 
+	
+	<select id="UI_getList" resultType="USER">
+		SELECT	*
+		FROM	T_USERINFO
+	</select>
+	
+	
+	<update id="UI_updateData">
+		UPDATE 	T_USERINFO
+		SET		UI_PASSWORD	=	#{UI_PASSWORD}
+		WHERE	UI_ID	=	#{UI_ID}
+	
+	</update>	
+	<select id="jact_user" resultType="UserJact">
+		select * from jnact.rain_member
+	</select>	
+	
+	<insert id="g4_member_to_userinfo" parameterType="USER">
+		INSERT INTO T_USERINFO(
+			UI_KEYNO, 
+			UI_ID, 
+			UI_NAME, 
+			UI_EMAIL, 
+			UI_PHONE, 
+			UI_BIRTH, 
+			UI_ZENDER, 
+			UI_REGDT, 
+			UI_AUTH_YN, 
+			UI_LASTLOGIN, 
+			UI_MB_LEVEL, 
+			UI_MB_PASSWORD, 
+			UI_MB_TEL, 
+			UI_MB_ZIP1, 
+			UI_MB_ZIP2, 
+			UI_MB_ADDR1, 
+			UI_MB_ADDR2, 
+			UI_MB_RECOMMEND, 
+			UI_MB_POINT, 
+			UI_MB_LOGIN_IP, 
+			UI_MB_IP, 
+			UI_INTERCEPT_DATE, 
+			UI_MB_NICK, 
+			UI_MB_NICK_DATE, 
+			UI_MB_EMAIL_CERTIFY, 
+			UI_MB_MAILLING, 
+			UI_MB_SMS, 
+			UI_MB_OPEN, 
+			UI_MB_OPEN_DATE, 
+			UI_MB_1,
+			UI_REP_NAME
+		)VALUES(
+			#{UI_KEYNO}, 
+			#{UI_ID}, 
+			#{UI_NAME}, 
+			#{UI_EMAIL}, 
+			#{UI_PHONE}, 
+			#{UI_BIRTH}, 
+			#{UI_ZENDER}, 
+			#{UI_REGDT}, 
+			#{UI_AUTH_YN}, 
+			#{UI_LASTLOGIN}, 
+			#{UI_MB_LEVEL}, 
+			#{UI_MB_PASSWORD}, 
+			#{UI_MB_TEL}, 
+			#{UI_MB_ZIP1}, 
+			#{UI_MB_ZIP2}, 
+			#{UI_MB_ADDR1}, 
+			#{UI_MB_ADDR2}, 
+			#{UI_MB_RECOMMEND}, 
+			#{UI_MB_POINT}, 
+			#{UI_MB_LOGIN_IP}, 
+			#{UI_MB_IP}, 
+			#{UI_INTERCEPT_DATE}, 
+			#{UI_MB_NICK}, 
+			#{UI_MB_NICK_DATE}, 
+			#{UI_MB_EMAIL_CERTIFY}, 
+			#{UI_MB_MAILLING}, 
+			#{UI_MB_SMS}, 
+			#{UI_MB_OPEN}, 
+			#{UI_MB_OPEN_DATE}, 
+			#{UI_MB_1},
+			#{UI_REP_NAME}
+		)
+	</insert>
+	<!-- 자유게시판 파일 원본이름 파일 만들기용 -->
+	<select id="get_free_file" resultType="boardFileDto" parameterType="boardFileDto">
+		select * from jnact.rain_board_file where tableN = #{tableN}
+		<if test="wr_id != null and wr_id != ''">
+		and wr_id = #{wr_id}
+		</if>
+	</select>
+	
+	<!-- 메뉴별 게시판 정보 초기화 -->
+	<delete id="delete_board" parameterType="String">
+		delete from T_BOARD_NOTICE
+		where	BN_MN_KEYNO = #{BN_MN_KEYNO}
+	</delete> 
+	<!-- 메뉴별 게시판 사용자 컬럼 초기화 -->
+	<delete id="delete_column" parameterType="String">
+		delete from T_BOARD_COLUMN_DATA
+		where	BD_MN_KEYNO = #{BD_MN_KEYNO}
+	</delete>
+	
+	<!-- CateId 별 BBS_DATA 가져오기 -->
+	<select id="select_BBS_DATA_free" resultType="Board_5_5" parameterType="TableName">
+		SELECT *
+		FROM ${NAME}
+		<!-- where wr_id = 19 -->
+		<!-- 테스트 로직 -->
+<!-- 		AND IDX = '7189' -->
+	</select>
+	
+	<!-- 아이디로 유저 keyno 찾기 -->
+	<select id="select_user_keyno" resultType="USER" parameterType="USER">
+		SELECT UI_KEYNO, UI_ID 
+		FROM T_USERINFO WHERE UI_ID = #{UI_ID}
+	</select>
+	
+	
+	<!-- 게시판 등록 -->
+	 <insert id="BN_insert" parameterType="BoardNotice">
+    
+	<![CDATA[
+		INSERT 
+		INTO 	T_BOARD_NOTICE(
+				BN_KEYNO,
+				BN_MN_KEYNO,
+				BN_FM_KEYNO,
+				BN_TITLE,
+				BN_CONTENTS,
+				BN_REGNM,
+				BN_PWD,
+				BN_REGDT,
+				BN_USE_YN,
+				BN_SECRET_YN,
+				BN_THUMBNAIL,
+				BN_IMPORTANT,
+				BN_MAINKEY,
+				BN_PARENTKEY,
+				BN_SEQ,
+				BN_DEPTH,
+				BN_HITS
+			]]>
+				<if test="BN_IMPORTANT_DATE != null and BN_IMPORTANT_DATE != '' ">
+				<![CDATA[
+				,BN_IMPORTANT_DATE
+				]]>
+				</if>
+		<![CDATA[
+				)
+		VALUES(
+				#{BN_KEYNO},
+				#{BN_MN_KEYNO},
+				#{BN_FM_KEYNO},
+				#{BN_TITLE},
+				#{BN_CONTENTS},
+				#{BN_REGNM},
+				#{BN_PWD},
+				#{BN_REGDT},
+				#{BN_USE_YN},
+				#{BN_SECRET_YN},
+				#{BN_THUMBNAIL},
+				#{BN_IMPORTANT},
+				#{BN_MAINKEY},
+				#{BN_PARENTKEY},
+				#{BN_SEQ},
+				#{BN_DEPTH},
+				#{BN_HITS}
+			]]>
+				<if test="BN_IMPORTANT_DATE != null and BN_IMPORTANT_DATE != '' ">
+				<![CDATA[
+				,#{BN_IMPORTANT_DATE}
+				]]>
+				</if>
+				<![CDATA[
+				)
+		]]>
+	</insert>
+	
+	<insert id="FileSubInsert" parameterType="FileSub">
+		INSERT INTO T_COMMON_FILE_SUB
+		(
+			 FS_KEYNO
+			,FS_FM_KEYNO
+			,FS_FILE_SIZE
+			,FS_ORINM
+			,FS_CHANGENM
+			,FS_EXT
+			,FS_FOLDER
+			,FS_M_KEYNO
+			,FS_REGDT
+			,FS_REGNM
+			,FS_THUMBNAIL
+			,FS_ALT
+	        ,FS_COMMENTS
+	        ,FS_ORIWIDTH
+	        ,FS_ORIHEIGHT
+	        ,FS_DOWNCNT
+		)
+		VALUES
+		(
+   		  #{FS_KEYNO}
+		 ,#{FS_FM_KEYNO}
+		 ,#{FS_FILE_SIZE}
+		 ,#{FS_ORINM}
+	  	 ,#{FS_CHANGENM}
+	     ,#{FS_EXT}
+	     ,#{FS_FOLDER}
+	     ,#{FS_M_KEYNO}
+	     ,#{FS_REGDT}
+	     ,#{FS_REGNM}
+	     ,#{FS_THUMBNAIL}
+	     ,#{FS_ALT}
+         ,#{FS_COMMENTS}
+         ,#{FS_ORIWIDTH}
+         ,#{FS_ORIHEIGHT}
+		 ,#{FS_DOWNCNT}
+		)
+	</insert>
+	
+</mapper>
+ 

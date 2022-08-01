@@ -6,6 +6,5 @@
 		<jsp:include page="/WEB-INF/jsp/publish/${tilesNm }/include/footer.jsp"/>
 	</c:when>
 	<c:otherwise>
-		<jsp:include page=""/>
 	</c:otherwise>
 </c:choose>

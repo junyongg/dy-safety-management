@@ -35,7 +35,7 @@ public class TemplateController {
 			, @RequestParam(value = "msg", defaultValue = "") String msg
 			) throws Exception {
 		
-		ModelAndView mv  = new ModelAndView("/publish/" + tiles + "/prc_main");
+		ModelAndView mv  = new ModelAndView("/publish/" + tiles + "/prc_main.notiles");
 		
 		mv.addObject("msg", URLDecoder.decode(msg, "UTF-8")); // 현재 회원인증후 메세지
 		
