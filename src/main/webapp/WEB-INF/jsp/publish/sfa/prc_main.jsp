@@ -13,6 +13,7 @@
     transition: all .25s ease;
     color : rgba( 62, 154, 129, 0.9 );
     cursor: pointer;
+    list-style:none;
 }
 
 .intro_menu li a .txt_box h2 {
@@ -36,13 +37,22 @@
     width: 100%;
     width: 100%;
     height: calc(98vh - -6px);
-    background: url(/resources/img/safeAdmin/bg_login.jpg) no-repeat center center; 
+/* 	background: url(/resources/img/safeAdmin/bg_login.jpg) no-repeat center center;  */
     background-size: cover;
     display: flex;
     align-items: center;
+
 }
 .right_btn{}
 
+.image-box {
+    height: 300px;
+    background-image: url(/resources/img/safeAdmin/bg_main.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 10px;
+}
 </style>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <form:form id="Form" name="Form" action="" method="post">
@@ -50,6 +60,7 @@
 <div id="wrap">
     <div class="intro_content_box">
         <div class="in">
+        <div class="image-box"></div>
             <div class="botto_box">
                 <ul class="intro_menu" style ="justify-content: center;">
                     <li>

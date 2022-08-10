@@ -202,10 +202,10 @@ public class safeAdminLogController {
 	public Object PopUpController(HttpServletRequest req
 			, @RequestParam(value="listtable", required = false) String listtable
 			) throws Exception {
-		ModelAndView mv  = new ModelAndView("/sfa/Admin/prc_admin_popup.notiles");
+		ModelAndView mv  = new ModelAndView("/sfa/Admin/Popup/prc_admin_popup2.notiles");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		map = Component.getData("sfa.safepaperselect_one", listtable);  //object로 보냄 getList는 배열, getData는 object 
+		map = Component.getData("sfa.safepaperselect2_one", listtable);  //object로 보냄 getList는 배열, getData는 object 
 
 		
 		mv.addObject("list",map); //object로 보냄
@@ -219,10 +219,10 @@ public class safeAdminLogController {
 		public Object UpdatePage(HttpServletRequest req
 				, @RequestParam(value="listtable", required = false) String listtable
 				) throws Exception {
-			ModelAndView mv  = new ModelAndView("/sfa/Admin/prc_admin_updateview.notiles");
+			ModelAndView mv  = new ModelAndView("/sfa/Admin/Popup/prc_admin_updateview2.notiles");
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
-			map = Component.getData("sfa.safepaperselect_one", listtable);  //object로 보냄 getList는 배열, getData는 object
+			map = Component.getData("sfa.safepaperselect2_one", listtable);  //object로 보냄 getList는 배열, getData는 object
 
 			
 			mv.addObject("list",map); //object로 보냄

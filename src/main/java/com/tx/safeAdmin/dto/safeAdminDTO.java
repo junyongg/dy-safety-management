@@ -90,6 +90,54 @@ public class safeAdminDTO {
 	public String sa_writetype;
 	
 	
+	//양식 두번째
+	public String sa2_keyno;
+	public String sa2_title;
+	public String sa2_date;
+	public String sa2_wether;
+	public String sa2_adminname;
+	public String sa2_inverternumtype;
+	public String sa2_nowpower;
+	public String sa2_todaypower;
+	public String sa2_accpower;
+	public String sa2_periodpower;
+	public String sa2_ACVL1_N;
+	public String sa2_ACVL2_N;
+	public String sa2_ACVL3_N;
+	public String sa2_ACAL1;
+	public String sa2_ACAL2;
+	public String sa2_ACAL3;
+	public String sa2_ACBV;
+	public String sa2_ACBA;
+	public String sa2_VCBKV;
+	public String sa2_VCBA;
+	public String sa2_palntKW;
+	public String sa2_palntV;
+	public String sa2_palntCT;
+	public String sa2_date2;
+	public String sa2_meternum1;
+	public String sa2_meternum2;
+	public String sa2_meter1KWh;
+	public String sa2_meter2KWh;
+	public String sa2_meter1period;
+	public String sa2_meter2period;
+	public String sa2_inverterperiod;
+	public String sa2_meter1date;
+	public String sa2_meter2date;
+	public String sa2_inverterdate;
+	public String sa2_meter1allKWh;
+	public String sa2_meter2allKWh;
+	public String sa2_inverterallKWh;
+	public String sa2_meter1dayKWh;
+	public String sa2_meter2dayKWh;
+	public String sa2_inverterdayKWh;
+	public String sa2_meter1dayhour;
+	public String sa2_meter2dayhour;
+	public String sa2_inverterdayhour;
+	public String sa2_opinion;
+	public String sa2_problem;
+
+	
 	
 	
 	public String getSa_keyno() {
@@ -608,6 +656,282 @@ public class safeAdminDTO {
 	public void setSa_writetype(String sa_writetype) {
 		this.sa_writetype = sa_writetype;
 	}
+	
+	
+	//양식 두번째
+	public String getSa2_keyno() {
+		return sa2_keyno;
+	}
+	public void setSa2_keyno(String sa2_keyno) {
+		this.sa2_keyno = sa2_keyno;
+	}
+	public String getSa2_title() {
+		return sa2_title;
+	}
+	public void setSa2_title(String sa2_title) {
+		this.sa2_title = sa2_title;
+	}
+	public String getSa2_date() {
+		return sa2_date;
+	}
+	public void setSa2_date(String sa2_date) {
+		this.sa2_date = sa2_date;
+	}
+	public String getSa2_wether() {
+		return sa2_wether;
+	}
+	public void setSa2_wether(String sa2_wether) {
+		this.sa2_wether = sa2_wether;
+	}
+	public String getSa2_adminname() {
+		return sa2_adminname;
+	}
+	public void setSa2_adminname(String sa2_adminname) {
+		this.sa2_adminname = sa2_adminname;
+	}
+	public String getSa2_inverternumtype() {
+		return sa2_inverternumtype;
+	}
+	public void setSa2_inverternumtype(String sa2_inverternumtype) {
+		this.sa2_inverternumtype = sa2_inverternumtype;
+	}
+	public String getSa2_nowpower() {
+		return sa2_nowpower;
+	}
+	public void setSa2_nowpower(String sa2_nowpower) {
+		this.sa2_nowpower = sa2_nowpower;
+	}
+	public String getSa2_todaypower() {
+		return sa2_todaypower;
+	}
+	public void setSa2_todaypower(String sa2_todaypower) {
+		this.sa2_todaypower = sa2_todaypower;
+	}
+	public String getSa2_accpower() {
+		return sa2_accpower;
+	}
+	public void setSa2_accpower(String sa2_accpower) {
+		this.sa2_accpower = sa2_accpower;
+	}
+	public String getSa2_periodpower() {
+		return sa2_periodpower;
+	}
+	public void setSa2_periodpower(String sa2_periodpower) {
+		this.sa2_periodpower = sa2_periodpower;
+	}
+	public String getSa2_ACVL1_N() {
+		return sa2_ACVL1_N;
+	}
+	public void setSa2_ACVL1_N(String sa2_ACVL1_N) {
+		this.sa2_ACVL1_N = sa2_ACVL1_N;
+	}
+	public String getSa2_ACVL2_N() {
+		return sa2_ACVL2_N;
+	}
+	public void setSa2_ACVL2_N(String sa2_ACVL2_N) {
+		this.sa2_ACVL2_N = sa2_ACVL2_N;
+	}
+	public String getSa2_ACVL3_N() {
+		return sa2_ACVL3_N;
+	}
+	public void setSa2_ACVL3_N(String sa2_ACVL3_N) {
+		this.sa2_ACVL3_N = sa2_ACVL3_N;
+	}
+	public String getSa2_ACAL1() {
+		return sa2_ACAL1;
+	}
+	public void setSa2_ACAL1(String sa2_ACAL1) {
+		this.sa2_ACAL1 = sa2_ACAL1;
+	}
+	public String getSa2_ACAL2() {
+		return sa2_ACAL2;
+	}
+	public void setSa2_ACAL2(String sa2_ACAL2) {
+		this.sa2_ACAL2 = sa2_ACAL2;
+	}
+	public String getSa2_ACAL3() {
+		return sa2_ACAL3;
+	}
+	public void setSa2_ACAL3(String sa2_ACAL3) {
+		this.sa2_ACAL3 = sa2_ACAL3;
+	}
+	public String getSa2_ACBV() {
+		return sa2_ACBV;
+	}
+	public void setSa2_ACBV(String sa2_ACBV) {
+		this.sa2_ACBV = sa2_ACBV;
+	}
+	public String getSa2_ACBA() {
+		return sa2_ACBA;
+	}
+	public void setSa2_ACBA(String sa2_ACBA) {
+		this.sa2_ACBA = sa2_ACBA;
+	}
+	public String getSa2_VCBKV() {
+		return sa2_VCBKV;
+	}
+	public void setSa2_VCBKV(String sa2_VCBKV) {
+		this.sa2_VCBKV = sa2_VCBKV;
+	}
+	public String getSa2_VCBA() {
+		return sa2_VCBA;
+	}
+	public void setSa2_VCBA(String sa2_VCBA) {
+		this.sa2_VCBA = sa2_VCBA;
+	}
+	public String getSa2_palntKW() {
+		return sa2_palntKW;
+	}
+	public void setSa2_palntKW(String sa2_palntKW) {
+		this.sa2_palntKW = sa2_palntKW;
+	}
+	public String getSa2_palntV() {
+		return sa2_palntV;
+	}
+	public void setSa2_palntV(String sa2_palntV) {
+		this.sa2_palntV = sa2_palntV;
+	}
+	public String getSa2_palntCT() {
+		return sa2_palntCT;
+	}
+	public void setSa2_palntCT(String sa2_palntCT) {
+		this.sa2_palntCT = sa2_palntCT;
+	}
+	public String getSa2_date2() {
+		return sa2_date2;
+	}
+	public void setSa2_date2(String sa2_date2) {
+		this.sa2_date2 = sa2_date2;
+	}
+	public String getSa2_meternum1() {
+		return sa2_meternum1;
+	}
+	public void setSa2_meternum1(String sa2_meternum1) {
+		this.sa2_meternum1 = sa2_meternum1;
+	}
+	public String getSa2_meternum2() {
+		return sa2_meternum2;
+	}
+	public void setSa2_meternum2(String sa2_meternum2) {
+		this.sa2_meternum2 = sa2_meternum2;
+	}
+	public String getSa2_meter1KWh() {
+		return sa2_meter1KWh;
+	}
+	public void setSa2_meter1KWh(String sa2_meter1KWh) {
+		this.sa2_meter1KWh = sa2_meter1KWh;
+	}
+	public String getSa2_meter2KWh() {
+		return sa2_meter2KWh;
+	}
+	public void setSa2_meter2KWh(String sa2_meter2KWh) {
+		this.sa2_meter2KWh = sa2_meter2KWh;
+	}
+	public String getSa2_meter1period() {
+		return sa2_meter1period;
+	}
+	public void setSa2_meter1period(String sa2_meter1period) {
+		this.sa2_meter1period = sa2_meter1period;
+	}
+	public String getSa2_meter2period() {
+		return sa2_meter2period;
+	}
+	public void setSa2_meter2period(String sa2_meter2period) {
+		this.sa2_meter2period = sa2_meter2period;
+	}
+	public String getSa2_inverterperiod() {
+		return sa2_inverterperiod;
+	}
+	public void setSa2_inverterperiod(String sa2_inverterperiod) {
+		this.sa2_inverterperiod = sa2_inverterperiod;
+	}
+	public String getSa2_meter1date() {
+		return sa2_meter1date;
+	}
+	public void setSa2_meter1date(String sa2_meter1date) {
+		this.sa2_meter1date = sa2_meter1date;
+	}
+	public String getSa2_meter2date() {
+		return sa2_meter2date;
+	}
+	public void setSa2_meter2date(String sa2_meter2date) {
+		this.sa2_meter2date = sa2_meter2date;
+	}
+	public String getSa2_inverterdate() {
+		return sa2_inverterdate;
+	}
+	public void setSa2_inverterdate(String sa2_inverterdate) {
+		this.sa2_inverterdate = sa2_inverterdate;
+	}
+	public String getSa2_meter1allKWh() {
+		return sa2_meter1allKWh;
+	}
+	public void setSa2_meter1allKWh(String sa2_meter1allKWh) {
+		this.sa2_meter1allKWh = sa2_meter1allKWh;
+	}
+	public String getSa2_meter2allKWh() {
+		return sa2_meter2allKWh;
+	}
+	public void setSa2_meter2allKWh(String sa2_meter2allKWh) {
+		this.sa2_meter2allKWh = sa2_meter2allKWh;
+	}
+	public String getSa2_inverterallKWh() {
+		return sa2_inverterallKWh;
+	}
+	public void setSa2_inverterallKWh(String sa2_inverterallKWh) {
+		this.sa2_inverterallKWh = sa2_inverterallKWh;
+	}
+	public String getSa2_meter1dayKWh() {
+		return sa2_meter1dayKWh;
+	}
+	public void setSa2_meter1dayKWh(String sa2_meter1dayKWh) {
+		this.sa2_meter1dayKWh = sa2_meter1dayKWh;
+	}
+	public String getSa2_meter2dayKWh() {
+		return sa2_meter2dayKWh;
+	}
+	public void setSa2_meter2dayKWh(String sa2_meter2dayKWh) {
+		this.sa2_meter2dayKWh = sa2_meter2dayKWh;
+	}
+	public String getSa2_inverterdayKWh() {
+		return sa2_inverterdayKWh;
+	}
+	public void setSa2_inverterdayKWh(String sa2_inverterdayKWh) {
+		this.sa2_inverterdayKWh = sa2_inverterdayKWh;
+	}
+	public String getSa2_meter1dayhour() {
+		return sa2_meter1dayhour;
+	}
+	public void setSa2_meter1dayhour(String sa2_meter1dayhour) {
+		this.sa2_meter1dayhour = sa2_meter1dayhour;
+	}
+	public String getSa2_meter2dayhour() {
+		return sa2_meter2dayhour;
+	}
+	public void setSa2_meter2dayhour(String sa2_meter2dayhour) {
+		this.sa2_meter2dayhour = sa2_meter2dayhour;
+	}
+	public String getSa2_inverterdayhour() {
+		return sa2_inverterdayhour;
+	}
+	public void setSa2_inverterdayhour(String sa2_inverterdayhour) {
+		this.sa2_inverterdayhour = sa2_inverterdayhour;
+	}
+	public String getSa2_opinion() {
+		return sa2_opinion;
+	}
+	public void setSa2_opinion(String sa2_opinion) {
+		this.sa2_opinion = sa2_opinion;
+	}
+	public String getSa2_problem() {
+		return sa2_problem;
+	}
+	public void setSa2_problem(String sa2_problem) {
+		this.sa2_problem = sa2_problem;
+	}
+	
+	
+	
 	
 	
 	

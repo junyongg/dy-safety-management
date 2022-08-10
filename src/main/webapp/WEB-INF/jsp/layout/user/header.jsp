@@ -72,7 +72,7 @@ header {
     }
 </style>
 <div class="headerdiv">
-	<h1><a onclick="location.href='/sfa/index.do'" style="cursor: pointer;"><img alt="" src="/resources/img/safeAdmin/logo.png"></a></h1>       
+	<h1><a onclick="location.href='/sfa/index.do'" style="cursor: pointer;"><img alt="" src="/resources/img/safeAdmin/bg_main2-1.png"></a></h1>       
         <nav id="gnb">
             <ul> 
       		<c:set var = "str" value = "${currentMenu.MN_NAME}"/>

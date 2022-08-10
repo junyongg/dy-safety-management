@@ -22,7 +22,7 @@
 <script>
 
 $(function() {
-	change123("UI_JUN");
+	change123("UI_YONG");
 });
 
 //링크확인

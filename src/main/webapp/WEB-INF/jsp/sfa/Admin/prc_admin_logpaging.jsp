@@ -67,8 +67,8 @@
 											<th class="hasinput"><select class="form-control search-control"
 												data-searchindex="2" style="width: 100%;" onchange="pf_LinkPage()">
 													<option value="">전체</option>
-													<option value="1">전기설비 점검결과 기록표</option>
-													<option value="2">다른 양식</option>
+													<option value="1">이상 유</option>
+													<option value="2">이상 무</option>
 											</select></th>
 											<th class="hasinput"><input type="text"
 												class="form-control search-control" data-searchindex="3"
@@ -84,7 +84,7 @@
 										<tr>
 											<th style="text-align: center; display: none;">키값</th>
 											<th class="arrow" style="text-align: center;" data-index="1">번호</th>
-											<th class="arrow" style="text-align: center;" data-index="2">양식명</th>
+											<th class="arrow" style="text-align: center;" data-index="2">이상유/무</th>
 											<th class="arrow" style="text-align: center;" data-index="3">발전소 명</th>
 											<th class="arrow" style="text-align: center;" data-index="4">작성일</th>
 											<th class="arrow" style="text-align: center;" data-index="5">종합 의견</th>
@@ -98,17 +98,17 @@
 										</c:if>
 										<c:forEach items="${resultList4 }" var="b">
 											<tr>
-												<td style="display: none;">${b.sa_keyno}</td>
+												<td style="display: none;">${b.sa2_keyno}</td>
 												<td style="white-space: nowrap;">${b.COUNT}</td>
-												<c:if test="${b.sa_writetype eq '1' }">
-												<td style="white-space: nowrap;">전기설비 점검결과 기록표</td>
+												<c:if test="${b.sa2_problem eq '1' }">
+												<td style="white-space: nowrap;">이상 있음</td>
 												</c:if>
-												<c:if test="${b.sa_writetype eq '2' }">
-												<td style="white-space: nowrap;">다른 양식</td>
+												<c:if test="${b.sa2_problem eq '2' }">
+												<td style="white-space: nowrap;">이상 없음</td>
 												</c:if>
-												<td style="white-space: nowrap;"><a onclick = "taxpopup('${b.sa_keyno}');" style="cursor: pointer;" id="listtable" name ="listtable" value ="${b.sa_keyno}">${b.sa_sulbi}</a></td>
-												<td style="white-space: nowrap;">${b.sa_date}</td>
-												<td style="white-space: nowrap;">${b.sa_opinion}</td>
+												<td style="white-space: nowrap;"><a onclick = "taxpopup('${b.sa2_keyno}');" style="cursor: pointer;" id="listtable" name ="listtable" value ="${b.sa2_keyno}">${b.sa2_title}</a></td>
+												<td style="white-space: nowrap;">${b.sa2_date}</td>
+												<td style="white-space: nowrap;">${b.sa2_opinion}</td>
 											</tr>
 										</c:forEach>
 									</tbody>

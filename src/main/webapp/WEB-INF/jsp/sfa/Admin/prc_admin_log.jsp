@@ -49,12 +49,12 @@ width : 80px;
 					<div class="widget-body" >
 						<div class="widget-body-toolbar bg-color-white smart-form">
 							<div class="row">
-								<section class="col col-2">안전관리 양식 종류
+								<section class="col col-2">점검 후 이상 유/무
 									<label class="select">
 										<select class="form-control input-sm" name="AH_HOMEDIV_C" id="AH_HOMEDIV_C" onchange="pf_getList()">
 							              	<option value="">전체</option>
-							              	<option value="1">전기설비 점검결과 기록표</option>
-							              	<option value="2">다른 양식</option>
+							              	<option value="1">이상 있음</option>
+							              	<option value="2">이상 없음</option>
 							            </select> <i></i> 
 									</label>
 								</section>

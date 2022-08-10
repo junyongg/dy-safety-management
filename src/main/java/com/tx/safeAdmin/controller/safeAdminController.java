@@ -22,8 +22,11 @@ import javax.annotation.Resource;
 import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -34,6 +37,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tx.admin.board.dto.BoardColumn;
@@ -43,7 +48,10 @@ import com.tx.common.component.CommonService;
 import com.tx.common.component.ComponentService;
 import com.tx.common.common.SettingData;
 import com.tx.common.dto.Common;
+import com.tx.common.file.FileUploadTools;
+import com.tx.common.file.dto.FileSub;
 import com.tx.common.page.PageAccess;
+import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.service.reqapi.requestAPIservice;
 import com.tx.safeAdmin.dto.DateDTO;
 import com.tx.safeAdmin.dto.safeAdminDTO;
@@ -72,6 +80,10 @@ public class safeAdminController {
 	/** 프로퍼티 정보 */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
+    
+    
+    /** 파일업로드 툴*/
+    @Autowired private FileUploadTools FileUploadTools;	
 
 	/*
 	 * 메인페이지
@@ -983,6 +995,21 @@ public class safeAdminController {
 
 		return msg;
 	}
+	
+	/*
+	 * 대양에스코 안전관리 기록표 저장
+	 **/
+	@RequestMapping("/sfa/safe/safepaper2Insert.do")
+	@ResponseBody
+	public String SafePaper2Insert(HttpServletRequest req, safeAdminDTO bill) throws Exception {
+
+		String msg = "";
+
+		Component.createData("sfa.sapaper2Insert", bill);
+		msg = "등록이 완료 되었습니다.";
+
+		return msg;
+	}
 
 	/*
 	 * 안전관리 기록표 수정
@@ -993,7 +1020,9 @@ public class safeAdminController {
 
 		String msg = "";
 
-		Component.updateData("sfa.sapaperUpdate", bill);
+		System.out.println(bill);
+		Component.updateData("sfa.sapaperUpdate2", bill);
+		
 		msg = "수정이 완료 되었습니다.";
 //					 }
 //				 }
@@ -1020,9 +1049,10 @@ public class safeAdminController {
 	 **/
 	@RequestMapping("/sfa/Admin/sendAilmaAjax.do")
 	@ResponseBody
-	public <E> String sendAilmAsjax(
+	public <E> String sendAilmAjax(
 			@RequestParam(value = "SU_KEYNO") String SU_KEYNO,
 			@RequestParam(value = "imgSrc") String binaryData,
+			@RequestParam(value = "sa_writetype") String writetype,
 			safeUserDTO safeuser,
 			safeAdminDTO safeAdmin,
 			@RequestParam HashMap<Object, Object> param, 
@@ -1061,36 +1091,54 @@ public class safeAdminController {
 		
 		map.addAttribute("resultMap", "");
 		
-		//안전관리 양식 정보 저장
-		Component.createData("sfa.sapaperInsert", safeAdmin);
+		//안전관리 양식 정보 저장(양식별로 구분 해서 저장)
+		if(writetype.equals("1")) {		
+			Component.createData("sfa.sapaperInsert", safeAdmin);			
+		}else if(writetype.equals("2")) {
+			Component.createData("sfa.sapaper2Insert", safeAdmin);
+		}
+		
 		String msg1 = "";
 		
 		//문자 o, 카톡 o
 		if(safeuser.getSU_SA_MSGYN().equals("Y") && safeuser.getSU_SA_KAKAOYN().equals("Y")){
 			
 			msg1 = "카카오톡, 문자메시지 전송 완료";
-			
+			String msg = "";
 			String userid = "daeyang";
 			String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
 			String destination = safeuser.getSU_SA_SULBI().toString();
 			String receiver = safeuser.getSU_SA_PHONE().toString().replace("-", "");
-			String msg = safeAdmin.getSa_opinion();
+			if(writetype == "1") {		
+				 msg = safeAdmin.getSa_opinion();							
+			}else if(writetype == "2") {
+				 msg = safeAdmin.getSa2_opinion();
+			}
 			String image = filePath;
 			
 			requestAPI.sendMessage(userid, api, destination, receiver, msg, image);
 			
 			
-			String pname = "발전소 명";
-			String sname = "발전소 명";
-			String subject = safeuser.getSU_SA_SULBI();
-			String grandtotal = safeuser.getSU_SA_SULBI();
-			String issuedate = safeAdmin.getSa_opinion();
+			String pname = safeAdmin.getSa2_title();
+			String sname = safeAdmin.getSa2_date();
+			String subject = safeAdmin.getSa2_adminname();
+			String grandtotal = safeAdmin.getSa2_problem();
+			String issuedate = safeAdmin.getSa2_opinion();
 			String admin = "대양기업 안전관리자";
 			String adminphone = "061-332-8086";
 			
-			String contents = "[세금계산서 발행 완료 안내]\n" + sname + "의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : " + pname
-					+ "\n□ 공급받는자: " + sname + "\n□ 품목명 : " + subject + "\n□ 합계금액 : " + grandtotal + "원"
-					+ "\n□ 발행일 : " + issuedate + "\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : " + admin + "\n연락처 : " + adminphone;
+			
+			//이상유무 처리
+			if(grandtotal.equals("1")) {
+				grandtotal = "이상 유";
+			}else {
+				grandtotal = "이상 무";
+			}
+			
+			
+			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
+					+ "\n□ 점검일 : " + sname + "\n□ 점검자 : " + subject + "\n□ 이상유무 : " + grandtotal
+					+ "\n□ 종합의견 : " + issuedate + "\n\n\n※ 안전 관리 관련 문의\n담당자 : " + admin + "\n연락처 : " + adminphone;
 			
 			// 토큰받기
 			String tocken = requestAPI.TockenRecive(SettingData.Apikey, SettingData.Userid);
@@ -1100,7 +1148,7 @@ public class safeAdminController {
 			JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey, SettingData.Userid,
 					SettingData.Senderkey, tocken);
 			org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
-			jsonObj2 = (JSONObject) jsonObj_a2.get(9); // 템플릿 리스트
+			jsonObj2 = (JSONObject) jsonObj_a2.get(10); // 템플릿 리스트
 			
 			String list = safeuser.getSU_SA_PHONE();
 			String Sendurl = "http://dymonitering.co.kr/";
@@ -1121,11 +1169,16 @@ public class safeAdminController {
 			
 			msg1 = "문자메시지 전송 완료";
 			
+			String msg = "";
 			String userid = "daeyang";
 			String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
 			String destination = safeuser.getSU_SA_SULBI().toString();
 			String receiver = safeuser.getSU_SA_PHONE().toString().replace("-", "");
-			String msg = safeAdmin.getSa_opinion();
+			if(writetype == "1") {		
+				 msg = safeAdmin.getSa_opinion();							
+			}else if(writetype == "2") {
+				 msg = safeAdmin.getSa2_opinion();
+			}
 			String image = filePath;
 			
 			
@@ -1187,15 +1240,24 @@ public class safeAdminController {
 		@RequestMapping(value="/sfa/sfaAdmin/preview.do")
 		@ResponseBody
 		public Object PopUpController(HttpServletRequest req
-			,DateDTO DateDTO
-				) throws Exception {
-			ModelAndView mv  = new ModelAndView("/sfa/Admin/prc_admin_MainPopup.notiles");
-			HashMap<String, Object> map = new HashMap<String, Object>();
+			,@RequestParam(value="type") String writetype
+			,DateDTO DateDTO) throws Exception {
 			
-			map = Component.getData("sfa.preview", DateDTO);
+			ModelAndView mv  = new ModelAndView("/sfa/Admin/MainPopup/prc_admin_MainPopup.notiles");
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			String url = "";
+			System.out.println(writetype);
+			if(writetype.equals("1")) {
+				map = Component.getData("sfa.preview", DateDTO);
+				url = "/sfa/Admin/MainPopup/prc_admin_MainPopup.notiles";
+			}else if(writetype.equals("2")) {
+				map = Component.getData("sfa.preview2", DateDTO);
+				url = "/sfa/Admin/MainPopup/prc_admin_MainPopup2.notiles";
+			}
 			//object로 보냄 getList는 배열, getData는 object 
 			
 			
+			mv.setViewName(url);
 			mv.addObject("list",map); //object로 보냄
 			
 			
@@ -1208,11 +1270,16 @@ public class safeAdminController {
 			@RequestMapping(value="/sfa/sfaAdmin/previewAjax.do")
 			@ResponseBody
 			public Object PopUpControllerAjax(HttpServletRequest req
-				,DateDTO DateDTO) throws Exception {
+				,DateDTO DateDTO
+				,@RequestParam(value="sa_writetype") String writetype ) throws Exception {
 				
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				
-				map = Component.getData("sfa.preview", DateDTO);
+				if(writetype.equals("1")) {
+					map = Component.getData("sfa.preview", DateDTO);
+				}else if(writetype.equals("2")) {
+					map = Component.getData("sfa.preview2", DateDTO);
+				}
 				String msg = "";
 				System.out.println(map);
 				if(map == null) {
@@ -1223,7 +1290,18 @@ public class safeAdminController {
 				
 				return msg;
 			}
-	
+			
+			@RequestMapping("/sfa/imageInsert.do")
+			@ResponseBody
+			public HashMap<String, Object> ImageInsert(HttpServletRequest req, safeAdminDTO bill,
+					@RequestParam(value = "SU_KEYNO") String SU_KEYNO) throws Exception {
+
+				HashMap<String, Object> map = Component.getData("sfa.safeuserselect_one", SU_KEYNO);
+
+				return map;
+			}
+			
+			
 	/*
 	 * 홈택스빌 api 메소드
 	 **/
