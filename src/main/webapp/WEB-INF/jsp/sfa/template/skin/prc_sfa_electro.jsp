@@ -929,7 +929,7 @@ function loadInfo(){
 					url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
 					success : function(data) {
 						console.log(data);
-						alert(data);
+						alert("전송이 완료되었습니다.");
 					},
 					error : function(a, b, c) {
 						alert("error");
@@ -1015,12 +1015,12 @@ function monselect(){
 	}
 }
 
-//이전 양식 조회
 function view(){
 	
 	var a = $("#su_keyno").val();
 	var b = $("#Year").val();
 	var c = $("#Month").val();
+	var d = $("#sa_writetype").val();
 	
 	$.ajax({
         url: '/sfa/sfaAdmin/previewAjax.do?${_csrf.parameterName}=${_csrf.token}',
@@ -1031,10 +1031,10 @@ function view(){
         	
         	if(data == "null"){        		
         		alert("해당 연월에 작성한 양식이 없습니다.")	
-        	}else{       		
+        	}else{
 	        	var left = Math.ceil((window.screen.width - 1000)/2);
 	        	var top = Math.ceil((window.screen.height - 820)/2);
-	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
+	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
 	        	popOpen.focus();
         	}
         },
