@@ -285,12 +285,12 @@ input:focus {outline:none;}
   </tr>
   <tr>
     <td class="tg-0lax" colspan="48">
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  name="sa2_opinion" id="sa2_opinion">
+	
 	<img src="" class="uploadImage" id ="sa2_image">
 	</td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="48">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-0lax" colspan="48">　<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  name="sa2_opinion" id="sa2_opinion"></td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="48">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -357,52 +357,53 @@ function loadInfo(){
     var radioVal = $('input[name="sa2_problem"]:checked').val();
    	array.push(radioVal);
    	
-	if(array[0] == "1" || array[0] == "2"){
-		if(confirm("저장 후 즉시 전송하시겠습니까? 취소를 누르면 저장만 됩니다.")){
-			
-			if (target != null && target.length > 0) {
-				var t = target[0];
-				console.log(t);
-				html2canvas(t).then(function(canvas) {
-					var myImg = canvas.toDataURL("image/png");
-					myImg = myImg.replace("data:image/png;base64,", "");
-					
-					$("#imgSrc").val(myImg);
-					$.ajax({
-						type : "POST",
-						data : $("#Form").serialize(),
-						dataType : "text",
-						url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
-						success : function(data) {
-							console.log(data);
-							alert(data);
-						},
-						error : function(a, b, c) {
-							alert("error");
-						}
+   	if(!validationCheck()) return false
+		if(array[0] == "1" || array[0] == "2"){
+			if(confirm("저장 후 즉시 전송하시겠습니까? 취소를 누르면 저장만 됩니다.")){
+				
+				if (target != null && target.length > 0) {
+					var t = target[0];
+					console.log(t);
+					html2canvas(t).then(function(canvas) {
+						var myImg = canvas.toDataURL("image/png");
+						myImg = myImg.replace("data:image/png;base64,", "");
+						
+						$("#imgSrc").val(myImg);
+						$.ajax({
+							type : "POST",
+							data : $("#Form").serialize(),
+							dataType : "text",
+							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
+							success : function(data) {
+								console.log(data);
+								alert(data);
+							},
+							error : function(a, b, c) {
+								alert("error");
+							}
+						});
 					});
-				});
-			}
+				}
+			}else{
+				
+				 $.ajax({
+			        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
+			        type: 'POST',
+			        data: $("#Form").serialize(),
+			        async: false,  
+			        success: function(result) {
+			        	location.reload();
+			        	alert(result);
+			        },
+			        error: function(){
+			        	alert("저장 에러");
+			        }
+				}); 
+		 	}		
 		}else{
-			
-			 $.ajax({
-		        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
-		        type: 'POST',
-		        data: $("#Form").serialize(),
-		        async: false,  
-		        success: function(result) {
-		        	location.reload();
-		        	alert(result);
-		        },
-		        error: function(){
-		        	alert("저장 에러");
-		        }
-			}); 
-	 	}		
-	}else{
-		alert("발전소 이상유무를 선택해주세요");
-	}
-	
+			alert("발전소 이상유무를 선택해주세요");
+		}
+		
 	
 }
 
@@ -494,6 +495,16 @@ function changesulbi(keyno) {
         	alert("저장 에러");
         }
 	}); 
+}
+
+function validationCheck(){
+	
+	if($("#sa2_title").val() == ''){
+		alert("발전소를 선택해주세요");
+		return false
+	}
+	
+	return true
 }
 
 // function image(){
