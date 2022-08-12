@@ -51,7 +51,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin-top: 10px;
+    margin-top: 0px;
 }
 </style>
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -59,7 +59,7 @@
 <input type="hidden" value="">
 <div id="wrap">
     <div class="intro_content_box">
-        <div class="in">
+        <div class="in" style="margin-top: 0px;">
         <div class="image-box"></div>
             <div class="botto_box">
                 <ul class="intro_menu" style ="justify-content: center;">

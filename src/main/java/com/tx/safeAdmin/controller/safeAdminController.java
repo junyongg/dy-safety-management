@@ -1,6 +1,7 @@
 package com.tx.safeAdmin.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.io.File;
 
 import javax.annotation.Resource;
 import javax.jms.Session;
@@ -1047,7 +1047,7 @@ public class safeAdminController {
 	/*
 	 * 저장 시 문자 or 카톡 전송 기능
 	 **/
-	@RequestMapping("/sfa/Admin/sendAilmaAjax.do")
+	@RequestMapping(value = "/sfa/Admin/sendAilmaAjax.do", produces = "application/text; charset=utf8")
 	@ResponseBody
 	public <E> String sendAilmAjax(
 			@RequestParam(value = "SU_KEYNO") String SU_KEYNO,
@@ -1291,15 +1291,26 @@ public class safeAdminController {
 				return msg;
 			}
 			
-			@RequestMapping("/sfa/imageInsert.do")
-			@ResponseBody
-			public HashMap<String, Object> ImageInsert(HttpServletRequest req, safeAdminDTO bill,
-					@RequestParam(value = "SU_KEYNO") String SU_KEYNO) throws Exception {
+		@RequestMapping("/imageInsert.do")
+		@ResponseBody
+		public String ImageInsert(HttpServletRequest req,
+			@RequestParam(value="sa2_opinion") String MultipartFile) throws Exception {
 
-				HashMap<String, Object> map = Component.getData("sfa.safeuserselect_one", SU_KEYNO);
-
-				return map;
-			}
+			String msg = "123";
+			System.out.println(MultipartFile);
+//			String prefix = ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().substring(((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().lastIndexOf("."), ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().length());
+//			String fileName=  UUID.randomUUID().toString()+	prefix;
+//		
+//		
+//			String pathname = propertiesService.getString("resourcePath") + fileName;
+//			File dest = new File(pathname);			
+//			File folder = new File(pathname);
+//			if(!folder.isDirectory()) {
+//				folder.mkdirs();
+//			}
+			
+			return msg;
+		}
 			
 			
 	/*

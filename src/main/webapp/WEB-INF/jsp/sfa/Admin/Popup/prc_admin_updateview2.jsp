@@ -292,9 +292,11 @@ input:focus {outline:none;}
 </table>
 </div>
 </div>
-<div style="text-align: center; margin-top: 30px">
-<label>
-발전소 이상유무 선택
+<div style="margin-top: 20px; margin-left: 300px;">
+<table style="border: 2px solid black;">
+<tr>
+<td style="border-right: 2px solid black;">발전소 이상유무 선택</td>
+<td style="width:250px; ">
 <label>
 <span>이상있음</span> 
 <input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "1">
@@ -302,8 +304,9 @@ input:focus {outline:none;}
 <label>
 <span>이상없음</span> 
 <input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "2">
-</label>
-</label>
+</label></td>
+</tr>
+</table>
 </div>
 <div style="text-align: center;">
 <button type ="button" style="width: 120px;" onclick="UpdateInfo()"> 수정 </button>

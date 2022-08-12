@@ -71,6 +71,8 @@ header {
     background-color: #2F62AD;
     }
 </style>
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
 <div class="headerdiv">
 	<h1><a onclick="location.href='/sfa/index.do'" style="cursor: pointer;"><img alt="" src="/resources/img/safeAdmin/bg_main2-1.png"></a></h1>       
         <nav id="gnb">

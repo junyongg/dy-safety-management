@@ -2,17 +2,25 @@
 <%@ include file="/WEB-INF/jsp/taglib/taglib.jspf"%>
 
 <script src="/resources/common/js/html2canvas.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-0lax{text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:middle}
 #sa2_problem{width: 5%}
+.border{
+	border-bottom :2px solid black;
+}
 input{ border:0 solid black; width:80%;}
 input:focus {outline:none;}
 </style>
+<form:form id="Form" name ="Form" method="post">
 <div style="text-align: center;">
 <div>	
 	<select class="form-control input-sm" name="su_keyno" id="su_keyno" onchange="changesulbi(this.value)">
@@ -26,18 +34,18 @@ input:focus {outline:none;}
 	<button type="button" onclick="view()">조회</button>
 </div>
 <div id="esco" style="margin-left: 400px; margin-top: 20px;">
-<table class="tg" style="width: 80%;">
+<table class="tg" style="width: 80%; border:3px solid black;">
 <thead>
   <tr>
-    <th class="tg-0lax" colspan="48">
+    <th class="tg-0lax" colspan="48" style="text-align: center;">
     <label>
-	<input type="text" style="width:20%; text-align: center;" class="tb_gbla1 input_type_serch"  title=""  name="sa2_title" id="sa2_title">점검표
+	<input type="text" style="width:10%; text-align: center;" class="tb_gbla1 input_type_serch"  title=""  name="sa2_title" id="sa2_title">점검표
 	</label></th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0lax" colspan="48">
+    <td class="tg-0lax" colspan="48" style="text-align: center;">
     <label>
 	<input type="text" style="width:20% " class="tb_gbla1 input_type_serch"  value="${now }"  name="sa2_date" id="sa2_date">
 	날씨 :<input type="text" style="width:20% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_wether" id="sa2_wether">
@@ -80,7 +88,7 @@ input:focus {outline:none;}
 	</label>
 	</td>
   </tr>
-  <tr>
+  <tr class="border">
     <td class="tg-0lax" colspan="24">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype">
     <option value="KWh">KWh</option>
     <option value="MWh">MWh</option>
@@ -121,7 +129,7 @@ input:focus {outline:none;}
 	</label>
     </td>
   </tr>
-  <tr>
+  <tr class="border">
     <td class="tg-0lax" colspan="6">L3 - N</td>
     <td class="tg-0lax" colspan="12">
     <label>
@@ -176,7 +184,7 @@ input:focus {outline:none;}
 	</td>
     <td class="tg-0lax" colspan="9">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
   </tr>
-  <tr>
+  <tr class="border">
     <td class="tg-0lax" colspan="24">현재 누적 송전 유효전력량[KWh]-전체</td>
     <td class="tg-0lax" colspan="6">
 	<select id="sa2_meternum2" name="sa2_meternum2">
@@ -257,7 +265,7 @@ input:focus {outline:none;}
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_inverterdayKWh" id="sa2_inverterdayKWh">
 	</label></td>
   </tr>
-  <tr>
+  <tr class="border">
     <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">1일평균 발전시간<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[hour/day]</td>
     <td class="tg-0lax" colspan="12"><label>
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_meter1dayhour" id="sa2_meter1dayhour">
@@ -269,16 +277,17 @@ input:focus {outline:none;}
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_inverterdayhour" id="sa2_inverterdayhour">
 	</label></td>
   </tr>
-  <tr>
-    <td class="tg-0lax" colspan="48"> ※ 점검자 확인사항 <button type="button" onclick="picture()">사진 등록</button></td>
+  <tr class="border">
+    <td class="tg-0lax" colspan="48"> ※ 점검자 확인사항 
+     <input type="file" id="inputImage">
+  <button type="button" id="sendButton">등록</button>
+   </td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="48">
-    <label>
-    <form name="image" action="/sfa/imageInsert.do" method="post" enctype="multipart/form-data">
-	<input type="file" style="width:100% " class="tb_gbla1 input_type_serch"  name="sa2_opinion" id="sa2_opinion">
-	</form>
-	</label></td>
+	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  name="sa2_opinion" id="sa2_opinion">
+	<img src="" class="uploadImage" id ="sa2_image">
+	</td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="48">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -296,9 +305,11 @@ input:focus {outline:none;}
 </table>
 </div>
 </div>
-<div style="text-align: center; margin-top: 30px">
-<label>
-발전소 이상유무 선택
+<div style="margin-top: 20px; margin-left: 400px;">
+<table style="border: 2px solid black;">
+<tr>
+<td style="border-right: 2px solid black;">발전소 이상유무 선택</td>
+<td style="width:250px; ">
 <label>
 <span>이상있음</span> 
 <input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "1">
@@ -306,8 +317,9 @@ input:focus {outline:none;}
 <label>
 <span>이상없음</span> 
 <input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "2">
-</label>
-</label>
+</label></td>
+</tr>
+</table>
 </div>
 <div style="text-align: center;">
 <input type="hidden" id="buttionType" name="buttionType" value="insert"> 
@@ -317,59 +329,81 @@ input:focus {outline:none;}
 <input type="hidden" id="imgSrc" name="imgSrc" value="">
 <button style="width: 100px; margin-top: 20px;" type="button" onclick="loadInfo()"> 저장 </button>
 </div>
+</form:form>
 <script type="text/javascript">
 
 $(function() {
 	yearselect();
 	monselect();
+	
+	//사진등록
+  	  document.querySelector("#sendButton").addEventListener('click',()=>{
+
+      let selectFile = document.querySelector("#inputImage").files[0];
+
+      const file = URL.createObjectURL(selectFile);
+
+      document.querySelector(".uploadImage").src = file;
+      
+
+    })
 });
 
 	
 function loadInfo(){
 	
+	var array = new Array(); 
 	var target = $("#esco");
-	
-	if(confirm("저장 후 즉시 전송하시겠습니까? 취소를 누르면 저장만 됩니다.")){
-		
-		if (target != null && target.length > 0) {
-			var t = target[0];
-			console.log(t);
-			html2canvas(t).then(function(canvas) {
-				var myImg = canvas.toDataURL("image/png");
-				myImg = myImg.replace("data:image/png;base64,", "");
-				
-				$("#imgSrc").val(myImg);
-				$.ajax({
-					type : "POST",
-					data : $("#Form").serialize(),
-					dataType : "text",
-					url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
-					success : function(data) {
-						console.log(data);
-						alert(data);
-					},
-					error : function(a, b, c) {
-						alert("error");
-					}
+    var radioVal = $('input[name="sa2_problem"]:checked').val();
+   	array.push(radioVal);
+   	
+	if(array[0] == "1" || array[0] == "2"){
+		if(confirm("저장 후 즉시 전송하시겠습니까? 취소를 누르면 저장만 됩니다.")){
+			
+			if (target != null && target.length > 0) {
+				var t = target[0];
+				console.log(t);
+				html2canvas(t).then(function(canvas) {
+					var myImg = canvas.toDataURL("image/png");
+					myImg = myImg.replace("data:image/png;base64,", "");
+					
+					$("#imgSrc").val(myImg);
+					$.ajax({
+						type : "POST",
+						data : $("#Form").serialize(),
+						dataType : "text",
+						url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
+						success : function(data) {
+							console.log(data);
+							alert(data);
+						},
+						error : function(a, b, c) {
+							alert("error");
+						}
+					});
 				});
-			});
-		}
+			}
+		}else{
+			
+			 $.ajax({
+		        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
+		        type: 'POST',
+		        data: $("#Form").serialize(),
+		        async: false,  
+		        success: function(result) {
+		        	location.reload();
+		        	alert(result);
+		        },
+		        error: function(){
+		        	alert("저장 에러");
+		        }
+			}); 
+	 	}		
 	}else{
-		
-		 $.ajax({
-	        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
-	        type: 'POST',
-	        data: $("#Form").serialize(),
-	        async: false,  
-	        success: function(result) {
-	        	location.reload();
-	        	alert(result);
-	        },
-	        error: function(){
-	        	alert("저장 에러");
-	        }
-		}); 
- 	}
+		alert("발전소 이상유무를 선택해주세요");
+	}
+	
+	
 }
 
 //연월 셋팅
@@ -462,22 +496,29 @@ function changesulbi(keyno) {
 	}); 
 }
 
-function picture(){
+// function image(){
 	
-	 $.ajax({
-	        url: '/sfa/safe/imageInsert.do?${_csrf.parameterName}=${_csrf.token}',
-	        type: 'POST',
-	        data: $("#Form").serialize(),
-	        async: false,  
-	        success: function(result) {
-	        	location.reload();
-	        	alert(result);
-	        },
-	        error: function(){
-	        	alert("저장 에러");
-	        }
-		}); 
+// 	$.ajax({
+//         url: '/imageInsert.do',
+//         type: 'POST',
+//         data: $("#Form").serialize(),
+//         async: false,  
+//         processData: false,
+//         contentType: false,
+//         success: function(result) {
+
+//         	console.log(result);
+//         },
+//         error: function(e){
+//         	console.log(e);
+//         	alert("저장 에러");
+//         }
+// 	}); 
 	
-}
+// }
+
+
+
+
 
 </script>

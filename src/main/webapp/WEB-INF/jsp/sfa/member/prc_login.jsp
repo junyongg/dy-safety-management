@@ -38,7 +38,7 @@
 <div class="log-inner">
 	<!-- 로그인 -->
 	<div class="login-logo-b">
-		<img src="/resources/img/safeAdmin/logo_login.jpg" alt="로고">
+		<img src="/resources/img/safeAdmin/bg_main2-1.png" alt="로고">
 	</div>
 		<fieldset>
 			<legend>로그인</legend>

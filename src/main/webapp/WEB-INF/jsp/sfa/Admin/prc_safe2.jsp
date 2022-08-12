@@ -8,7 +8,6 @@
 <!-- <link type="text/css" rel="stylesheet" href="/resources/jcia/css/board.css"> -->
 <style>
 </style>
-<form:form id="Form" name ="Form" action="">
 <div>	
 	<select class="form-control input-sm" name="jspselect" id="jspselect" onchange="change123(this.value);">
 	       	<c:forEach items="${result}" var="result">
@@ -18,7 +17,7 @@
 </div>
 <div id="show">
 </div>
-</form:form>
+
 <script>
 
 $(function() {
