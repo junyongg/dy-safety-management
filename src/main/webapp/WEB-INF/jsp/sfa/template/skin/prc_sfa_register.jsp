@@ -375,8 +375,8 @@ function loadInfo(){
 							dataType : "text",
 							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
 							success : function(data) {
-								console.log(data);
 								alert(data);
+								location.reload();
 							},
 							error : function(a, b, c) {
 								alert("error");

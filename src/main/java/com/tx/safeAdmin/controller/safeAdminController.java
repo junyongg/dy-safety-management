@@ -1109,10 +1109,11 @@ public class safeAdminController {
 			String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
 			String destination = safeuser.getSU_SA_SULBI().toString();
 			String receiver = safeuser.getSU_SA_PHONE().toString().replace("-", "");
+			
 			if(writetype == "1") {		
 				 msg = safeAdmin.getSa_opinion();							
-			}else if(writetype == "2") {
-				 msg = safeAdmin.getSa2_opinion();
+			}else if(writetype == "2") {			
+				msg = safeAdmin.getSa2_opinion();
 			}
 			String image = filePath;
 			
@@ -1135,6 +1136,10 @@ public class safeAdminController {
 				grandtotal = "이상 무";
 			}
 			
+			//종합의견 처리
+			if(issuedate.equals("") || issuedate == null) {
+				issuedate = "종합의견 없음";
+			}
 			
 			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
 					+ "\n□ 점검일 : " + sname + "\n□ 점검자 : " + subject + "\n□ 이상유무 : " + grandtotal
@@ -1194,18 +1199,30 @@ public class safeAdminController {
 			
 			msg1 = "카카오톡 전송 완료";
 			
-			String pname = "발전소 명";
-			String sname = "발전소 명";
-			String subject = safeuser.getSU_SA_SULBI();
-			String grandtotal = safeuser.getSU_SA_SULBI();
-			String issuedate = safeAdmin.getSa_opinion();
+			String pname = safeAdmin.getSa2_title();
+			String sname = safeAdmin.getSa2_date();
+			String subject = safeAdmin.getSa2_adminname();
+			String grandtotal = safeAdmin.getSa2_problem();
+			String issuedate = safeAdmin.getSa2_opinion();
 			String admin = "대양기업 안전관리자";
 			String adminphone = "061-332-8086";
 			
-//			  String contents = name+"(이)가 \n발전소 : "+map.get("DPP_NAME").toString()+"의 \n게시물 : "+title+" (를)을\n확인하였습니다.";
-			String contents = "[세금계산서 발행 완료 안내]\n" + sname + "의 세금계산서 발행이 완료되었습니다.\n□ 공급자 : " + pname
-					+ "\n□ 공급받는자: " + sname + "\n□ 품목명 : " + subject + "\n□ 합계금액 : " + grandtotal + "원"
-					+ "\n□ 발행일 : " + issuedate + "\n\n\n※ 세금계산서 발행 관련 문의\n담당자 : " + admin + "\n연락처 : " + adminphone;
+			
+			//이상유무 처리
+			if(grandtotal.equals("1")) {
+				grandtotal = "이상 유";
+			}else {
+				grandtotal = "이상 무";
+			}
+			
+			//종합의견 처리
+			if(issuedate.equals("") || issuedate == null) {
+				issuedate = "종합의견 없음";
+			}
+			
+			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
+					+ "\n□ 점검일 : " + sname + "\n□ 점검자 : " + subject + "\n□ 이상유무 : " + grandtotal
+					+ "\n□ 종합의견 : " + issuedate + "\n\n\n※ 안전 관리 관련 문의\n담당자 : " + admin + "\n연락처 : " + adminphone;
 			
 			// 토큰받기
 			String tocken = requestAPI.TockenRecive(SettingData.Apikey, SettingData.Userid);
@@ -1215,7 +1232,7 @@ public class safeAdminController {
 			JSONObject jsonObj2 = requestAPI.KakaoAllimTalkList(SettingData.Apikey, SettingData.Userid,
 					SettingData.Senderkey, tocken);
 			org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
-			jsonObj2 = (JSONObject) jsonObj_a2.get(9); // 템플릿 리스트
+			jsonObj2 = (JSONObject) jsonObj_a2.get(10); // 템플릿 리스트
 			
 			String list = safeuser.getSU_SA_PHONE();
 			String Sendurl = "http://dymonitering.co.kr/";
