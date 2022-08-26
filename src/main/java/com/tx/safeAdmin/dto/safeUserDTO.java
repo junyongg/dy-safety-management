@@ -4,20 +4,16 @@ public class safeUserDTO {
 
 	public String SU_KEYNO;
 	public String SU_SA_SULBI;
-	public String SU_SA_SUJEONV;
-	public String SU_SA_SUJEONKW;
-	public String SU_SA_BALV;
-	public String SU_SA_BALKW;
-	public String SU_SA_SOLARV;
-	public String SU_SA_SOLARKW;
-	public String SU_SA_TRANSVOLUM;
-	public String SU_SA_ADMINTYPE;
-	public String SU_SA_ADMINCOUNT;
-	public String SU_SA_WRITETYPE;
-	public String SU_SA_PHONE;
+	public String SU_SA_AD;
+	public String SU_SA_RG;
+	public String SU_SA_VOLUM;
+	public String SU_SA_VOLT;
+	public String SU_SA_CT;
+	public String SU_SA_INVERTERNUM;
+	public String SU_SA_PHONE1;
+	public String SU_SA_PHONE2;
 	public String SU_SA_KAKAOYN;
 	public String SU_SA_MSGYN;
-	
 	public String getSU_KEYNO() {
 		return SU_KEYNO;
 	}
@@ -30,71 +26,53 @@ public class safeUserDTO {
 	public void setSU_SA_SULBI(String sU_SA_SULBI) {
 		SU_SA_SULBI = sU_SA_SULBI;
 	}
-	public String getSU_SA_SUJEONV() {
-		return SU_SA_SUJEONV;
+	public String getSU_SA_AD() {
+		return SU_SA_AD;
 	}
-	public void setSU_SA_SUJEONV(String sU_SA_SUJEONV) {
-		SU_SA_SUJEONV = sU_SA_SUJEONV;
+	public void setSU_SA_AD(String sU_SA_AD) {
+		SU_SA_AD = sU_SA_AD;
 	}
-	public String getSU_SA_SUJEONKW() {
-		return SU_SA_SUJEONKW;
+	public String getSU_SA_RG() {
+		return SU_SA_RG;
 	}
-	public void setSU_SA_SUJEONKW(String sU_SA_SUJEONKW) {
-		SU_SA_SUJEONKW = sU_SA_SUJEONKW;
+	public void setSU_SA_RG(String sU_SA_RG) {
+		SU_SA_RG = sU_SA_RG;
 	}
-	public String getSU_SA_BALV() {
-		return SU_SA_BALV;
+	public String getSU_SA_VOLUM() {
+		return SU_SA_VOLUM;
 	}
-	public void setSU_SA_BALV(String sU_SA_BALV) {
-		SU_SA_BALV = sU_SA_BALV;
+	public void setSU_SA_VOLUM(String sU_SA_VOLUM) {
+		SU_SA_VOLUM = sU_SA_VOLUM;
 	}
-	public String getSU_SA_BALKW() {
-		return SU_SA_BALKW;
+	public String getSU_SA_VOLT() {
+		return SU_SA_VOLT;
 	}
-	public void setSU_SA_BALKW(String sU_SA_BALKW) {
-		SU_SA_BALKW = sU_SA_BALKW;
+	public void setSU_SA_VOLT(String sU_SA_VOLT) {
+		SU_SA_VOLT = sU_SA_VOLT;
 	}
-	public String getSU_SA_SOLARV() {
-		return SU_SA_SOLARV;
+	public String getSU_SA_CT() {
+		return SU_SA_CT;
 	}
-	public void setSU_SA_SOLARV(String sU_SA_SOLARV) {
-		SU_SA_SOLARV = sU_SA_SOLARV;
+	public void setSU_SA_CT(String sU_SA_CT) {
+		SU_SA_CT = sU_SA_CT;
 	}
-	public String getSU_SA_SOLARKW() {
-		return SU_SA_SOLARKW;
+	public String getSU_SA_INVERTERNUM() {
+		return SU_SA_INVERTERNUM;
 	}
-	public void setSU_SA_SOLARKW(String sU_SA_SOLARKW) {
-		SU_SA_SOLARKW = sU_SA_SOLARKW;
+	public void setSU_SA_INVERTERNUM(String sU_SA_INVERTERNUM) {
+		SU_SA_INVERTERNUM = sU_SA_INVERTERNUM;
 	}
-	public String getSU_SA_TRANSVOLUM() {
-		return SU_SA_TRANSVOLUM;
+	public String getSU_SA_PHONE1() {
+		return SU_SA_PHONE1;
 	}
-	public void setSU_SA_TRANSVOLUM(String sU_SA_TRANSVOLUM) {
-		SU_SA_TRANSVOLUM = sU_SA_TRANSVOLUM;
+	public void setSU_SA_PHONE1(String sU_SA_PHONE1) {
+		SU_SA_PHONE1 = sU_SA_PHONE1;
 	}
-	public String getSU_SA_ADMINTYPE() {
-		return SU_SA_ADMINTYPE;
+	public String getSU_SA_PHONE2() {
+		return SU_SA_PHONE2;
 	}
-	public void setSU_SA_ADMINTYPE(String sU_SA_ADMINTYPE) {
-		SU_SA_ADMINTYPE = sU_SA_ADMINTYPE;
-	}
-	public String getSU_SA_ADMINCOUNT() {
-		return SU_SA_ADMINCOUNT;
-	}
-	public void setSU_SA_ADMINCOUNT(String sU_SA_ADMINCOUNT) {
-		SU_SA_ADMINCOUNT = sU_SA_ADMINCOUNT;
-	}
-	public String getSU_SA_WRITETYPE() {
-		return SU_SA_WRITETYPE;
-	}
-	public void setSU_SA_WRITETYPE(String sU_SA_WRITETYPE) {
-		SU_SA_WRITETYPE = sU_SA_WRITETYPE;
-	}
-	public String getSU_SA_PHONE() {
-		return SU_SA_PHONE;
-	}
-	public void setSU_SA_PHONE(String sU_SA_PHONE) {
-		SU_SA_PHONE = sU_SA_PHONE;
+	public void setSU_SA_PHONE2(String sU_SA_PHONE2) {
+		SU_SA_PHONE2 = sU_SA_PHONE2;
 	}
 	public String getSU_SA_KAKAOYN() {
 		return SU_SA_KAKAOYN;
@@ -108,6 +86,7 @@ public class safeUserDTO {
 	public void setSU_SA_MSGYN(String sU_SA_MSGYN) {
 		SU_SA_MSGYN = sU_SA_MSGYN;
 	}
+	
 	
 	
 }

@@ -79,7 +79,7 @@
 											<tr>
 												<td style="white-space: nowrap;">${b.COUNT}</td>
 												<td style="white-space: nowrap;"><a onclick = "taxpopup('${b.SU_KEYNO}');" style="cursor: pointer;" id="listtable" name ="listtable" value ="${b.SU_KEYNO}">${b.SU_SA_SULBI}</a></td>
-												<td style="white-space: nowrap;">${b.SU_SA_PHONE}</td>
+												<td style="white-space: nowrap;">${b.SU_SA_PHONE1}</td>
 												<c:if test="${b.SU_SA_KAKAOYN eq 'Y'}">
 												<td id ="chktd"><input type="checkbox" name="chk" id ="chk" value = "${b.SU_KEYNO}" onChange="checkcheck(this.value)" checked> </td>
 												</c:if>

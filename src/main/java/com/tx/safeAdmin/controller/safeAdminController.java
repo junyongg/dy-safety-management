@@ -201,7 +201,7 @@ public class safeAdminController {
 		ModelAndView mv = new ModelAndView();
 		
 		String url = "/sfa/template/skin/prc_sfa_electro";
-		String now = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+		String now = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분").format(Calendar.getInstance().getTime());
 		String year = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 		String mon = new SimpleDateFormat("MM").format(Calendar.getInstance().getTime());
 
@@ -1006,7 +1006,7 @@ public class safeAdminController {
 		String msg = "";
 
 		Component.createData("sfa.sapaper2Insert", bill);
-		msg = "등록이 완료 되었습니다.";
+		msg = "저장이 완료 되었습니다.";
 
 		return msg;
 	}
@@ -1108,7 +1108,7 @@ public class safeAdminController {
 			String userid = "daeyang";
 			String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
 			String destination = safeuser.getSU_SA_SULBI().toString();
-			String receiver = safeuser.getSU_SA_PHONE().toString().replace("-", "");
+			String receiver = safeuser.getSU_SA_PHONE1().toString().replace("-", "");
 			
 			if(writetype == "1") {		
 				 msg = safeAdmin.getSa_opinion();							
@@ -1138,7 +1138,7 @@ public class safeAdminController {
 			
 			//종합의견 처리
 			if(issuedate.equals("") || issuedate == null) {
-				issuedate = "종합의견 없음";
+				issuedate = "금일 안전관리 종합의견은 이미지로 대체합니다";
 			}
 			
 			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
@@ -1155,7 +1155,7 @@ public class safeAdminController {
 			org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
 			jsonObj2 = (JSONObject) jsonObj_a2.get(10); // 템플릿 리스트
 			
-			String list = safeuser.getSU_SA_PHONE();
+			String list = safeuser.getSU_SA_PHONE1();
 			String Sendurl = "http://dymonitering.co.kr/";
 			
 			String phone = list.toString().replace("-", "");
@@ -1178,7 +1178,7 @@ public class safeAdminController {
 			String userid = "daeyang";
 			String api = "qcp255q389pcsb3ddunfcb7ys93kbnli";
 			String destination = safeuser.getSU_SA_SULBI().toString();
-			String receiver = safeuser.getSU_SA_PHONE().toString().replace("-", "");
+			String receiver = safeuser.getSU_SA_PHONE1().toString().replace("-", "");
 			if(writetype == "1") {		
 				 msg = safeAdmin.getSa_opinion();							
 			}else if(writetype == "2") {
@@ -1217,7 +1217,7 @@ public class safeAdminController {
 			
 			//종합의견 처리
 			if(issuedate.equals("") || issuedate == null) {
-				issuedate = "종합의견 없음";
+				issuedate = "금일 안전관리 종합의견은 이미지로 대체합니다";
 			}
 			
 			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
@@ -1234,7 +1234,7 @@ public class safeAdminController {
 			org.json.simple.JSONArray jsonObj_a2 = (org.json.simple.JSONArray) jsonObj2.get("list");
 			jsonObj2 = (JSONObject) jsonObj_a2.get(10); // 템플릿 리스트
 			
-			String list = safeuser.getSU_SA_PHONE();
+			String list = safeuser.getSU_SA_PHONE1();
 			String Sendurl = "http://dymonitering.co.kr/";
 			
 			String phone = list.toString().replace("-", "");
@@ -1245,7 +1245,7 @@ public class safeAdminController {
 		//문자 x, 카톡 x
 		}else {
 			
-			msg1 = "선택된 전송 타입이 없습니다. 알림 타입을 선택해주세요.정보저장완료";
+			msg1 = "선택된 전송 타입이 없습니다. 알림 타입을 선택해주세요.";
 		}
 
 		return msg1;
@@ -1308,26 +1308,66 @@ public class safeAdminController {
 				return msg;
 			}
 			
-		@RequestMapping("/imageInsert.do")
-		@ResponseBody
-		public String ImageInsert(HttpServletRequest req,
-			@RequestParam(value="sa2_opinion") String MultipartFile) throws Exception {
-
-			String msg = "123";
-			System.out.println(MultipartFile);
-//			String prefix = ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().substring(((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().lastIndexOf("."), ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().length());
-//			String fileName=  UUID.randomUUID().toString()+	prefix;
-//		
-//		
-//			String pathname = propertiesService.getString("resourcePath") + fileName;
-//			File dest = new File(pathname);			
-//			File folder = new File(pathname);
-//			if(!folder.isDirectory()) {
-//				folder.mkdirs();
-//			}
+			/*
+			 * 발전소별 이전 작성 양식 조회 Ajax
+			 **/ 
+			@RequestMapping(value="/sfa/sfaAdmin/prepaperviewAjax.do")
+			@ResponseBody
+			public Object previewAjax(HttpServletRequest req
+				,DateDTO DateDTO
+				,@RequestParam(value="sa2_title") String title) throws Exception {
+				
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				
+				map = Component.getData("sfa.paperpreview", title);
+				
+				return map;
+			}
+				
 			
-			return msg;
-		}
+			/*
+			 * 안전관리 작성 양식 선택 Ajax
+			 **/
+			@RequestMapping(value = "/sfa/sfaAdmin/prepaperview.do")
+			@ResponseBody
+			public ModelAndView prepaperview(HttpServletRequest req,
+					@RequestParam(value = "sa2_title", required = false) String title) throws Exception {
+
+				ModelAndView mv = new ModelAndView();
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				
+				map = Component.getData("sfa.paperpreview", title);
+				
+				String url = "/sfa/Admin/preview/prc_sfa_EscoPreview.notiles";
+				
+				
+				
+				mv.addObject("preview", map);
+				mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
+				mv.setViewName(url);
+				return mv;
+			}
+			
+//		@RequestMapping("/imageInsert.do")
+//		@ResponseBody
+//		public String ImageInsert(HttpServletRequest req,
+//			@RequestParam(value="sa2_opinion") String MultipartFile) throws Exception {
+//
+//			String msg = "123";
+//			System.out.println(MultipartFile);
+////			String prefix = ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().substring(((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().lastIndexOf("."), ((org.springframework.web.multipart.MultipartFile) MultipartFile1).getOriginalFilename().length());
+////			String fileName=  UUID.randomUUID().toString()+	prefix;
+////		
+////		
+////			String pathname = propertiesService.getString("resourcePath") + fileName;
+////			File dest = new File(pathname);			
+////			File folder = new File(pathname);
+////			if(!folder.isDirectory()) {
+////				folder.mkdirs();
+////			}
+//			
+//			return msg;
+//		}
 			
 			
 	/*

@@ -368,7 +368,9 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_meter2dayhour = #{sa2_meter2dayhour},
 				sa2_inverterdayhour = #{sa2_inverterdayhour},
 				sa2_opinion = #{sa2_opinion},
-				sa2_problem = #{sa2_problem}			
+				sa2_problem = #{sa2_problem},			
+				changenum = #{changenum},			
+				changenum2 = #{changenum2}
 			WHERE sa2_keyno = #{sa2_keyno}
 		</update>
 	
@@ -514,44 +516,41 @@ where UI_KEYNO = 'UI_HMWNH'
     <insert id="safeUserInsert" parameterType="safeUserDTO">
 		INSERT INTO dy_sa_user
 		(
-			SU_SA_SUJEONV,
-			SU_SA_SUJEONKW,
-			SU_SA_BALV,
-			SU_SA_BALKW,
-			SU_SA_SOLARV,
-			SU_SA_SOLARKW,
-			SU_SA_TRANSVOLUM,
-			SU_SA_ADMINTYPE,
 			SU_SA_SULBI,
-			SU_SA_PHONE
+			SU_SA_AD,
+			SU_SA_RG,
+			SU_SA_VOLUM,
+			SU_SA_VOLT,
+			SU_SA_CT,
+			SU_SA_INVERTERNUM,
+			SU_SA_PHONE1,
+			SU_SA_PHONE2
 			
 		)VALUES(
-			#{SU_SA_SUJEONV},
-			#{SU_SA_SUJEONKW},
-			#{SU_SA_BALV},
-			#{SU_SA_BALKW},
-			#{SU_SA_SOLARV},
-			#{SU_SA_SOLARKW},
-			#{SU_SA_TRANSVOLUM},
-			#{SU_SA_ADMINTYPE},
 			#{SU_SA_SULBI},
-			#{SU_SA_PHONE}
+			#{SU_SA_AD},
+			#{SU_SA_RG},
+			#{SU_SA_VOLUM},
+			#{SU_SA_VOLT},
+			#{SU_SA_CT},
+			#{SU_SA_INVERTERNUM},
+			#{SU_SA_PHONE1},
+			#{SU_SA_PHONE2}
 		)
 	</insert>
 	
 	<!-- 안전관리 발전소 정보 수정(관리자 페이지) -->
 	<update id="safeUserUPdate" parameterType="safeUserDTO">
 		UPDATE dy_sa_user
-		SET SU_SA_SUJEONV = #{SU_SA_SUJEONV},
-			SU_SA_SUJEONKW = #{SU_SA_SUJEONKW},
-			SU_SA_BALV = #{SU_SA_BALV},
-			SU_SA_BALKW = #{SU_SA_BALKW},
-			SU_SA_SOLARV = #{SU_SA_SOLARV},
-			SU_SA_SOLARKW = #{SU_SA_SOLARKW},
-			SU_SA_TRANSVOLUM = #{SU_SA_TRANSVOLUM},
-			SU_SA_ADMINTYPE = #{SU_SA_ADMINTYPE},
-			SU_SA_SULBI = #{SU_SA_SULBI},
-			SU_SA_PHONE = #{SU_SA_PHONE}
+		SET SU_SA_SULBI = #{SU_SA_SULBI},
+			SU_SA_AD = #{SU_SA_AD},
+			SU_SA_RG = #{SU_SA_RG},
+			SU_SA_VOLUM = #{SU_SA_VOLUM},
+			SU_SA_VOLT = #{SU_SA_VOLT},
+			SU_SA_CT = #{SU_SA_CT},
+			SU_SA_INVERTERNUM = #{SU_SA_INVERTERNUM},
+			SU_SA_PHONE1 = #{SU_SA_PHONE1},
+			SU_SA_PHONE2 = #{SU_SA_PHONE2}
 			
 		WHERE SU_KEYNO = #{SU_KEYNO}
 	</update>
@@ -735,7 +734,9 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_inverterdayhour,
 				sa2_opinion,
 				sa_writetype,
-				sa2_problem
+				sa2_problem,
+				changenum,
+				changenum2
 				
 			)VALUES(
 				#{sa2_title},
@@ -782,7 +783,19 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa2_inverterdayhour},
 				#{sa2_opinion},
 				#{sa_writetype},
-				#{sa2_problem}
+				#{sa2_problem},
+				#{changenum},
+				#{changenum2}
 			)
 		</insert>
+		
+		<!-- 발전소별 가장 최신 데이터 뽑기 -->
+		<select id="paperpreview" parameterType="String" resultType="hashmap">
+			select *
+			from dy_sa2_paper
+			where Conn_date =
+			(select max(Conn_date)
+			from dy_sa2_paper
+			where sa2_title = #{title})
+		</select>
 </mapper>

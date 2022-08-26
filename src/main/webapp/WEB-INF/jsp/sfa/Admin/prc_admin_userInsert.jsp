@@ -93,27 +93,32 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<td>수전전압/용량</td>
-												<td><input type="text" class="form-control check" id="SU_SA_SUJEONV" name="SU_SA_SUJEONV">
-													<input type="text" class="form-control check" id="SU_SA_SUJEONKW" name="SU_SA_SUJEONKW"></td>
-												<td>발전전압/용량</td>
-												<td><input type="text" class="form-control check" id="SU_SA_BALV" name="SU_SA_BALV">
-													<input type="text" class="form-control check" id="SU_SA_BALKW" name="SU_SA_BALKW"></td>
-												<td>태양광</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_SOLARV" name="SU_SA_SOLARV" >
-													<input type="text" class="form-control check2" id="SU_SA_SOLARKW" name="SU_SA_SOLARKW" ></td>
+												<td>발전소 명</td>
+												<td><input type="text" class="form-control check" id="SU_SA_SULBI" name="SU_SA_SULBI"></td>
+												<td>발전소 지역</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_RG" name="SU_SA_RG" ></td>
+												<td>발전소 주소</td>
+												<td><input type="text" class="form-control check" id="SU_SA_AD" name="SU_SA_AD"></td>
 											</tr>
 											<tr>
-												<td>계약용량</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_TRANSVOLUM" name="SU_SA_TRANSVOLUM" ></td>
-												<td>점검종별</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_ADMINTYPE" name="SU_SA_ADMINTYPE"></td>
-												<td>발전소명</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_SULBI" name="SU_SA_SULBI"></td>
+												<td>발전소 용량</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_VOLUM" name="SU_SA_VOLUM" ></td>
+												<td>발전 전압</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_VOLT" name="SU_SA_VOLT"></td>
+												<td>CT비</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_CT" name="SU_SA_CT"></td>
 											</tr>
 											<tr>
-												<td>전화번호</td>
-												<td><input type="text" class="form-control check2" id="SU_SA_PHONE" name="SU_SA_PHONE"></td>
+												<td>인버터 대수</td>
+												<td><select class="form-control input-sm" id="SU_SA_INVERTERNUM" name ="SU_SA_INVERTERNUM">
+													 <option value="1">1대</option>
+													 <option value="3">3대</option>
+													 <option value="4">4~20대</option>
+													</select></td>
+												<td>사업주 전화번호 1</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_PHONE1" name="SU_SA_PHONE1"></td>
+												<td>사업주 전화번호 2</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_PHONE2" name="SU_SA_PHONE2"></td>
 											</tr>
 											<tr>
 												<td colspan="8">
@@ -160,16 +165,15 @@ function providerSelect2(value){
 }
 
 function clear2(){
-	$("#SU_SA_SUJEONV").val("")
-	$("#SU_SA_SUJEONKW").val("")
-	$("#SU_SA_BALV").val("")
-	$("#SU_SA_BALKW").val("")
-	$("#SU_SA_SOLARV").val("")
-	$("#SU_SA_SOLARKW").val("")
-	$("#SU_SA_TRANSVOLUM").val("")
-	$("#SU_SA_ADMINTYPE").val("")
 	$("#SU_SA_SULBI").val("")
-	$("#SU_SA_PHONE").val("")
+	$("#SU_SA_AD").val("")
+	$("#SU_SA_RG").val("")
+	$("#SU_SA_VOLUM").val("")
+	$("#SU_SA_VOLT").val("")
+	$("#SU_SA_CT").val("")
+	$("#SU_SA_INVERTERNUM").val("")
+	$("#SU_SA_PHONE1").val("")
+	$("#SU_SA_PHONE2").val("")
 }
 
 function providerSelectmethod2(value){
@@ -182,18 +186,17 @@ function providerSelectmethod2(value){
         async: false,  
         success: function(result) {
         	
-        	$("#SU_SA_SUJEONV").val(result.SU_SA_SUJEONV)
-        	$("#SU_SA_SUJEONKW").val(result.SU_SA_SUJEONKW)
-        	$("#SU_SA_BALV").val(result.SU_SA_BALV)
-        	$("#SU_SA_BALKW").val(result.SU_SA_BALKW)
-        	$("#SU_SA_SOLARV").val(result.SU_SA_SOLARV)
-        	$("#SU_SA_SOLARKW").val(result.SU_SA_SOLARKW)
-        	$("#SU_SA_TRANSVOLUM").val(result.SU_SA_TRANSVOLUM)
-        	$("#SU_SA_ADMINTYPE").val(result.SU_SA_ADMINTYPE)
-        	$("#SU_SA_SULBI").val(result.SU_SA_SULBI)
-        	$("#SU_KEYNO").val(result.SU_KEYNO)
-        	$("#SU_SA_PHONE").val(result.SU_SA_PHONE)
         	
+        	$("#SU_KEYNO").val(result.SU_KEYNO)
+        	$("#SU_SA_SULBI").val(result.SU_SA_SULBI)
+        	$("#SU_SA_AD").val(result.SU_SA_AD)
+        	$("#SU_SA_RG").val(result.SU_SA_RG)
+        	$("#SU_SA_VOLUM").val(result.SU_SA_VOLUM)
+        	$("#SU_SA_VOLT").val(result.SU_SA_VOLT)
+        	$("#SU_SA_CT").val(result.SU_SA_CT)
+        	$("#SU_SA_INVERTERNUM").val(result.SU_SA_INVERTERNUM)
+        	$("#SU_SA_PHONE1").val(result.SU_SA_PHONE1)
+        	$("#SU_SA_PHONE2").val(result.SU_SA_PHONE2)
         
         	
         	$("#buttondiv2-2").html('<button class="btn btn-sm btn-danger" type="button" onclick="supdeleteInfo();" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제</button>')

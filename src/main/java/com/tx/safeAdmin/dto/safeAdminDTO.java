@@ -136,6 +136,8 @@ public class safeAdminDTO {
 	public String sa2_inverterdayhour;
 	public String sa2_opinion;
 	public String sa2_problem;
+	public String changenum;
+	public String changenum2;
 
 	
 	
@@ -928,6 +930,18 @@ public class safeAdminDTO {
 	}
 	public void setSa2_problem(String sa2_problem) {
 		this.sa2_problem = sa2_problem;
+	}
+	public String getChangenum() {
+		return changenum;
+	}
+	public void setChangenum(String changenum) {
+		this.changenum = changenum;
+	}
+	public String getChangenum2() {
+		return changenum2;
+	}
+	public void setChangenum2(String changenum2) {
+		this.changenum2 = changenum2;
 	}
 	
 	

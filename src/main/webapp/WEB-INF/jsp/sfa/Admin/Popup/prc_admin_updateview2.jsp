@@ -38,18 +38,12 @@ input:focus {outline:none;}
     <td class="tg-0lax" colspan="48">
     <label>
 	<input type="text" style="width:20% " class="tb_gbla1 input_type_serch"  value="${list.sa2_date }"  name="sa2_date" id="sa2_date">
-	날씨 :<input type="text" style="width:20% " class="tb_gbla1 input_type_serch"  value="${list.sa2_wether }" id="sa2_wether">
+	날씨 :<input type="text" style="width:20% " class="tb_gbla1 input_type_serch"  value="${list.sa2_wether }" name= "sa2_wether" id="sa2_wether">
 	점검자 : <input type="text" style="width:20% " class="tb_gbla1 input_type_serch" value="${list.sa2_adminname }" name="sa2_adminname" id="sa2_adminname">
 	</label></td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="48" style = "background-color: #99CCFF" >인 버 터 발 전 현 황
-    <select id="sa2_inverternumtype" name="sa2_inverternumtype">
-    <option value="1">1대</option>
-    <option value="3">3대</option>
-    <option value="4">4~20대</option>
-    </select>
-    </td>
+    <td class="tg-0lax" colspan="48" style = "background-color: #99CCFF" >인 버 터 발 전 현 황 </td>
 
   </tr>
   <tr>
@@ -74,7 +68,7 @@ input:focus {outline:none;}
     </select></td>
     <td class="tg-0lax" colspan="24">
 	<label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_accpower" id="sa2_accpower">
+	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_accpower }"  name="sa2_accpower" id="sa2_accpower">
 	</label>
 	</td>
   </tr>
@@ -85,7 +79,7 @@ input:focus {outline:none;}
     </select></td>
     <td class="tg-0lax" colspan="24">
     <label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  title=""  name="sa2_periodpower" id="sa2_periodpower">
+	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_periodpower }"  name="sa2_periodpower" id="sa2_periodpower">
 	</label>
     </td>
   </tr>
@@ -162,10 +156,16 @@ input:focus {outline:none;}
   <tr>
     <td class="tg-0lax" colspan="24">전월 누적 송전 유효전력량[KWh]-전체</td>
     <td class="tg-0lax" colspan="6">
-    <select id="sa2_meternum1" name="sa2_meternum1">
-    <option value="계량기#4">계량기#4</option>
-    <option value="계량기#5">계량기#5</option>
-    </select>
+    <c:if test="${list.sa2_meternum1 eq '4' }">
+		<select id="sa2_meternum1" name="sa2_meternum1" onchange="changenumber(this.value)">
+	    <option value="4">계량기#4</option>
+	    </select>
+		</c:if>
+    <c:if test="${list.sa2_meternum1 eq '5' }">
+		<select id="sa2_meternum1" name="sa2_meternum1" onchange="changenumber(this.value)">
+	    <option value="5">계량기#5</option>
+	    </select>
+		</c:if>
     </td>
     <td class="tg-0lax" colspan="9">
 	<label>
@@ -177,10 +177,22 @@ input:focus {outline:none;}
   <tr>
     <td class="tg-0lax" colspan="24">현재 누적 송전 유효전력량[KWh]-전체</td>
     <td class="tg-0lax" colspan="6">
-	<select id="sa2_meternum2" name="sa2_meternum2">
-    <option value="계량기#7">계량기#7</option>
-    <option value="계량기#6">계량기#6</option>
-    </select>
+		<c:if test="${list.sa2_meternum2 eq '3' }">
+		<select id="sa2_meternum2" name="sa2_meternum2" >
+	    <option value="3">계량기#3</option>
+	    </select>
+		</c:if>
+		<c:if test="${list.sa2_meternum2 eq '7' }">
+		<select id="sa2_meternum2" name="sa2_meternum2" >
+	    <option value="7">계량기#7</option>
+	    </select>
+		</c:if>
+		<c:if test="${list.sa2_meternum2 eq '9' }">
+		<select id="sa2_meternum2" name="sa2_meternum2" >
+	    <option value="9">계량기#9</option>
+	    </select>
+		</c:if>
+    
 	</td>
     <td class="tg-0lax" colspan="9">
     <label>
@@ -190,9 +202,9 @@ input:focus {outline:none;}
   </tr>
   <tr>
     <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">검침 대상</td>
-    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">계량기#5</td>
-    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">계량기#9</td>
-    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">인버터 데이터</td>
+    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF"><input type="text" style="width:100%; background-color: #99CCFF " class="tb_gbla1 input_type_serch" readonly="readonly" value="${list.changenum }" name="changenum" id="changenum"></td>
+    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF"><input type="text" style="width:100%; background-color: #99CCFF " class="tb_gbla1 input_type_serch" readonly="readonly" value="${list.changenum2 }" name="changenum2" id="changenum2"></td>
+    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">검침일</td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="6" rowspan="2" style = "background-color: #99CCFF">검침<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;주기</td>
@@ -297,14 +309,27 @@ input:focus {outline:none;}
 <tr>
 <td style="border-right: 2px solid black;">발전소 이상유무 선택</td>
 <td style="width:250px; ">
-<label>
-<span>이상있음</span> 
-<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "1">
-</label>
-<label>
-<span>이상없음</span> 
-<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "2">
-</label></td>
+  <c:if test="${list.sa2_problem eq '1' }">
+	<label>
+	<span>이상있음</span> 
+	<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "1" checked="checked">
+	</label>
+	<label>
+	<span>이상없음</span> 
+	<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "2">
+	</label>
+  </c:if>
+  <c:if test="${list.sa2_problem eq '2' }">
+	<label>
+	<span>이상있음</span> 
+	<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "1" >
+	</label>
+	<label>
+	<span>이상없음</span> 
+	<input type = "radio" style="width : 10%;" margin-top: 5px;" name = "sa2_problem" id="sa2_problem" value = "2" checked="checked">
+	</label>
+  </c:if>
+</td>
 </tr>
 </table>
 </div>
@@ -313,10 +338,22 @@ input:focus {outline:none;}
 </div>
 <div style="text-align: center;" id = "buttondiv1">
 <input type="hidden" id="buttionType" name="buttionType" value="insert"> 
+<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="">
 <input type="hidden" id="sa2_keyno" name="sa2_keyno" value="${list.sa2_keyno }">
 </div>
 </form:form>
 <script type="text/javascript">
+
+$(function() {
+    
+   		 var t = document.getElementById('sa2_meternum2');
+      
+   		 t.addEventListener('change', function(event){
+    	  
+   			changetext(event.target.value);
+     	 });
+
+});
 
 function UpdateInfo(){
 	
@@ -372,4 +409,38 @@ function changesulbi(keyno) {
 	}); 
 }
 
+
+function changenumber(value){
+	
+	if(value == 4){
+		
+		$("#sa2_meternum2").html("<select id='sa2_meternum2' name='sa2_meternum2'><option value='7'>계량기#7</option>")
+		$("#changenum").val("계량기#4")
+		$("#changenum2").val("계량기#7")
+		
+	}else if(value == 5){
+		
+		$("#sa2_meternum2").html("<select id='sa2_meternum2' name='sa2_meternum2'><option value='3'>계량기#3</option><option value='9'>계량기#9</option></select>")
+		$("#changenum").val("계량기#5")
+		$("#changenum2").val("계량기#3")
+		
+		
+	}
+	
+}
+
+function changetext(value){
+	
+	
+	if(value == 3){
+
+		$("#changenum2").val("계량기#3")
+		
+	}else if(value == 9){
+
+		$("#changenum2").val("계량기#9")
+		
+	}
+	
+}
 </script>

@@ -167,10 +167,13 @@ input:focus {outline:none;}
     </td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="24">전월 누적 송전 유효전력량[KWh]-전체</td>
-    <td class="tg-0lax" colspan="6">
-    <input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_meternum1 }"  name="sa2_meternum1" id="sa2_meternum1" readonly="readonly">
-    </td>
+    <td class="tg-0lax" colspan="24">전월 누적 송전 유효전력량[KWh]-전체</td>    
+	    <c:if test="${list.sa2_meternum1 eq '4' }">
+	    <td class="tg-0lax" colspan="6">계량기#4</td>
+		</c:if>
+		<c:if test="${list.sa2_meternum1 eq '5' }">
+		<td class="tg-0lax" colspan="6">계량기#5</td>
+		</c:if>    
     <td class="tg-0lax" colspan="9">
 	<label>
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_meter1KWh }"  name="sa2_meter1KWh" id="sa2_meter1KWh" readonly="readonly">
@@ -180,9 +183,15 @@ input:focus {outline:none;}
   </tr>
   <tr>
     <td class="tg-0lax" colspan="24">현재 누적 송전 유효전력량[KWh]-전체</td>
-    <td class="tg-0lax" colspan="6">
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_meternum2 }"  name="sa2_meternum2" id="sa2_meternum2" readonly="readonly">
-	</td>
+    	<c:if test="${list.sa2_meternum2 eq '3' }">
+	    <td class="tg-0lax" colspan="6">계량기#4</td>
+		</c:if>
+		<c:if test="${list.sa2_meternum2 eq '7' }">
+		<td class="tg-0lax" colspan="6">계량기#7</td>
+		</c:if>
+		<c:if test="${list.sa2_meternum2 eq '9' }">
+		<td class="tg-0lax" colspan="6">계량기#9</td>
+		</c:if>  
     <td class="tg-0lax" colspan="9">
     <label>
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value="${list.sa2_meter2KWh }"  name="sa2_meter2KWh" id="sa2_meter2KWh" readonly="readonly">
@@ -193,7 +202,7 @@ input:focus {outline:none;}
     <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">검침 대상</td>
     <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">계량기#5</td>
     <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">계량기#9</td>
-    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">인버터 데이터</td>
+    <td class="tg-0lax" colspan="12" style = "background-color: #99CCFF">검침일</td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="6" rowspan="2" style = "background-color: #99CCFF">검침<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;주기</td>
