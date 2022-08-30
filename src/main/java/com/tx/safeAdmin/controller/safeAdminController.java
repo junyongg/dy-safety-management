@@ -1060,7 +1060,6 @@ public class safeAdminController {
 			HttpServletResponse response) throws Exception {
 		
 		SiteManagerDTO site = new SiteManagerDTO();
-		String resourcepath = site.getRESOURCE_PATH();
 		
 		safeuser = Component.getData("sfa.safeuserselect_alim", SU_KEYNO);
 		
@@ -1087,7 +1086,6 @@ public class safeAdminController {
 		if(stream != null) {
 			stream.close();
 		}
-		
 		
 		map.addAttribute("resultMap", "");
 		

@@ -8,20 +8,23 @@
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:20px;
   overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:20px;
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-0lax{text-align:left;vertical-align:middle}
 #sa2_problem{width: 5%}
 .border{
 	border-bottom :2px solid black;
 }
-input{ border:0 solid black; width:80%;}
+input[type="text"] { border:0 solid black; width:80%; height: 30px;  /* 높이 초기화 */line-height: normal;  /* line-height 초기화 */font-size: 20px;}
+
 input:focus {outline:none;}
+select{ height: 30px; }
+
 </style>
 <form:form id="Form" name ="Form" method="post">
-<div style="text-align: center;">
+<div style="text-align: center;" id="esco">
 <div>	
 	<select class="form-control input-sm" name="su_keyno" id="su_keyno" onchange="changesulbi(this.value)">
 	       		<option>선택하세요</option>
@@ -35,12 +38,15 @@ input:focus {outline:none;}
 	<button type="button" onclick="view()">조회</button>
 </div>
 <div style="margin-left: 400px; margin-top: 20px;">
-<table class="tg" style="width: 80%; border:3px solid black;">
+<table class="tg" style="width: 80%; border:3px solid black;" >
 <thead>
+  <tr data-html2canvas-ignore="true">
+  	<th class="tg-0lax" colspan="48" style="text-align: center;"><input type="checkbox" id="allcheck"></th>
+  </tr>
   <tr>
     <th class="tg-0lax" colspan="48" style="text-align: center;">
     <label>
-	<input type="text" style="width:10%; text-align: center;" class="tb_gbla1 input_type_serch"  title=""  name="sa2_title" id="sa2_title">점검표
+		<input type="text" style="width:10%; text-align: center;" class="tb_gbla1 input_type_serch"  title=""  name="sa2_title" id="sa2_title">점검표
 	</label></th>
   </tr>
 </thead>
@@ -62,13 +68,17 @@ input:focus {outline:none;}
 	</label></td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="38" style = "background-color: #99CCFF" >인 버 터 발 전 현 황
+    <td class="tg-0lax" colspan="38" style = "background-color: #99CCFF" >
+    	인 버 터 발 전 현 황
     </td>
 	<td class="tg-0lax" colspan="10">
 	<label id="sa2_label0"></label>
 	</td>
   </tr>
   <tbody class="esco">
+  <tr data-html2canvas-ignore="true">
+  	<td colspan="48"><input type="checkbox" class="check" checked="checked" onclick="checkboxEvent(this)"></td> 
+  </tr>
   <tr>
     <td class="tg-0lax" colspan="24">현재 출력 </td>
     <td class="tg-0lax" colspan="14">
@@ -120,15 +130,19 @@ input:focus {outline:none;}
 	</td>
   </tr>
   </tbody>
+  <tbody class ="esco" data-html2canvas-ignore="true">
+   <tr data-html2canvas-ignore="true">
+  	<td colspan="48"><input type="checkbox" class="check" onclick="checkboxEvent(this)"></td> 
+  </tr>
   <tr>
-    <td class="tg-0lax" colspan="6" rowspan="3">AC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전압<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[V]</td>
+    <td class="tg-0lax" colspan="6" rowspan="3"> AC전압&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[V]</td>
     <td class="tg-0lax" colspan="6">L1 - N</td>
     <td class="tg-0lax" colspan="12">
 	<label id="sa2_label5">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACVL1_N" id="sa2_ACVL1_N">
 	</label>
 	</td>
-    <td class="tg-0lax" colspan="6" rowspan="3">AC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전류<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]</td>
+    <td class="tg-0lax" colspan="6" rowspan="3">AC전류&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]</td>
     <td class="tg-0lax" colspan="6">L1</td>
     <td class="tg-0lax" colspan="12">
     <label id="sa2_label6">
@@ -297,9 +311,13 @@ input:focus {outline:none;}
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_inverterdayhour" id="sa2_inverterdayhour">
 	</label></td>
   </tr>
+  </tbody>
   <tbody class ="esco" >
+  <tr class="border" data-html2canvas-ignore="true">
+  	<td colspan="48"><input type="checkbox" class="check" checked="checked"  onclick="checkboxEvent(this)"></td> 
+  </tr>
   <tr class="border"> 
-    <td class="tg-0lax" colspan="48"> ※ 점검자 확인사항 
+    <td class="tg-0lax" colspan="48">※ 점검자 확인사항 
      <input type="file" id="inputImage">
   <button type="button" id="sendButton">등록</button>
    </td>
@@ -361,10 +379,28 @@ input:focus {outline:none;}
 </form:form>
 <script type="text/javascript">
 
-
-
-
 $(function() {
+	///data-html2canvas-ignore="true" 
+	$(document).on('click','#allcheck',function(){
+		if($('#allcheck').is(':checked')){
+			$('.check').prop('checked',true);
+			$('.esco').removeAttr('data-html2canvas-ignore');
+		}else{     
+			$('.check').prop('checked',false); 
+			$('.esco').attr('data-html2canvas-ignore','true')
+		} 
+	});
+	
+	
+	$(document).on('click','.check',function(){
+	    if($('input[class=check]:checked').length==$('.check').length){  
+			 $('#allcheck').prop('checked',true);    
+		}else{       
+			 $('#allcheck').prop('checked',false);     
+		}
+	});
+	
+	
 	yearselect();
 	monselect();
 	
@@ -392,42 +428,47 @@ $(function() {
 
 });
 
+function checkboxEvent(obj){
+	if($(obj).is(':checked')){
+		$(obj).closest("tbody").removeAttr('data-html2canvas-ignore')
+	}else{
+		$(obj).closest("tbody").attr('data-html2canvas-ignore','true')
+	}
+}
+
+
 function SendAlim(){
 	
 	var array = new Array(); 
-	var target = $(".esco");
+	var target = $("#esco");
     var radioVal = $('input[name="sa2_problem"]:checked').val();
    	array.push(radioVal);
    	
    	if(!validationCheck()) return false
 		if(array[0] == "1" || array[0] == "2"){
 			if(confirm("저장 후 즉시 알림 전송하시겠습니까?")){
-				var t;
 				if (target != null && target.length > 0) {
-					for(var i=0; i<target.length; i++){
-						t += target[i];
-						
-					};
+					
+					var t = target[0];
 
 					html2canvas(t).then(function(canvas) {
 						var myImg = canvas.toDataURL("image/png");
 						myImg = myImg.replace("data:image/png;base64,", "");
 						
 						
-						console.log(myImg);
 						$("#imgSrc").val(myImg);
-// 						$.ajax({
-// 							type : "POST",
-// 							data : $("#Form").serialize(),
-// 							dataType : "text",
-// 							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
-// 							success : function(data) {
-// 								alert(data);
-// 							},
-// 							error : function(a, b, c) {
-// 								alert("error");
-// 							}
-// 						});
+ 						$.ajax({
+ 							type : "POST",
+ 							data : $("#Form").serialize(),
+ 							dataType : "text",
+ 							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
+ 							success : function(data) {
+ 								alert(data);
+ 							},
+ 							error : function(a, b, c) {
+ 								alert("error");
+ 							}
+ 						});
 					});
 				}
 			}else{
@@ -696,6 +737,7 @@ function changetext(value){
 // 	}); 
 	
 // }
+
 
 
 

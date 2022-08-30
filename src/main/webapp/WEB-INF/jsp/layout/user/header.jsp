@@ -15,7 +15,7 @@
     height: 36px;
     color: #fff;
     padding: 0 16px 0 35px;
-    background: #3061AD url(/resources/img/sub/ic_lock.png) no-repeat left 15px top 50%;
+    background: #3061AD no-repeat left 15px top 50%;
     border-radius: 30px;
     font-size: 14px;
     cursor: pointer;
