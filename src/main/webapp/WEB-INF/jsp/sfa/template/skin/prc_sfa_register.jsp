@@ -29,8 +29,9 @@ input:focus {outline:none;}
 				<option value="${b.SU_KEYNO}">${b.SU_SA_SULBI }</option>
 				</c:forEach>		                
 	</select>
-<!-- 	<select class="form-control input-sm" name="Year" id="Year"></select> -->
-<!-- 	<select class="form-control input-sm" name="Month" id="Month"></select> -->
+	<select class="form-control input-sm" name="Year" id="Year"></select>
+	<select class="form-control input-sm" name="Month" id="Month" onchange="datanumselect()"></select>
+	<select class="form-control input-sm" name="selectgroup" id="selectgroup"></select>
 	<button type="button" onclick="view()">조회</button>
 </div>
 <div style="margin-left: 400px; margin-top: 20px;">
@@ -61,24 +62,33 @@ input:focus {outline:none;}
 	</label></td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="48" style = "background-color: #99CCFF" >인 버 터 발 전 현 황
+    <td class="tg-0lax" colspan="38" style = "background-color: #99CCFF" >인 버 터 발 전 현 황
     </td>
-
+	<td class="tg-0lax" colspan="10">
+	<label id="sa2_label0"></label>
+	</td>
   </tr>
-  <tbody id="esco">
+  <tbody class="esco">
   <tr>
     <td class="tg-0lax" colspan="24">현재 출력 </td>
-    <td class="tg-0lax" colspan="24">
-    <label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch" value=""   name="sa2_nowpower" id="sa2_nowpower">
-	</label></td>
+    <td class="tg-0lax" colspan="14">
+    <label >
+	<input type="text" style="width:40%" class="tb_gbla1 input_type_serch" value=""   name="sa2_nowpower" id="sa2_nowpower">
+	</label>
+	</td>	
+	<td class="tg-0lax" colspan="10">
+	<label id="sa2_label1"></label>		
+	</td>
   </tr>
   <tr>
     <td class="tg-0lax" colspan="24">금일 발전량 [KWh]</td>
-    <td class="tg-0lax" colspan="24">
+    <td class="tg-0lax" colspan="14">
 	<label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value=""  name="sa2_todaypower" id="sa2_todaypower">
+	<input type="text" style="width:40% " class="tb_gbla1 input_type_serch"  value=""  name="sa2_todaypower" id="sa2_todaypower">
 	</label>
+	</td>
+	<td class="tg-0lax" colspan="10">
+	<label id="sa2_label2"></label>		
 	</td>
   </tr>
   <tr>
@@ -86,10 +96,13 @@ input:focus {outline:none;}
     <option value="KWh">KWh</option>
     <option value="MWh">MWh</option>
     </select></td>
-    <td class="tg-0lax" colspan="24">
+    <td class="tg-0lax" colspan="14">
 	<label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  value=""   name="sa2_accpower" id="sa2_accpower">
+	<input type="text" style="width:40% " class="tb_gbla1 input_type_serch"  value=""   name="sa2_accpower" id="sa2_accpower">
 	</label>
+	</td>
+	<td class="tg-0lax" colspan="10">
+	<label id="sa2_label3"></label>		
 	</td>
   </tr>
   <tr class="border">
@@ -97,25 +110,28 @@ input:focus {outline:none;}
     <option value="KWh">KWh</option>
     <option value="MWh">MWh</option>
     </select></td>
-    <td class="tg-0lax" colspan="24">
+    <td class="tg-0lax" colspan="14">
     <label>
-	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_periodpower" id="sa2_periodpower">
+	<input type="text" style="width:40% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_periodpower" id="sa2_periodpower">
 	</label>
     </td>
+    <td class="tg-0lax" colspan="10">
+	<label id="sa2_label4"></label>		
+	</td>
   </tr>
   </tbody>
   <tr>
     <td class="tg-0lax" colspan="6" rowspan="3">AC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전압<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[V]</td>
     <td class="tg-0lax" colspan="6">L1 - N</td>
     <td class="tg-0lax" colspan="12">
-	<label>
+	<label id="sa2_label5">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACVL1_N" id="sa2_ACVL1_N">
 	</label>
 	</td>
     <td class="tg-0lax" colspan="6" rowspan="3">AC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전류<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]</td>
     <td class="tg-0lax" colspan="6">L1</td>
     <td class="tg-0lax" colspan="12">
-    <label>
+    <label id="sa2_label6">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACAL1" id="sa2_ACAL1">
 	</label>
     </td>
@@ -123,13 +139,13 @@ input:focus {outline:none;}
   <tr>
     <td class="tg-0lax" colspan="6">L2 - N</td>
     <td class="tg-0lax" colspan="12">
-	<label>
+	<label id="sa2_label7">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACVL2_N" id="sa2_ACVL2_N">
 	</label>
 	</td>
     <td class="tg-0lax" colspan="6">L2</td>
     <td class="tg-0lax" colspan="12">
-    <label>
+    <label id="sa2_label8">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACAL2" id="sa2_ACAL2">
 	</label>
     </td>
@@ -137,12 +153,12 @@ input:focus {outline:none;}
   <tr class="border">
     <td class="tg-0lax" colspan="6">L3 - N</td>
     <td class="tg-0lax" colspan="12">
-    <label>
+    <label id="sa2_label9">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACVL3_N" id="sa2_ACVL3_N">
 	</label></td>
     <td class="tg-0lax" colspan="6">L3</td>
     <td class="tg-0lax" colspan="12">
-    <label>
+    <label id="sa2_label10">
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_ACAL3" id="sa2_ACAL3">
 	</label></td>
   </tr>
@@ -281,8 +297,8 @@ input:focus {outline:none;}
 	<input type="text" style="width:100% " class="tb_gbla1 input_type_serch"  oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="sa2_inverterdayhour" id="sa2_inverterdayhour">
 	</label></td>
   </tr>
-  <tbody id ="esco">
-  <tr class="border" id = "esco"> 
+  <tbody class ="esco" >
+  <tr class="border"> 
     <td class="tg-0lax" colspan="48"> ※ 점검자 확인사항 
      <input type="file" id="inputImage">
   <button type="button" id="sendButton">등록</button>
@@ -379,35 +395,39 @@ $(function() {
 function SendAlim(){
 	
 	var array = new Array(); 
-	var target = $("#esco");
+	var target = $(".esco");
     var radioVal = $('input[name="sa2_problem"]:checked').val();
    	array.push(radioVal);
    	
    	if(!validationCheck()) return false
 		if(array[0] == "1" || array[0] == "2"){
 			if(confirm("저장 후 즉시 알림 전송하시겠습니까?")){
-				
+				var t;
 				if (target != null && target.length > 0) {
-					var t = target[0];
-					console.log(t);
+					for(var i=0; i<target.length; i++){
+						t += target[i];
+						
+					};
+
 					html2canvas(t).then(function(canvas) {
 						var myImg = canvas.toDataURL("image/png");
 						myImg = myImg.replace("data:image/png;base64,", "");
 						
+						
+						console.log(myImg);
 						$("#imgSrc").val(myImg);
-						$.ajax({
-							type : "POST",
-							data : $("#Form").serialize(),
-							dataType : "text",
-							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
-							success : function(data) {
-								alert(data);
-								location.reload();
-							},
-							error : function(a, b, c) {
-								alert("error");
-							}
-						});
+// 						$.ajax({
+// 							type : "POST",
+// 							data : $("#Form").serialize(),
+// 							dataType : "text",
+// 							url : "/sfa/Admin/sendAilmaAjax.do?${_csrf.parameterName}=${_csrf.token}",
+// 							success : function(data) {
+// 								alert(data);
+// 							},
+// 							error : function(a, b, c) {
+// 								alert("error");
+// 							}
+// 						});
 					});
 				}
 			}else{
@@ -423,14 +443,13 @@ function SendAlim(){
 function loadInfo(){
 	
 	var array = new Array(); 
-	var target = $("#esco");
     var radioVal = $('input[name="sa2_problem"]:checked').val();
    	array.push(radioVal);
    	
    	if(!validationCheck()) return false
 		if(array[0] == "1" || array[0] == "2"){
 			if(confirm("저장하시겠습니까?")){
-				
+				s
 				 $.ajax({
 			        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
 			        type: 'POST',
@@ -462,9 +481,9 @@ function yearselect(){
 	
 	years = "";
 		
-	for(var i = (comyear-5); i <= (comyear); i++){
-		years += $("#Year").append("<option value="+i+">"+i+"년"+"</option>");
-	}
+// 	for(var i = (comyear-5); i <= (comyear); i++){
+		years += $("#Year").append("<option value="+comyear+">"+comyear+"년"+"</option>");
+// 	}
 }
 
 function monselect(){
@@ -478,49 +497,102 @@ function monselect(){
 	}
 }
 
-//이전 양식 조회
-function view(){
+
+function datanumselect(){
 	
-// 	var a = $("#su_keyno").val();
-// 	var b = $("#Year").val();
-// 	var c = $("#Month").val();
-// 	var d = $("#sa_writetype").val();
-	
-// 	$.ajax({
-//         url: '/sfa/sfaAdmin/previewAjax.do?${_csrf.parameterName}=${_csrf.token}',
-//         type: 'POST',
-//         data: $("#Form").serialize(),
-//         async: false,  
-//         success: function(data) {
-        	
-//         	if(data == "null"){        		
-//         		alert("해당 연월에 작성한 양식이 없습니다.")	
-//         	}else{
-// 	        	var left = Math.ceil((window.screen.width - 1000)/2);
-// 	        	var top = Math.ceil((window.screen.height - 820)/2);
-// 	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
-// 	        	popOpen.focus();
-//         	}
-//         },
-//         error: function(){
-//         	alert("저장 에러");
-//         }
-// 	}); 
+	var a = $("#su_keyno").val();
+	var b = $("#Year").val();
+	var c = $("#Month").val();
 	
 	$.ajax({
-        url: '/sfa/sfaAdmin/prepaperview.do?${_csrf.parameterName}=${_csrf.token}',
+        url: '/sfa/sfaAdmin/previewAjax.do?${_csrf.parameterName}=${_csrf.token}',
         type: 'POST',
         data: $("#Form").serialize(),
         async: false,  
         success: function(data) {
         	
-        	$("#prepaper").html(data)
+        	console.log(data);
+        	if(data == null || data == ""){
+        		alert("해당 연월에 작성한 양식이 없습니다");
+        	}else{
+				var userlist = [];
+				 
+				for(var i=0; i<data.length; i++){
+					userlist[i] = data[i].sa2_keyno;
+				}
+	
+				for(var i=0; i<data.length; i++){
+					$("#selectgroup").append("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
+			 	}  		
+	        	
+	//         	if(data == "null"){        		
+	//         		alert("해당 연월에 작성한 양식이 없습니다.")	
+	//         	}else{
+	// 	        	var left = Math.ceil((window.screen.width - 1000)/2);
+	// 	        	var top = Math.ceil((window.screen.height - 820)/2);
+	// 	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
+	// 	        	popOpen.focus();
+	//         	}	
+        	}
         	
         },
         error: function(){
         	alert("저장 에러");
         }
 	}); 
+	
+}
+
+//이전 양식 조회
+function view(){
+	
+	$.ajax({
+        url: '/sfa/sfaAdmin/previewplaceholder.do?${_csrf.parameterName}=${_csrf.token}',
+        type: 'POST',
+        data: $("#Form").serialize(),
+        async: false,  
+        success: function(data) {
+        	
+        	var a = data.sa2_date;
+
+        	var result = a.substring(6,13);
+        	
+        	var result2 = result.replace(" ","")
+        	
+        	
+        	$("#sa2_label0").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value="+result2+" name='' id=''>")
+        	$("#sa2_label1").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_nowpower+" name='sa2_nowpower3' id='sa2_nowpower3'>")
+        	$("#sa2_label2").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_todaypower+" name='sa2_todaypower3' id='sa2_todaypower3'>")
+        	$("#sa2_label3").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_accpower+" name='sa2_accpower3' id='sa2_accpower3'>")
+        	$("#sa2_label4").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_periodpower+" name='sa2_periodpower3' id='sa2_periodpower3'>")
+        	$("#sa2_label5").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL1_N+" name='sa2_ACVL1_N' id='sa2_ACVL1_N'>")
+        	$("#sa2_label6").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL1+" name='sa2_ACAL1' id='sa2_ACAL1'>")
+        	$("#sa2_label7").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL2_N+" name='sa2_ACVL2_N' id='sa2_ACVL2_N'>")
+        	$("#sa2_label8").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL2+" name='sa2_ACAL2' id='sa2_ACAL2'>")
+        	$("#sa2_label9").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL3_N+" name='sa2_ACVL3_N' id='sa2_ACVL3_N'>")
+        	$("#sa2_label10").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL3+" name='sa2_ACAL3' id='sa2_ACAL3'>")
+        	
+		
+        },
+        error: function(){
+        	alert("저장 에러");
+        }
+	}); 
+	
+// 	$.ajax({
+//         url: '/sfa/sfaAdmin/prepaperview.do?${_csrf.parameterName}=${_csrf.token}',
+//         type: 'POST',
+//         data: $("#Form").serialize(),
+//         async: false,  
+//         success: function(data) {
+        	
+//         	$("#prepaper").html(data)
+        	
+//         },
+//         error: function(){
+//         	alert("저장 에러");
+//         }
+// 	}); 
 	
 }
 
@@ -543,9 +615,9 @@ function changesulbi(keyno) {
         	$("#sa2_palntV").val(result.SU_SA_VOLT)
         	$("#sa2_palntCT").val(result.SU_SA_CT)
         	$("#sa2_inverternumtype").val(result.SU_SA_INVERTERNUM)
-//         	$("#sa_transvolum").val(result.SU_SA_TRANSVOLUM)
-//         	$("#sa_admintype").val(result.SU_SA_ADMINTYPE)
-//         	$("#sa_admincount").val(result.SU_SA_ADMINCOUNT)
+        	$("#sa2_nowpower").val("164 KW")
+        	$("#sa2_todaypower").val("2607 KW")
+        	$("#sa2_accpower").val("665,260 KW")
         	
 //         	var date = result.CONN_DATE;
 //         	console.log(date);

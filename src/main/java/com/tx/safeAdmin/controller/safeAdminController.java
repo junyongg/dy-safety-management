@@ -1138,7 +1138,7 @@ public class safeAdminController {
 			
 			//종합의견 처리
 			if(issuedate.equals("") || issuedate == null) {
-				issuedate = "금일 안전관리 종합의견은 이미지로 대체합니다";
+				issuedate = "발전소 이상없이 정상 작동 중";
 			}
 			
 			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
@@ -1217,7 +1217,7 @@ public class safeAdminController {
 			
 			//종합의견 처리
 			if(issuedate.equals("") || issuedate == null) {
-				issuedate = "금일 안전관리 종합의견은 이미지로 대체합니다";
+				issuedate = "발전소 이상없이 정상 작동 중";
 			}
 			
 			String contents = "[안전 관리 점검 결과 안내]\n" + pname + "의 안전 관리 점검이 완료되었습니다.\n□ 발전소 명 : " + pname
@@ -1282,31 +1282,38 @@ public class safeAdminController {
 		}
 		
 		/*
-		 * 발전소별 이전 작성 양식 조회 Ajax(팝업)
+		 * 발전소별 이전 작성 데이터 조회 Ajax
 		 **/ 
 			@RequestMapping(value="/sfa/sfaAdmin/previewAjax.do")
 			@ResponseBody
-			public Object PopUpControllerAjax(HttpServletRequest req
-				,DateDTO DateDTO
-				,@RequestParam(value="sa_writetype") String writetype ) throws Exception {
+			public List PopUpControllerAjax(HttpServletRequest req
+				,DateDTO DateDTO) throws Exception {
 				
-				HashMap<String, Object> map = new HashMap<String, Object>();
+				HashMap<String, Object> map = new HashMap<String, Object>();			
 				
-				if(writetype.equals("1")) {
-					map = Component.getData("sfa.preview", DateDTO);
-				}else if(writetype.equals("2")) {
-					map = Component.getData("sfa.preview2", DateDTO);
-				}
-				String msg = "";
-				System.out.println(map);
-				if(map == null) {
-					msg = "null";
-				}else {
-					msg = "notnull";
-				}
+				List userlist;
 				
-				return msg;
+				userlist = Component.getList("sfa.previewData", DateDTO);								
+				
+				return userlist;
 			}
+			
+			
+			/*
+			 * 발전소별 이전 작성 데이터 조회 placeholder
+			 **/ 
+				@RequestMapping(value="/sfa/sfaAdmin/previewplaceholder.do")
+				@ResponseBody
+				public HashMap<String,Object> previewpalceholder(HttpServletRequest req
+					,@RequestParam(value="selectgroup") String selectgroup) throws Exception {
+					
+					HashMap<String, Object> map = new HashMap<String, Object>();			
+					
+					
+					map = Component.getData("sfa.placeholderView", selectgroup);			
+					
+					return map;
+				}
 			
 			/*
 			 * 발전소별 이전 작성 양식 조회 Ajax
