@@ -816,16 +816,15 @@ where UI_KEYNO = 'UI_HMWNH'
 			where sa2_keyno = #{selectgroup}
 		</select>
 		
-		
+		<!-- 현재월 양식 작성 횟수 -->
 		<select id="safeWritecount" parameterType="String" resultType="hashmap">
-		select count(*)
+		select count(*) count
 		from(
 				SELECT sa2_keyno, date_format(a.Conn_date, '%d일') datenum
 				FROM dy_sa2_paper a 
 				join dy_sa_user b
 				on a.sa2_title = b.SU_SA_SULBI
-				where date_format(a.Conn_date, '%Y') =  #{Year}
-				and date_format(a.Conn_date, '%m') = #{Month}
+				where date_format(a.Conn_date, '%Y-%m') =  date_format(now() , '%Y-%m')
 				and b.SU_KEYNO = #{su_keyno}
 			)sa
 		</select>

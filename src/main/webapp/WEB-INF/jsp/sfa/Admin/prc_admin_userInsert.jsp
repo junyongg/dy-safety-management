@@ -95,7 +95,7 @@
 											<tr>
 												<td>발전소 명</td>
 												<td><input type="text" class="form-control check" id="SU_SA_SULBI" name="SU_SA_SULBI"></td>
-												<td>발전소 지역</td>
+												<td>월별 점검 횟수</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_RG" name="SU_SA_RG" ></td>
 												<td>발전소 주소</td>
 												<td><input type="text" class="form-control check" id="SU_SA_AD" name="SU_SA_AD"></td>

@@ -1038,8 +1038,12 @@ public class safeAdminController {
 	public HashMap<String, Object> SafeUserInfoSelect(HttpServletRequest req, safeAdminDTO bill,
 			@RequestParam(value = "SU_KEYNO") String SU_KEYNO) throws Exception {
 
-		HashMap<String, Object> map = Component.getData("sfa.safeuserselect_one", SU_KEYNO);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+				
+		map.put("data", Component.getData("sfa.safeuserselect_one", SU_KEYNO));		
+		map.put("count", Component.getData("sfa.safeWritecount",SU_KEYNO));		
 
+		
 		return map;
 	}
 
