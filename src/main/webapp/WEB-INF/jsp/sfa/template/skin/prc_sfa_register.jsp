@@ -46,18 +46,18 @@ select{ height: 30px; }
 			<select class="form-control input-sm" name="Month" id="Month"
 				onchange="datanumselect()"></select>
 				 <select class="form-control input-sm" name="selectgroup" id="selectgroup"></select>
-			<button type="button" onclick="view()">조회</button>
+			<button id ="autoInsert" type="button" onclick="view(); jun();">조회</button>
 		</div>
 		<div style="margin-left: 400px; margin-top: 20px;">
 			<table class="tg" style="width: 80%; border: 3px solid black;">
 				<thead>
 				  	<tr data-html2canvas-ignore="true">
-					  	<th class="tg-0lax" colspan="48" style="text-align: center;"><input type="checkbox" id="allcheck"></th>
+					  	<th class="tg-0lax" colspan="48" style="text-align: center;">양식 전체 캡쳐<input type="checkbox" id="allcheck"></th>
 					</tr>
 					<tr>
 						<th class="tg-0lax" colspan="48" style="text-align: center;">
 							<label> <input type="text"
-								style="width: 10%; text-align: center;"
+								style="width: 20%; text-align: center;"
 								class="tb_gbla1 input_type_serch" title="" name="sa2_title"
 								id="sa2_title">점검표
 						</label>
@@ -71,28 +71,30 @@ select{ height: 30px; }
 								class="tb_gbla1 input_type_serch" value="${now }"
 								name="sa2_date" id="sa2_date"> 날씨 :<select
 								id="sa2_wether" name="sa2_wether" style="width: 10%">
+									<option value="">날씨 선택</option>
 									<option value="맑음">맑음</option>
 									<option value="흐림">흐림</option>
 									<option value="비">비</option>
 									<option value="눈">눈</option>
 							</select> 점검자 : <select id="sa2_adminname" name="sa2_adminname"
 								style="width: 10%">
+									<option value="">관리자 선택</option>
 									<option value="이민환">이민환</option>
 									<option value="김용인">김용인</option>
 							</select>
 						</label>
 						</td>
 					</tr>
+					<tbody class="esco">
+				  	<tr data-html2canvas-ignore="true">
+				  		<td colspan="48">인버터발전현황 부분 캡쳐<input type="checkbox" class="check" checked="checked" onclick="checkboxEvent(this)"></td> 
+				  	</tr>
 					<tr>
 						<td class="tg-0lax" colspan="38" style="background-color: #99CCFF">인
 							버 터 발 전 현 황</td>
-						<td class="tg-0lax" colspan="10"><label id="sa2_label0"></label>
+						<td class="tg-0lax" colspan="10" style="background-color: #99CCFF"><label id="sa2_label0"></label>
 						</td>
 					</tr>
-				<tbody class="esco">
-				  	<tr data-html2canvas-ignore="true">
-				  		<td colspan="48"><input type="checkbox" class="check" checked="checked" onclick="checkboxEvent(this)"></td> 
-				  	</tr>
 					<tr>
 						<td class="tg-0lax" colspan="24">현재 출력</td>
 						<td class="tg-0lax" colspan="14"><label> <input
@@ -141,7 +143,7 @@ select{ height: 30px; }
 				</tbody>
 				<tbody class="esco" data-html2canvas-ignore="true">
 				<tr data-html2canvas-ignore="true">
-			  		<td colspan="48"><input type="checkbox" class="check" onclick="checkboxEvent(this)"></td> 
+			  		<td colspan="48">기타 데이터 부분 캡쳐<input type="checkbox" class="check" onclick="checkboxEvent(this)"></td> 
 			  	</tr>
 				<tr>
 					<td class="tg-0lax" colspan="6" rowspan="3">AC전압&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[V]</td>
@@ -151,6 +153,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACVL1_N" id="sa2_ACVL1_N">
 					</label></td>
 					<td class="tg-0lax" colspan="6" rowspan="3">AC전류&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]</td>
@@ -160,6 +163,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACAL1" id="sa2_ACAL1">
 					</label></td>
 				</tr>
@@ -169,6 +173,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACVL2_N" id="sa2_ACVL2_N">
 					</label></td>
 					<td class="tg-0lax" colspan="6">L2</td>
@@ -176,6 +181,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACAL2" id="sa2_ACAL2">
 					</label></td>
 				</tr>
@@ -185,6 +191,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACVL3_N" id="sa2_ACVL3_N">
 					</label></td>
 					<td class="tg-0lax" colspan="6">L3</td>
@@ -192,6 +199,7 @@ select{ height: 30px; }
 							<input type="text" style="width: 100%"
 							class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+							onclick="jun()"
 							name="sa2_ACAL3" id="sa2_ACAL3">
 					</label></td>
 				</tr>
@@ -237,6 +245,7 @@ select{ height: 30px; }
 							type="text" style="width: 100%" class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							onkeyup="Divison(this)"
+							onclick="jun()"
 							name="sa2_meter1KWh" id="sa2_meter1KWh">
 					</label></td>
 					<!--     <td class="tg-0lax" colspan="9">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
@@ -254,6 +263,7 @@ select{ height: 30px; }
 							type="text" style="width: 100%" class="tb_gbla1 input_type_serch"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							onkeyup="Divison2(this)"
+							onclick="jun()"
 							name="sa2_meter2KWh" id="sa2_meter2KWh">
 					</label></td>
 					<!--     <td class="tg-0lax" colspan="9">　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
@@ -365,7 +375,7 @@ select{ height: 30px; }
 				</tbody>
 				<tbody class="esco">
 					<tr class="border" data-html2canvas-ignore="true">
-					  	<td colspan="48"><input type="checkbox" class="check" checked="checked"  onclick="checkboxEvent(this)"></td> 
+					  	<td colspan="48">종합의견 부분 캡쳐<input type="checkbox" class="check" checked="checked"  onclick="checkboxEvent(this)"></td> 
 					</tr> 
 					<tr class="border">
 						<td class="tg-0lax" colspan="48">※ 점검자 확인사항 <input
@@ -380,6 +390,7 @@ select{ height: 30px; }
 					<tr>
 						<td class="tg-0lax" colspan="48"><input type="text"
 							style="width: 100%" class="tb_gbla1 input_type_serch"
+							onclick="jun()"
 							name="sa2_opinion" id="sa2_opinion"></td>
 					</tr>
 					<tr>
@@ -415,10 +426,9 @@ select{ height: 30px; }
 			</table>
 		</div>
 		<div style="text-align: center;">
-			<input type="hidden" id="buttionType" name="buttionType"
-				value="insert"> <input type="hidden" id="sa2_keyno"
-				name="sa2_keyno"> <input type="hidden"
-				id="sa2_inverternumtype" name="sa2_inverternumtype" value="">
+			<input type="hidden" id="buttionType" name="buttionType" value="insert"> 
+			<input type="hidden" id="sa2_keyno" name="sa2_keyno" value=""> 
+			<input type="hidden" id="sa2_inverternumtype" name="sa2_inverternumtype" value="">
 			<input type="hidden" id="sa_writetype" name="sa_writetype" value="2">
 			<input type="hidden" id="SU_KEYNO" name="SU_KEYNO" value="">
 			<input type="hidden" id="imgSrc" name="imgSrc" value="">
@@ -426,7 +436,7 @@ select{ height: 30px; }
 				onclick="SendAlim()">알림 전송 후 저장</button>
 			<button style="width: 100px; margin-top: 20px;" type="button"
 				onclick="loadInfo()">저장</button>
-			<!-- <button style="width: 100px; margin-top: 20px;" type="button" onclick="clearinput()"> 초기화 </button> -->
+			<button style="width: 100px; margin-top: 20px;" type="button" onclick="jun()"> 초기화 </button>
 		</div>
 	</div>
 	<div id="prepaper"></div>
@@ -438,7 +448,70 @@ select{ height: 30px; }
 
 $(function() {
 	
-	///data-html2canvas-ignore="true" 
+	$("#sa2_count").val(localStorage.getItem("sa2_count"));
+	$("#sa2_count2").val(localStorage.getItem("sa2_count2"));
+	$("#sa2_keyno").val(localStorage.getItem("sa2_keyno"));
+	$("#sa2_title").val(localStorage.getItem("sa2_title"));
+	$("#sa2_wether").val(localStorage.getItem("sa2_wether"));
+	$("#sa2_adminname").val(localStorage.getItem("sa2_adminname"));
+	$("#sa2_inverternumtype").val(localStorage.getItem("sa2_inverternumtype"));
+	$("#sa2_nowpower").val(localStorage.getItem("sa2_nowpower"));
+	$("#sa2_todaypower").val(localStorage.getItem("sa2_todaypower"));
+	$("#sa2_accpower").val(localStorage.getItem("sa2_accpower"));
+	$("#sa2_periodpower").val(localStorage.getItem("sa2_periodpower"));
+	$("#sa2_ACVL1_N").val(localStorage.getItem("sa2_ACVL1_N"));
+	$("#sa2_ACVL2_N").val(localStorage.getItem("sa2_ACVL2_N"));
+	$("#sa2_ACVL3_N").val(localStorage.getItem("sa2_ACVL3_N"));
+	$("#sa2_ACAL1").val(localStorage.getItem("sa2_ACAL1"));
+	$("#sa2_ACAL2").val(localStorage.getItem("sa2_ACAL2"));
+	$("#sa2_ACAL3").val(localStorage.getItem("sa2_ACAL3"));
+	$("#sa2_ACBV").val(localStorage.getItem("sa2_ACBV"));
+	$("#sa2_ACBA").val(localStorage.getItem("sa2_ACBA"));
+	$("#sa2_VCBKV").val(localStorage.getItem("sa2_VCBKV"));
+	$("#sa2_VCBA").val(localStorage.getItem("sa2_VCBA"));
+	$("#sa2_palntKW").val(localStorage.getItem("sa2_palntKW"));
+	$("#sa2_palntV").val(localStorage.getItem("sa2_palntV"));
+	$("#sa2_palntCT").val(localStorage.getItem("sa2_palntCT"));
+// 	$("#sa2_date2").val(localStorage.getItem("sa2_date2"));
+	$("#sa2_meternum1").val(localStorage.getItem("sa2_meternum1"));
+	$("#sa2_meternum2").val(localStorage.getItem("sa2_meternum2"));
+	$("#sa2_meter1KWh").val(localStorage.getItem("sa2_meter1KWh"));
+	$("#sa2_meter2KWh").val(localStorage.getItem("sa2_meter2KWh"));
+	$("#sa2_meter1period").val(localStorage.getItem("sa2_meter1period"));
+	$("#sa2_meter2period").val(localStorage.getItem("sa2_meter2period"));
+	$("#sa2_inverterperiod").val(localStorage.getItem("sa2_inverterperiod"));
+	$("#sa2_meter1date").val(localStorage.getItem("sa2_meter1date"));
+	$("#sa2_meter2date").val(localStorage.getItem("sa2_meter2date"));
+	$("#sa2_inverterdate").val(localStorage.getItem("sa2_inverterdate"));
+	$("#sa2_meter1allKWh").val(localStorage.getItem("sa2_meter1allKWh"));
+	$("#sa2_meter2allKWh").val(localStorage.getItem("sa2_meter2allKWh"));
+	$("#sa2_inverterallKWh").val(localStorage.getItem("sa2_inverterallKWh"));
+	$("#sa2_meter1dayKWh").val(localStorage.getItem("sa2_meter1dayKWh"));
+	$("#sa2_meter2dayKWh").val(localStorage.getItem("sa2_meter2dayKWh"));
+	$("#sa2_inverterdayKWh").val(localStorage.getItem("sa2_inverterdayKWh"));
+	$("#sa2_meter1dayhour").val(localStorage.getItem("sa2_meter1dayhour"));
+	$("#sa2_meter2dayhour").val(localStorage.getItem("sa2_meter2dayhour"));
+	$("#sa2_inverterdayhour").val(localStorage.getItem("sa2_inverterdayhour"));
+	$("#sa2_opinion").val(localStorage.getItem("sa2_opinion"));
+// 	$("#sa2_problem").val(localStorage.getItem("sa2_problem"));
+	$("#changenum").val(localStorage.getItem("changenum"));
+	$("#changenum2").val(localStorage.getItem("changenum2"));
+
+	// 키로 부터 데이터 읽기
+// 	localStorage.getItem("key");
+
+	// 키의 데이터 삭제
+// 	localStorage.removeItem("key");
+
+	// 모든 키의 데이터 삭제
+// 	localStorage.clear();
+
+	// 저장된 키/값 쌍의 개수
+// 	localStorage.length;
+	
+	
+	
+	///data-html2canvas-ignore="true"(체크안된 div 캡쳐 안함)
 	$(document).on('click','#allcheck',function(){
 		if($('#allcheck').is(':checked')){
 			$('.check').prop('checked',true);
@@ -496,6 +569,8 @@ function checkboxEvent(obj){
 
 function SendAlim(){
 	
+	
+	
 	var array = new Array(); 
 	var target = $("#esco");
     var radioVal = $('input[name="sa2_problem"]:checked').val();
@@ -504,6 +579,9 @@ function SendAlim(){
    	if(!validationCheck()) return false
 		if(array[0] == "1" || array[0] == "2"){
 			if(confirm("저장 후 즉시 알림 전송하시겠습니까?")){
+				
+				localStorage.clear();
+				
 				if (target != null && target.length > 0) {
 					
 					var t = target[0];
@@ -538,6 +616,8 @@ function SendAlim(){
 	
 function loadInfo(){
 	
+	
+	
 	var array = new Array(); 
     var radioVal = $('input[name="sa2_problem"]:checked').val();
    	array.push(radioVal);
@@ -545,6 +625,9 @@ function loadInfo(){
    	if(!validationCheck()) return false
 		if(array[0] == "1" || array[0] == "2"){
 			if(confirm("저장하시겠습니까?")){
+				
+				localStorage.clear();
+				
 				 $.ajax({
 			        url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
 			        type: 'POST',
@@ -655,17 +738,17 @@ function view(){
         	var result2 = result.replace(" ","")+"데이터"
         	
         	
-        	$("#sa2_label0").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value="+result2+" name='' id=''>")
-        	$("#sa2_label1").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_nowpower+" name='sa2_nowpower3' id='sa2_nowpower3'>")
-        	$("#sa2_label2").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_todaypower+" name='sa2_todaypower3' id='sa2_todaypower3'>")
-        	$("#sa2_label3").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_accpower+" name='sa2_accpower3' id='sa2_accpower3'>")
-        	$("#sa2_label4").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_periodpower+" name='sa2_periodpower3' id='sa2_periodpower3'>")
-        	$("#sa2_label5").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL1_N+" name='sa2_ACVL1_N' id='sa2_ACVL1_N'>")
-        	$("#sa2_label6").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL1+" name='sa2_ACAL1' id='sa2_ACAL1'>")
-        	$("#sa2_label7").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL2_N+" name='sa2_ACVL2_N' id='sa2_ACVL2_N'>")
-        	$("#sa2_label8").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL2+" name='sa2_ACAL2' id='sa2_ACAL2'>")
-        	$("#sa2_label9").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL3_N+" name='sa2_ACVL3_N' id='sa2_ACVL3_N'>")
-        	$("#sa2_label10").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL3+" name='sa2_ACAL3' id='sa2_ACAL3'>")
+        	$("#sa2_label0").html("<input type='text' style='width:100%; background-color: #99CCFF;' class='tb_gbla1 input_type_serch' readonly='readonly' value="+result2+" name='' id=''>")
+        	$("#sa2_label1").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' readonly='readonly' value="+data.sa2_nowpower+" name='sa2_nowpower3' id='sa2_nowpower3'>")
+        	$("#sa2_label2").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' readonly='readonly' value="+data.sa2_todaypower+" name='sa2_todaypower3' id='sa2_todaypower3'>")
+        	$("#sa2_label3").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' readonly='readonly' value="+data.sa2_accpower+" name='sa2_accpower3' id='sa2_accpower3'>")
+        	$("#sa2_label4").html("<input type='text' style='width:40%' class='tb_gbla1 input_type_serch' readonly='readonly' value="+data.sa2_periodpower+" name='sa2_periodpower3' id='sa2_periodpower3'>")
+//         	$("#sa2_label5").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL1_N+" name='sa2_ACVL1_N' id='sa2_ACVL1_N'>")
+//         	$("#sa2_label6").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL1+" name='sa2_ACAL1' id='sa2_ACAL1'>")
+//         	$("#sa2_label7").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL2_N+" name='sa2_ACVL2_N' id='sa2_ACVL2_N'>")
+//         	$("#sa2_label8").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL2+" name='sa2_ACAL2' id='sa2_ACAL2'>")
+//         	$("#sa2_label9").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACVL3_N+" name='sa2_ACVL3_N' id='sa2_ACVL3_N'>")
+//         	$("#sa2_label10").html("<input type='text' style='width:100%' class='tb_gbla1 input_type_serch' value='' placeholder ="+data.sa2_ACAL3+" name='sa2_ACAL3' id='sa2_ACAL3'>")
         	$("#sa2_meternum1").val(data.sa2_meternum1)
         	$("#sa2_meternum2").val(data.sa2_meternum2)
         	$("#changenum").val(data.changenum)
@@ -724,6 +807,10 @@ function changesulbi(keyno) {
         	$("#sa2_periodpower").val("12.3")
         	$("#sa2_inverterperiod").val("매달 1일")
         	$("#sa2_inverterdate").val("30")
+        	$("#sa2_meter1period").val("8/28~8/31")
+        	$("#sa2_meter2period").val("8/28~8/31")
+        	$("#sa2_meter1date").val("3")
+        	$("#sa2_meter2date").val("3")
         	
         	
         	Divison3();
@@ -850,6 +937,90 @@ function Divison3(){
 
 	
 }
+
+//양식 자동 저장 (첫번째만 insert 두번째부터 update)
+function autoInsert(){
+	
+
+	
+	
+	
+// 	if(a == 1){
+// 		$("#buttionType").val("insert");
+// 	}else{
+// 		$("#buttionType").val("insert");
+// 	}
+	
+// 	$.ajax({
+//         url: '/sfa/safe/safepaper2Insert.do?${_csrf.parameterName}=${_csrf.token}',
+//         type: 'POST',
+//         data: $("#Form").serialize(),
+//         async: false,  
+//         success: function(result) {
+        	
+//         	$("#sa2_keyno").val(result);
+        	
+//         	alert($("#sa2_keyno").val(result));
+//         },
+//         error: function(){        	
+//         }
+// 	}); 	
+}
+
+function jun(){
+	
+	
+	//로컬스토리지
+	localStorage.setItem("sa2_count", String($("#sa2_count").val()));
+	localStorage.setItem("sa2_count2", String($("#sa2_count2").val()));
+	localStorage.setItem("sa2_keyno", String($("#sa2_keyno").val()));
+	localStorage.setItem("sa2_title", String($("#sa2_title").val()));
+	localStorage.setItem("sa2_wether", String($("#sa2_wether").val()));
+	localStorage.setItem("sa2_adminname", String($("#sa2_adminname").val()));
+	localStorage.setItem("sa2_inverternumtype", String($("#sa2_inverternumtype").val()));
+	localStorage.setItem("sa2_nowpower", String($("#sa2_nowpower").val()));
+	localStorage.setItem("sa2_todaypower", String($("#sa2_todaypower").val()));
+	localStorage.setItem("sa2_accpower", String($("#sa2_accpower").val()));
+	localStorage.setItem("sa2_periodpower", String($("#sa2_periodpower").val()));
+	localStorage.setItem("sa2_ACVL1_N", String($("#sa2_ACVL1_N").val()));
+	localStorage.setItem("sa2_ACVL2_N", String($("#sa2_ACVL2_N").val()));
+	localStorage.setItem("sa2_ACVL3_N", String($("#sa2_ACVL3_N").val()));
+	localStorage.setItem("sa2_ACAL1", String($("#sa2_ACAL1").val()));
+	localStorage.setItem("sa2_ACAL2", String($("#sa2_ACAL2").val()));
+	localStorage.setItem("sa2_ACAL3", String($("#sa2_ACAL3").val()));
+	localStorage.setItem("sa2_ACBV", String($("#sa2_ACBV").val()));
+	localStorage.setItem("sa2_ACBA", String($("#sa2_ACBA").val()));
+	localStorage.setItem("sa2_VCBKV", String($("#sa2_VCBKV").val()));
+	localStorage.setItem("sa2_VCBA", String($("#sa2_VCBA").val()));
+	localStorage.setItem("sa2_palntKW", String($("#sa2_palntKW").val()));
+	localStorage.setItem("sa2_palntV", String($("#sa2_palntV").val()));
+	localStorage.setItem("sa2_palntCT", String($("#sa2_palntCT").val()));
+// 	localStorage.setItem("sa2_date2", String($("#sa2_date2").val()));
+	localStorage.setItem("sa2_meternum1", String($("#sa2_meternum1").val()));
+	localStorage.setItem("sa2_meternum2", String($("#sa2_meternum2").val()));
+	localStorage.setItem("sa2_meter1KWh", String($("#sa2_meter1KWh").val()));
+	localStorage.setItem("sa2_meter2KWh", String($("#sa2_meter2KWh").val()));
+	localStorage.setItem("sa2_meter1period", String($("#sa2_meter1period").val()));
+	localStorage.setItem("sa2_meter2period", String($("#sa2_meter2period").val()));
+	localStorage.setItem("sa2_inverterperiod", String($("#sa2_inverterperiod").val()));
+	localStorage.setItem("sa2_meter1date", String($("#sa2_meter1date").val()));
+	localStorage.setItem("sa2_meter2date", String($("#sa2_meter2date").val()));
+	localStorage.setItem("sa2_inverterdate", String($("#sa2_inverterdate").val()));
+	localStorage.setItem("sa2_meter1allKWh", String($("#sa2_meter1allKWh").val()));
+	localStorage.setItem("sa2_meter2allKWh", String($("#sa2_meter2allKWh").val()));
+	localStorage.setItem("sa2_inverterallKWh", String($("#sa2_inverterallKWh").val()));
+	localStorage.setItem("sa2_meter1dayKWh", String($("#sa2_meter1dayKWh").val()));
+	localStorage.setItem("sa2_meter2dayKWh", String($("#sa2_meter2dayKWh").val()));
+	localStorage.setItem("sa2_inverterdayKWh", String($("#sa2_inverterdayKWh").val()));
+	localStorage.setItem("sa2_meter1dayhour", String($("#sa2_meter1dayhour").val()));
+	localStorage.setItem("sa2_meter2dayhour", String($("#sa2_meter2dayhour").val()));
+	localStorage.setItem("sa2_inverterdayhour", String($("#sa2_inverterdayhour").val()));
+	localStorage.setItem("sa2_opinion", String($("#sa2_opinion").val()));
+// 	localStorage.setItem("sa2_problem", String($("#sa2_problem").val()));
+	localStorage.setItem("changenum", String($("#changenum").val()));
+	localStorage.setItem("changenum2", String($("#changenum2").val()));
+}
+
 // function image(){
 	
 // 	$.ajax({

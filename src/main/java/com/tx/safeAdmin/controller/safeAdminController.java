@@ -1006,7 +1006,11 @@ public class safeAdminController {
 		String msg = "";
 
 		Component.createData("sfa.sapaper2Insert", bill);
-		msg = "저장이 완료 되었습니다.";
+		
+//		msg = Component.getData("sfa.paperpreview", bill);
+		
+		msg = "저장이 완료되었습니다";
+
 
 		return msg;
 	}
@@ -1020,7 +1024,6 @@ public class safeAdminController {
 
 		String msg = "";
 
-		System.out.println(bill);
 		Component.updateData("sfa.sapaperUpdate2", bill);
 		
 		msg = "수정이 완료 되었습니다.";
@@ -1357,6 +1360,29 @@ public class safeAdminController {
 				mv.addObject("safeuserlist", Component.getListNoParam("sfa.safeuserselect"));
 				mv.setViewName(url);
 				return mv;
+			}
+			
+			
+			/*
+			 * 자동 저장
+			 **/
+			@RequestMapping("/sfa/safe/AutoInsert.do")
+			@ResponseBody
+			public String AutoInsert(HttpServletRequest req, safeAdminDTO user,
+					@RequestParam(value = "buttionType2", defaultValue = "insert") String type) throws Exception {
+
+				String msg = "";
+
+				if (type.equals("update")) {
+					Component.updateData("sfa.safeUserUPdate", user);
+					System.out.println(user);
+					msg = "수정이 완료 되었습니다.";
+				} else {
+					Component.createData("sfa.safeUserInsert", user);
+					msg = "등록이 완료 되었습니다.";	
+				}
+
+				return msg;
 			}
 			
 //		@RequestMapping("/imageInsert.do")
