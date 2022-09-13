@@ -53,6 +53,7 @@ import com.tx.common.file.dto.FileSub;
 import com.tx.common.page.PageAccess;
 import com.tx.common.security.aes.AES256Cipher;
 import com.tx.common.service.reqapi.requestAPIservice;
+import com.tx.excel.ExcelService;
 import com.tx.safeAdmin.dto.DateDTO;
 import com.tx.safeAdmin.dto.safeAdminDTO;
 import com.tx.safeAdmin.dto.safeUserDTO;
@@ -81,9 +82,12 @@ public class safeAdminController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
     
-    
     /** 파일업로드 툴*/
     @Autowired private FileUploadTools FileUploadTools;	
+    
+    
+    @Autowired 
+    ExcelService excel;	
 
 	/*
 	 * 메인페이지
@@ -1670,5 +1674,41 @@ public class safeAdminController {
 
 		return msg;
 	}
-
+	
+	
+	/*
+	 * 안전관리 작성 양식 선택 Ajax
+	 **/
+	@RequestMapping(value = "/sfa/safe/insertExcel.do")
+	public String insertExcel(HttpServletRequest req,
+			@RequestParam(value = "excelFile", required=false) MultipartFile file
+			) throws Exception {
+		
+		ArrayList<ArrayList<String>> result = excel.readFilter_And_Insert(file);
+		
+		if(result.size() > 0) {
+			//발전소명 , 주소 , 인버터 대수, 점검횟수, 전압, 용량 , CT비, 전화번호 1, 2 
+			for(ArrayList<String> re : result) {
+				HashMap<String , Object> m = new HashMap<String, Object>();
+				
+				m.put("a",re.get(0));
+				m.put("b",re.get(1));
+				m.put("c",re.get(2));
+				m.put("d",re.get(3));
+				m.put("e",re.get(4));
+				m.put("f",re.get(5));
+				m.put("g",re.get(6));
+				m.put("h",re.get(7));
+				m.put("i",re.get(8));
+				
+				Component.createData("sfa.ExcelInsert", m);
+				
+			}
+		}
+		
+		return "redirect:/txap/safe/user.do";
+		
+		
+	}
+	
 }

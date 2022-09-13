@@ -54,16 +54,34 @@
 
 					<div class="widget-body">
 
-						<form:form id="Form2" class="form-horizontal" name="Form2"  method="post">
+						<form:form id="Form2" class="form-horizontal" name="Form2"  method="post" action="" enctype="multipart/form-data">
 							<legend>
 								<div class="widget-body-toolbar bg-color-white">
 									<div class="alert alert-info no-margin fade in">
 										<button type="button" class="close" data-dismiss="alert">×</button>
 										안전관리 발전소 등록
 									</div>
-								</div>
+								</div>:
 							</legend>
-
+							
+							<div class="widget-body-toolbar bg-color-white">
+								<div class="row">
+									
+									<div class="col-sm-6 col-md-2 text-align-right" style="float:right;">
+										<div class="btn-group">  
+											<button class="btn btn-sm btn" type="button" onclick="excelInsert();" >
+												<i class="fa fa-plus"></i>엑셀 등록
+											</button>
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-md-2 text-align-right" style="float:right;">
+										<div class="btn-group">  
+											<input type="file" id="excelFile" name="excelFile">
+										</div>
+									</div> 
+								</div>
+							</div>
 
 							<div class="form-group">
 									<label class="col-md-3 control-label"><span class="nessSpan">*</span> 발전소 선택</label>
@@ -252,6 +270,10 @@ function supdeleteInfo(){
 	
 }
 
+function excelInsert(){
+	alert("Dd");
+	$("#Form2").attr("action","/sfa/safe/insertExcel.do?${_csrf.parameterName}=${_csrf.token}");
+	$("#Form2").submit();
 
-
+}
 </script>

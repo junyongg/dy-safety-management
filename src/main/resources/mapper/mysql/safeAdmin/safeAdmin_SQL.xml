@@ -829,4 +829,15 @@ where UI_KEYNO = 'UI_HMWNH'
 				and b.SU_KEYNO = #{su_keyno}
 			)sa
 		</select>
+		
+		<insert id="ExcelInsert"  parameterType="hashmap">
+			INSERT INTO dy_sa_user (
+				SU_SA_SULBI, SU_SA_AD, SU_SA_RG, SU_SA_VOLUM, SU_SA_VOLT, SU_SA_CT, SU_SA_INVERTERNUM, SU_SA_PHONE1, SU_SA_PHONE2 
+			)VALUES
+			(
+				#{a},#{b},#{c},#{d},#{e},#{f},#{g},#{h},#{i}
+			)
+		</insert>
+		
+		
 </mapper>
