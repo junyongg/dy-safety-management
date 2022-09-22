@@ -138,6 +138,11 @@ public class safeAdminDTO {
 	public String sa2_problem;
 	public String changenum;
 	public String changenum2;
+	public String sa2_nowpowertype;
+	public String sa2_todaypowertype;
+	public String sa2_annacc;
+	public String sa2_preannacc;
+	public String sa2_peridev;
 
 	
 	
@@ -942,6 +947,36 @@ public class safeAdminDTO {
 	}
 	public void setChangenum2(String changenum2) {
 		this.changenum2 = changenum2;
+	}
+	public String getSa2_nowpowertype() {
+		return sa2_nowpowertype;
+	}
+	public void setSa2_nowpowertype(String sa2_nowpowertype) {
+		this.sa2_nowpowertype = sa2_nowpowertype;
+	}
+	public String getSa2_todaypowertype() {
+		return sa2_todaypowertype;
+	}
+	public void setSa2_todaypowertype(String sa2_todaypowertype) {
+		this.sa2_todaypowertype = sa2_todaypowertype;
+	}
+	public String getSa2_annacc() {
+		return sa2_annacc;
+	}
+	public void setSa2_annacc(String sa2_annacc) {
+		this.sa2_annacc = sa2_annacc;
+	}
+	public String getSa2_preannacc() {
+		return sa2_preannacc;
+	}
+	public void setSa2_preannacc(String sa2_preannacc) {
+		this.sa2_preannacc = sa2_preannacc;
+	}
+	public String getSa2_peridev() {
+		return sa2_peridev;
+	}
+	public void setSa2_peridev(String sa2_peridev) {
+		this.sa2_peridev = sa2_peridev;
 	}
 	
 	

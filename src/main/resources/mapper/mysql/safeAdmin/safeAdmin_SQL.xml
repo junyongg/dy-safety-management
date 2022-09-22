@@ -370,7 +370,12 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa2_opinion = #{sa2_opinion},
 				sa2_problem = #{sa2_problem},			
 				changenum = #{changenum},			
-				changenum2 = #{changenum2}
+				sa2_nowpowertype = #{sa2_nowpowertype},
+				sa2_todaypowertype = #{sa2_todaypowertype},
+				sa2_annacc = #{sa2_annacc},
+				sa2_preannacc = #{sa2_preannacc},
+				sa2_peridev = #{sa2_peridev}
+				
 			WHERE sa2_keyno = #{sa2_keyno}
 		</update>
 	
@@ -523,8 +528,14 @@ where UI_KEYNO = 'UI_HMWNH'
 			SU_SA_VOLT,
 			SU_SA_CT,
 			SU_SA_INVERTERNUM,
+			SU_SA_ADMINDATE,	
+			SU_SA_METER1,
+			SU_SA_METER2,
 			SU_SA_PHONE1,
-			SU_SA_PHONE2
+			SU_SA_PHONE2,
+			SU_SA_PHONE3,
+			SU_SA_PHONE4,
+			SU_SA_PHONE5
 			
 		)VALUES(
 			#{SU_SA_SULBI},
@@ -534,8 +545,14 @@ where UI_KEYNO = 'UI_HMWNH'
 			#{SU_SA_VOLT},
 			#{SU_SA_CT},
 			#{SU_SA_INVERTERNUM},
+			#{SU_SA_ADMINDATE},
+			#{SU_SA_METER1},
+			#{SU_SA_METER2},
 			#{SU_SA_PHONE1},
-			#{SU_SA_PHONE2}
+			#{SU_SA_PHONE2},
+			#{SU_SA_PHONE3},
+			#{SU_SA_PHONE4},
+			#{SU_SA_PHONE5}
 		)
 	</insert>
 	
@@ -549,8 +566,14 @@ where UI_KEYNO = 'UI_HMWNH'
 			SU_SA_VOLT = #{SU_SA_VOLT},
 			SU_SA_CT = #{SU_SA_CT},
 			SU_SA_INVERTERNUM = #{SU_SA_INVERTERNUM},
+			SU_SA_ADMINDATE = #{SU_SA_ADMINDATE},
+			SU_SA_METER1 = #{SU_SA_METER1},
+			SU_SA_METER2 = #{SU_SA_METER2},
 			SU_SA_PHONE1 = #{SU_SA_PHONE1},
-			SU_SA_PHONE2 = #{SU_SA_PHONE2}
+			SU_SA_PHONE2 = #{SU_SA_PHONE2},
+			SU_SA_PHONE3 = #{SU_SA_PHONE3},
+			SU_SA_PHONE4 = #{SU_SA_PHONE4},
+			SU_SA_PHONE5 = #{SU_SA_PHONE5}
 			
 		WHERE SU_KEYNO = #{SU_KEYNO}
 	</update>
@@ -747,7 +770,12 @@ where UI_KEYNO = 'UI_HMWNH'
 				sa_writetype,
 				sa2_problem,
 				changenum,
-				changenum2
+				changenum2,
+				sa2_nowpowertype,
+				sa2_todaypowertype,
+				sa2_annacc,
+				sa2_preannacc,
+				sa2_peridev
 				
 			)VALUES(
 				#{sa2_title},
@@ -796,7 +824,12 @@ where UI_KEYNO = 'UI_HMWNH'
 				#{sa_writetype},
 				#{sa2_problem},
 				#{changenum},
-				#{changenum2}
+				#{changenum2},
+				#{sa2_nowpowertype},
+				#{sa2_todaypowertype},
+				#{sa2_annacc},
+				#{sa2_preannacc},
+				#{sa2_peridev}
 			)
 		</insert>
 		
@@ -829,6 +862,75 @@ where UI_KEYNO = 'UI_HMWNH'
 				and b.SU_KEYNO = #{su_keyno}
 			)sa
 		</select>
+		
+		<!-- 가장최근 작성일자 뽑기 -->
+		<select id="preDateSelect" parameterType="String" resultType="hashmap">
+			SELECT ifnull(date_format(max(b.Conn_date), '%m/%d'),'') predate
+			FROM dy_sa_user a
+			join dy_sa2_paper b
+			on a.SU_SA_SULBI  = b.sa2_title
+			where SU_KEYNO = #{su_keyno}
+		</select>
+		
+		<!-- 가장최근 작성일자와 현재 시간 일차이 뽑기-->
+		<select id="dateDiff" parameterType="String" resultType="hashmap">
+			select ifnull(datediff(now(),max(b.Conn_date)),0) diff
+			FROM dy_sa_user a
+			join dy_sa2_paper b
+			on a.SU_SA_SULBI  = b.sa2_title
+			where SU_KEYNO = #{su_keyno}
+		</select>
+		
+		<!-- 전달 마지막날 뽑기-->
+		<select id="lastday" resultType="String">
+			select date_format(LAST_DAY(now()-interval 1 month),'%d') lastday
+		</select>
+		
+		<!-- 바로 전회차 데이터 뽑기-->
+		<select id="preDataSelect" resultType="hashmap">
+			select *
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%m/%d/%h/%i') =
+			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where SU_KEYNO = #{su_keyno}
+			)
+		</select>
+		
+		<select id="placeholderPreView" resultType="hashmap">
+			select *
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%m/%d/%h/%i') =
+			(  SELECT ifnull(date_format(max(b.Conn_date), '%m/%d/%h/%i'),'0')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where sa2_keyno = #{selectgroup}
+			)
+		</select>
+		
+		 <!-- 이전달 가장 마지막 전월유효전력량 데이터 뽑기(자동계산) -->
+		<select id="preWattSelect" resultType="String">
+			select max(a.sa2_meter1KWh) prewatt
+			FROM dy_sa2_paper a
+			join dy_sa_user b
+			on a.sa2_title = b.SU_SA_SULBI
+			where date_format(a.Conn_date, '%Y-%m') =
+				(select date_format(max(now()-interval 1 month),'%Y-%m')
+				FROM dy_sa_user a
+				join dy_sa2_paper b
+				on a.SU_SA_SULBI  = b.sa2_title
+				where SU_KEYNO = #{su_keyno}
+				)
+		</select>
+
+		
 		
 		<insert id="ExcelInsert"  parameterType="hashmap">
 			INSERT INTO dy_sa_user (

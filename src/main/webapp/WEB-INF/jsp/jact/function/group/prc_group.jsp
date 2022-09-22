@@ -94,7 +94,7 @@
 </section>
 <!-- end widget grid -->
 
-<%@ include file="/WEB-INF/jsp/cf/function/group/prc_group_receipt.jsp"%>
+<%@ include file="/WEB-INF/jsp/jact/function/group/prc_group_receipt.jsp"%>
 
 <script type="text/javascript">
 

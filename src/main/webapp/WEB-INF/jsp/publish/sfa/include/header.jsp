@@ -40,7 +40,7 @@
 
 
     <!-- 사이트맵 -->
-    <%@ include file="/WEB-INF/jsp/publish/jact/include/sitemap.jsp" %>
+    <%@ include file="/WEB-INF/jsp/publish/sfa/include/sitemap.jsp" %>
     <!-- 사이트맵 끝 -->
 
 	<header id="hd">

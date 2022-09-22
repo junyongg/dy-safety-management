@@ -133,10 +133,26 @@
 													 <option value="3">3대</option>
 													 <option value="4">4~20대</option>
 													</select></td>
+												<td>점검일</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_ADMINDATE" name="SU_SA_ADMINDATE"></td>
+												<td>계량기 번호1</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_METER1" name="SU_SA_METER1"></td>
+											</tr>
+											<tr>
+												<td>계량기 번호2</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_METER2" name="SU_SA_METER2"></td>
 												<td>사업주 전화번호 1</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_PHONE1" name="SU_SA_PHONE1"></td>
 												<td>사업주 전화번호 2</td>
 												<td><input type="text" class="form-control check2" id="SU_SA_PHONE2" name="SU_SA_PHONE2"></td>
+											</tr>
+											<tr>	
+												<td>시공사 전화번호</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_PHONE3" name="SU_SA_PHONE3"></td>
+												<td>판넬사 전화번호</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_PHONE4" name="SU_SA_PHONE4"></td>
+												<td>관리업체 전화번호</td>
+												<td><input type="text" class="form-control check2" id="SU_SA_PHONE5" name="SU_SA_PHONE5"></td>
 											</tr>
 											<tr>
 												<td colspan="8">
@@ -213,8 +229,14 @@ function providerSelectmethod2(value){
         	$("#SU_SA_VOLT").val(result.SU_SA_VOLT)
         	$("#SU_SA_CT").val(result.SU_SA_CT)
         	$("#SU_SA_INVERTERNUM").val(result.SU_SA_INVERTERNUM)
+        	$("#SU_SA_ADMINDATE").val(result.SU_SA_ADMINDATE)
+        	$("#SU_SA_METER1").val(result.SU_SA_METER1)
+        	$("#SU_SA_METER2").val(result.SU_SA_METER2)
         	$("#SU_SA_PHONE1").val(result.SU_SA_PHONE1)
         	$("#SU_SA_PHONE2").val(result.SU_SA_PHONE2)
+        	$("#SU_SA_PHONE3").val(result.SU_SA_PHONE3)
+        	$("#SU_SA_PHONE4").val(result.SU_SA_PHONE4)
+        	$("#SU_SA_PHONE5").val(result.SU_SA_PHONE5)
         
         	
         	$("#buttondiv2-2").html('<button class="btn btn-sm btn-danger" type="button" onclick="supdeleteInfo();" style="margin-right:10px;"><i class="glyphicon glyphicon-trash"></i> 삭제</button>')

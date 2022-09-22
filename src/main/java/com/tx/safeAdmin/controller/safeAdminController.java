@@ -1049,6 +1049,11 @@ public class safeAdminController {
 				
 		map.put("data", Component.getData("sfa.safeuserselect_one", SU_KEYNO));		
 		map.put("count", Component.getData("sfa.safeWritecount",SU_KEYNO));		
+		map.put("predate", Component.getData("sfa.preDateSelect",SU_KEYNO));
+		map.put("datediff", Component.getData("sfa.dateDiff",SU_KEYNO));
+		map.put("preData", Component.getData("sfa.preDataSelect",SU_KEYNO));
+		map.put("lastday", Component.getData("sfa.lastday"));
+		map.put("prewatt", Component.getData("sfa.preWattSelect",SU_KEYNO));
 
 		
 		return map;
@@ -1319,7 +1324,8 @@ public class safeAdminController {
 					HashMap<String, Object> map = new HashMap<String, Object>();			
 					
 					
-					map = Component.getData("sfa.placeholderView", selectgroup);			
+					map.put("placeholder", Component.getData("sfa.placeholderView", selectgroup));			
+					map.put("preData", Component.getData("sfa.placeholderPreView",selectgroup));
 					
 					return map;
 				}

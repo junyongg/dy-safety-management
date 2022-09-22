@@ -10,8 +10,14 @@ public class safeUserDTO {
 	public String SU_SA_VOLT;
 	public String SU_SA_CT;
 	public String SU_SA_INVERTERNUM;
+	public String SU_SA_ADMINDATE;
+	public String SU_SA_METER1;
+	public String SU_SA_METER2;
 	public String SU_SA_PHONE1;
 	public String SU_SA_PHONE2;
+	public String SU_SA_PHONE3;
+	public String SU_SA_PHONE4;
+	public String SU_SA_PHONE5;
 	public String SU_SA_KAKAOYN;
 	public String SU_SA_MSGYN;
 	public String getSU_KEYNO() {
@@ -85,6 +91,42 @@ public class safeUserDTO {
 	}
 	public void setSU_SA_MSGYN(String sU_SA_MSGYN) {
 		SU_SA_MSGYN = sU_SA_MSGYN;
+	}
+	public String getSU_SA_ADMINDATE() {
+		return SU_SA_ADMINDATE;
+	}
+	public void setSU_SA_ADMINDATE(String sU_SA_ADMINDATE) {
+		SU_SA_ADMINDATE = sU_SA_ADMINDATE;
+	}
+	public String getSU_SA_METER1() {
+		return SU_SA_METER1;
+	}
+	public void setSU_SA_METER1(String sU_SA_METER1) {
+		SU_SA_METER1 = sU_SA_METER1;
+	}
+	public String getSU_SA_METER2() {
+		return SU_SA_METER2;
+	}
+	public void setSU_SA_METER2(String sU_SA_METER2) {
+		SU_SA_METER2 = sU_SA_METER2;
+	}
+	public String getSU_SA_PHONE3() {
+		return SU_SA_PHONE3;
+	}
+	public void setSU_SA_PHONE3(String sU_SA_PHONE3) {
+		SU_SA_PHONE3 = sU_SA_PHONE3;
+	}
+	public String getSU_SA_PHONE4() {
+		return SU_SA_PHONE4;
+	}
+	public void setSU_SA_PHONE4(String sU_SA_PHONE4) {
+		SU_SA_PHONE4 = sU_SA_PHONE4;
+	}
+	public String getSU_SA_PHONE5() {
+		return SU_SA_PHONE5;
+	}
+	public void setSU_SA_PHONE5(String sU_SA_PHONE5) {
+		SU_SA_PHONE5 = sU_SA_PHONE5;
 	}
 	
 	
