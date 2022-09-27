@@ -1706,6 +1706,13 @@ public class safeAdminController {
 				m.put("g",re.get(6));
 				m.put("h",re.get(7));
 				m.put("i",re.get(8));
+				m.put("j",re.get(9));
+				m.put("k",re.get(10));
+				m.put("l",re.get(11));
+				m.put("m",re.get(12));
+				m.put("n",re.get(13));
+				m.put("o",re.get(14));
+			
 				
 				Component.createData("sfa.ExcelInsert", m);
 				

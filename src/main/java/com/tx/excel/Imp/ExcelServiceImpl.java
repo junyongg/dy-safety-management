@@ -35,7 +35,7 @@ public class ExcelServiceImpl extends EgovAbstractServiceImpl implements ExcelSe
 	
 	public ArrayList<ArrayList<String>> readFilter_And_Insert(MultipartFile file) throws IOException {
 		
-		int cells = 8;	// 셀의 수
+		int cells = 15;	// 셀의 수
 		
 		//프로퍼티 경로 불러오기
 		String propertiespath = propertiesService.getString("FilePath");
