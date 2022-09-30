@@ -38,7 +38,7 @@ select{ height: 30px; }
 				name="sa2_count2" id="sa2_count2">번 점검 <select
 				style="margin-left: 50px;" class="form-control input-sm"
 				name="su_keyno" id="su_keyno" onchange="changesulbi(this.value)">
-				<option>선택하세요</option>
+				<option value="">선택하세요</option>
 				<c:forEach items="${safeuserlist}" var="b">
 					<option value="${b.SU_KEYNO}">${b.SU_SA_SULBI }</option>
 				</c:forEach>
@@ -782,42 +782,47 @@ function datanumselect(){
 	var b = $("#Year").val();
 	var c = $("#Month").val();
 	
-	$.ajax({
-        url: '/sfa/sfaAdmin/previewAjax.do?${_csrf.parameterName}=${_csrf.token}',
-        type: 'POST',
-        data: $("#Form").serialize(),
-        async: false,  
-        success: function(data) {
-        	
-        	console.log(data);
-        	if(data == null || data == ""){
-        		alert("해당 연월에 작성한 양식이 없습니다");
-        	}else{
-				var userlist = [];
-				 
-				for(var i=0; i<data.length; i++){
-					userlist[i] = data[i].sa2_keyno;
-				}
-	
-				for(var i=0; i<data.length; i++){
-					$("#selectgroup").append("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
-			 	}  		
+	console.log(a);
+	if(a != ''){
+		$.ajax({
+	        url: '/sfa/sfaAdmin/previewAjax.do?${_csrf.parameterName}=${_csrf.token}',
+	        type: 'POST',
+	        data: $("#Form").serialize(),
+	        async: false,  
+	        success: function(data) {
 	        	
-	//         	if(data == "null"){        		
-	//         		alert("해당 연월에 작성한 양식이 없습니다.")	
-	//         	}else{
-	// 	        	var left = Math.ceil((window.screen.width - 1000)/2);
-	// 	        	var top = Math.ceil((window.screen.height - 820)/2);
-	// 	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
-	// 	        	popOpen.focus();
-	//         	}	
-        	}
-        	
-        },
-        error: function(){
-        	alert("저장 에러");
-        }
-	}); 
+	        	console.log(data);
+	        	if(data == null || data == ""){
+	        		alert("해당 연월에 작성한 양식이 없습니다");
+	        	}else{
+					var userlist = [];
+					 
+					for(var i=0; i<data.length; i++){
+						userlist[i] = data[i].sa2_keyno;
+					}
+		
+					for(var i=0; i<data.length; i++){
+						$("#selectgroup").append("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
+				 	}  		
+		        	
+		//         	if(data == "null"){        		
+		//         		alert("해당 연월에 작성한 양식이 없습니다.")	
+		//         	}else{
+		// 	        	var left = Math.ceil((window.screen.width - 1000)/2);
+		// 	        	var top = Math.ceil((window.screen.height - 820)/2);
+		// 	        	var popOpen	= window.open("/sfa/sfaAdmin/preview.do?su_keyno="+a+"&Year="+b+"&Month="+c+"&type="+d, "Taxpopup","width=1200px,height=900px,top="+top+",left="+left+",status=0,toolbar=0,menubar=0,location=false,scrollbars=yes");
+		// 	        	popOpen.focus();
+		//         	}	
+	        	}
+	        	
+	        },
+	        error: function(){
+	        	alert("저장 에러");
+	        }
+		});
+	}else{
+		alert("발전소를 선택해주세요")
+	}
 	
 }
 
@@ -889,15 +894,21 @@ function view(){
     		
     		
     		
-        	$("#lal1").remove();
-			$("#lal2").remove();
-			$("#lal3").remove();
-			$("#lal4").remove();
+        	$(".qwe1").remove();
+			$(".qwe2").remove();
+			$(".qwe3").remove();
+			$(".qwe4").remove();
 				
-  			$(".la2").append('<input type="text" style="width: 43px; color: gray;" class="tb_gbla1 input_type_serch" value='+nowpowerlist[0]+' name="" id="lal1">')
-  			$(".la3").append('<input type="text" style="width: 43px; color: gray;" class="tb_gbla1 input_type_serch" value='+todaypowerlist[0]+' name="" id="lal2">')
-  			$(".la4").append('<input type="text" style="width: 43px; color: gray; background-color : #edde5a;" class="tb_gbla1 input_type_serch" value='+accpowerlist[0]+' name="" id="lal3">')
-  			$(".la5").append('<input type="text" style="width: 43px; color: gray;" class="tb_gbla1 input_type_serch" value='+periodpowerlist[0]+' name="" id="lal4">')
+  			$(".la2").append('/<input type="text" style="width: 43px; color: gray; text-align: center;" class="qwe1" value='+nowpowerlist[0]+' name="qwe1" id="qwe1" readonly="readonly">')
+  			$(".la3").append('/<input type="text" style="width: 43px; color: gray; text-align: center;" class="qwe2" value='+todaypowerlist[0]+' name="qwe2" id="qwe1" readonly="readonly">')
+  			$(".la4").append('/<input type="text" style="width: 43px; color: gray; background-color : #edde5a; text-align: center;" class="qwe3" value='+accpowerlist[0]+' name="qwe3" id="qwe1" readonly="readonly">')
+  			$(".la5").append('/<input type="text" style="width: 43px; color: gray; text-align: center;" class="qwe4" value='+periodpowerlist[0]+' name="qwe4" id="qwe1" readonly="readonly">')
+//   			$(".la1").attr('colspan','2')
+//   			
+//   			$(".la2").append('<td>'+nowpowerlist[0]+'</td>')
+//   			$(".la3").append('<td>'+todaypowerlist[0]+'</td>')
+//   			$(".la4").append('<td >'+accpowerlist[0]+'</td>')
+//   			$(".la5").append('<td>'+periodpowerlist[0]+'</td>')
   						       			
        		
 			
@@ -1106,6 +1117,7 @@ function changesulbi(keyno) {
 				$("#inputplus1").html('<td class="tg-0lax" colspan="">현재 출력 <select id="sa2_nowpowertype" name="sa2_accpowertype"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la2" ><label><input type="text" style="width: 40%" class="tb_gbla1 input_type_serch" value="" name="sa2_nowpower" id="sa2_nowpower"><input type="hidden" value="" name="sa2_nowpower1"></label></td>');
 				$("#inputplus2").html('<td class="tg-0lax" colspan="">금일 발전량<select id="sa2_todaypowertype" name="sa2_accpowertype"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la3" ><label> <input type="text" style="width: 40%" class="tb_gbla1 input_type_serch" value="" name="sa2_todaypower" id="sa2_todaypower"></label><input type="hidden" value="" name="sa2_todaypower1"></td>');
 				$("#inputplus3").html('<td class="tg-0lax" colspan="">누적 발전량 <select id="sa2_accpowertype" name="sa2_accpowertype"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la4" style="background-color : #edde5a;"><label> <input type="text" style="width: 40%; background-color : #edde5a;" class="tb_gbla1 input_type_serch" value="" name="sa2_accpower" onkeyup="method_2(\'inputplus3\',\'inputplus4\',\''+conutt+'\');" ><input type="hidden" value="'+accpowerlist[0]+'" name="sa2_accpower1"></label></td>');
+				$("#inputplus4").html('<td class="tg-0lax" colspan="">기간 발전량<select id="sa2_periodpowertype" name="sa2_periodpowertype"><option value="KWh">KWh</option><option value="MWh">MWh</option></select></td><td class="la5" ><label> <input type="text" style="width: 40%" class="tb_gbla1 input_type_serch"	name="sa2_periodpower"><input type="hidden" value="" id ="sa2_periodpower1" name="sa2_periodpower1"></label></td>');
 				
 			
         		for(var i=1; i<=num-1; i++){	
