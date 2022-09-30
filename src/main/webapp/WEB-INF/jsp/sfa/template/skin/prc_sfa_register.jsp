@@ -914,7 +914,7 @@ function view(){
 			
         },
         error: function(){
-        	alert("저장 에러");
+        	alert("발전소,월,일을 선택해주세요");
         }
 	}); 
 	
