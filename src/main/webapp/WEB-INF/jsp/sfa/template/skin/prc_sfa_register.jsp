@@ -802,7 +802,7 @@ function datanumselect(){
 					}
 		
 					for(var i=0; i<data.length; i++){
-						$("#selectgroup").append("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
+						$("#selectgroup").html("<option value = "+data[i].sa2_keyno+">"+data[i].datenum+"</option>"); // <option>값 넣어줌
 				 	}  		
 		        	
 		//         	if(data == "null"){        		
